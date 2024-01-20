@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import Container from '@/Components/Container.vue';
 import Card from '@/Components/Card/Card.vue';
+import Button from '@/Components/Button.vue';
 import Table from '@/Components/Table/Table.vue';
 import Td from "@/Components/Table/Td.vue";
 import Actions from "@/Components/Table/Actions.vue";
@@ -16,21 +17,26 @@ defineProps({
     headers: {
         type: Array,
         default: () => []
+    },
+    title: {
+        type: String,
+        default: () => ""
     }
 });
 
 </script>
 
 <template>
-    <Head title="Roles" />
+    <Head :title="title" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Roles</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
         </template>
 
 
         <Container>
+            <Button :href="route(`admin.roles.create`)">Add New</Button>
             <Card class="mt-4">
                 <Table :headers="headers" :items="items">
                     <template v-slot="{ item }">
@@ -41,10 +47,10 @@ defineProps({
                             {{ item.created_at_formatted }}
                         </Td>
                         <Td>
-                            <Actions />
+                            <Actions :edit-link="route(`admin.roles.edit`, { id: item.id })" />
                         </Td>
                     </template>
-                   
+
                 </Table>
             </Card>
         </Container>
