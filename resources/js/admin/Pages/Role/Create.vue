@@ -7,6 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Button from '@/Components/Button.vue';
+import Permissions from './Permissions.vue';
 
 const props = defineProps({
     edit: {
@@ -23,6 +24,10 @@ const props = defineProps({
     routeResourceName: {
         type: String,
         required: true,
+    },
+    permissions: {
+        type: Array,
+        default: () => []
     },
 });
 
@@ -66,5 +71,9 @@ const submit = () => {
                 </form>
             </Card>
         </Container>
+        <Permissions v-if="edit"
+                     class="mt-6"
+                     :role="item"
+                     :permissions="permissions" />
     </AuthenticatedLayout>
 </template>

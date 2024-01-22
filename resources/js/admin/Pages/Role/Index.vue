@@ -37,7 +37,7 @@ const props = defineProps({
     routeResourceName: {
         type: String,
         required: true,
-    },
+    }
 });
 
 const {
