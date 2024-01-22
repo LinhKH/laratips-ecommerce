@@ -13,6 +13,15 @@ use Spatie\Permission\Models\Permission;
 class PermissionsController extends Controller
 {
     private string $routeResourceName = 'permissions';
+
+    public function __construct()
+    {
+        $this->middleware('can:view permissions list')->only('index');
+        $this->middleware('can:create permission')->only(['create', 'store']);
+        $this->middleware('can:edit permission')->only(['edit', 'update']);
+        $this->middleware('can:delete permission')->only('destroy');
+    }
+
     public function index(Request $request)
     {
         $permissions = Permission::query()
@@ -20,6 +29,7 @@ class PermissionsController extends Controller
             ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
             ->latest('id')
             ->paginate();
+            
         return Inertia::render('Permission/Index', [
             'title' => 'Permissions List',
             'items' => PermissionResource::collection($permissions),
@@ -36,9 +46,12 @@ class PermissionsController extends Controller
                     'label' => 'Actions',
                     'name' => 'actions'
                 ]
-                ],
-                'filters' => (object) $request->all(),
-                'routeResourceName' => $this->routeResourceName
+            ],
+            'filters' => (object) $request->all(),
+            'routeResourceName' => $this->routeResourceName,
+            'can' => [
+                'create' => $request->user()->can('create permission'),
+            ]
         ]);
     }
 
@@ -55,12 +68,11 @@ class PermissionsController extends Controller
     {
         $permission = Permission::create($request->validated());
 
-        return redirect()->route("admin.permissions.index")->with('success', 'Permission created successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Permission created successfully.');
     }
 
     public function edit(Permission $permission)
     {
-
         return Inertia::render('Permission/Create', [
             'edit' => true,
             'title' => 'Edit Permission',
@@ -73,7 +85,7 @@ class PermissionsController extends Controller
     {
         $permission->update($request->validated());
 
-        return redirect()->route("admin.permissions.index")->with('success', 'Permission updated successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Permission updated successfully.');
     }
 
     public function destroy(Permission $permission)

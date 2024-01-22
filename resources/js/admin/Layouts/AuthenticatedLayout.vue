@@ -31,14 +31,8 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
-                                    Permissions
-                                </NavLink>
-                                <NavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
-                                    Roles
+                                <NavLink v-show="menu.isVisible" v-for="menu in $page.props.menus" :key="menu.label" :href="menu.url" :active="menu.isActive">
+                                    {{ menu.label }}
                                 </NavLink>
                             </div>
                         </div>
@@ -120,14 +114,9 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
-                            Permissions
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
-                            Roles
+
+                        <ResponsiveNavLink v-show="menu.isVisible" v-for="menu in $page.props.menus" :key="menu.label" :href="menu.url" :active="menu.isActive">
+                                    {{ menu.label }}
                         </ResponsiveNavLink>
                     </div>
 

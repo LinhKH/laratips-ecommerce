@@ -15,6 +15,15 @@ use Spatie\Permission\Models\Role;
 class RolesController extends Controller
 {
     private string $routeResourceName = 'roles';
+
+    public function __construct()
+    {
+        $this->middleware('can:view roles list')->only('index');
+        $this->middleware('can:create role')->only(['create', 'store']);
+        $this->middleware('can:edit role')->only(['edit', 'update']);
+        $this->middleware('can:delete role')->only('destroy');
+    }
+
     public function index(Request $request)
     {
         $roles = Role::query()
@@ -40,7 +49,10 @@ class RolesController extends Controller
                 ]
                 ],
                 'filters' => (object) $request->all(),
-                'routeResourceName' => $this->routeResourceName
+                'routeResourceName' => $this->routeResourceName,
+                'can' => [
+                    'create' => $request->user()->can('create role'),
+                ]
         ]);
     }
 
@@ -57,7 +69,7 @@ class RolesController extends Controller
     {
         $role = Role::create($request->validated());
 
-        return redirect()->route("admin.roles.index")->with('success', 'Role created successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.edit", $role)->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role)
@@ -76,7 +88,7 @@ class RolesController extends Controller
     {
         $role->update($request->validated());
 
-        return redirect()->route("admin.roles.index")->with('success', 'Role updated successfully.');
+        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)
