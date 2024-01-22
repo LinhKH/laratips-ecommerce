@@ -5,7 +5,7 @@
             <Edit />
             </Link>
         </button>
-        <button v-if="showDelete">
+        <button v-if="showDelete" @click="$emit('deleteClicked', $event)">
             <Trash />
         </button>
     </div>
