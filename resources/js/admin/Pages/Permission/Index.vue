@@ -16,6 +16,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 
 import useDeleteItem from "@/Composables/useDeleteItem.js";
 import useFilters from "@/Composables/useFilters.js";
+import Filters from './Filters.vue';
 
 const props = defineProps({
     items: {
@@ -63,18 +64,7 @@ const { filters, isLoading } = useFilters({
 
 
         <Container>
-            <Card class="mb-4">
-                <template #header>
-                    Filters
-                </template>
-                <form class="grid grid-cols-4 gap-8">
-                    <div>
-                        <InputLabel value="Name" />
-
-                        <TextInput type="text" class="mt-1 block w-full" v-model="filters.name" />
-                    </div>
-                </form>
-            </Card>
+            <Filters v-model="filters" />
 
             <Button :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
             <Card class="mt-4" :is-loading="isLoading">
