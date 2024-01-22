@@ -7,11 +7,14 @@ export default function useFilters(params) {
     const filters = ref(defaultFilters);
 
     const fetchItemsHandler = ref(null);
+    const isLoading = ref(false);
     const fetchItems = () => {
         router.get(route("admin.roles.index"), filters.value, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
+            onBefore: () => isLoading.value = true,
+            onFinish: () => isLoading.value = false,
         });
     };
 
@@ -30,6 +33,7 @@ export default function useFilters(params) {
 
     return {
         filters,
+        isLoading,
         fetchItems,
     };
 }
