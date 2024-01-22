@@ -20,7 +20,13 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    routeResourceName: {
+        type: String,
+        required: true,
+    },
 });
+
+const { routeResourceName } = props;
 
 const form = useForm({
     name: props.item?.name ?? "",
@@ -28,8 +34,8 @@ const form = useForm({
 
 const submit = () => {
     props.edit
-        ? form.put(route('admin.roles.update', { id: props.item.id }))
-        : form.post(route('admin.roles.store'));
+        ? form.put(route(`admin.${routeResourceName}.update`, { id: props.item.id }))
+        : form.post(route(`admin.${routeResourceName}.store`));
 };
 </script>
 

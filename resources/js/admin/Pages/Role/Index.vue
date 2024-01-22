@@ -8,13 +8,14 @@ import Button from '@/Components/Button.vue';
 import Table from '@/Components/Table/Table.vue';
 import Td from "@/Components/Table/Td.vue";
 import Actions from "@/Components/Table/Actions.vue";
-import ModalCommon from "@/Components/ModalCommon.vue";
 import Modal from '@/Components/Modal.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 
+import useDeleteItem from "@/Composables/useDeleteItem.js";
+import useFilters from "@/Composables/useFilters.js";
 
 const props = defineProps({
     items: {
@@ -33,66 +34,22 @@ const props = defineProps({
         type: Object,
         default: () => ({})
     },
+    routeResourceName: {
+        type: String,
+        required: true,
+    },
 });
 
-onMounted(() => {
-    filters.value = props.filters
+const {
+    showDeleteModal, deleteModel, closeModal, itemToDelete, handleDeleteItem, isDeleting,
+} = useDeleteItem({
+    routeResourceName: props.routeResourceName,
+});
+const { filters } = useFilters({
+    filters: props.filters,
+    routeResourceName: props.routeResourceName
 });
 
-const deleteModel = ref(false);
-const isDeleting = ref(false);
-const itemToDelete = ref({});
-
-const showDeleteModal = (item) => {
-    deleteModel.value = true;
-    itemToDelete.value = item;
-};
-
-const handleDeleteItem = () => {
-    router.delete(route('admin.roles.destroy', { id: itemToDelete.value.id }), {
-        preserveScroll: true,
-        preserveState: true,
-        onBefore: () => {
-            isDeleting.value = true;
-        },
-        onSuccess: () => {
-            deleteModel.value = false;
-            itemToDelete.value = {};
-            closeModal();
-        },
-        onFinish: () => {
-            isDeleting.value = false;
-        },
-    });
-};
-
-const closeModal = () => {
-    deleteModel.value = false;
-
-};
-
-const filters = ref({
-    name: ""
-});
-
-const fetchItemsHandler = ref(null);
-const fetchItems = () => {
-    router.get(route('admin.roles.index'), filters.value, 
-    {
-        preserveState: true,
-        preserveScroll: true,
-        replace: true
-    });
-};
-
-watch(filters, () => {
-    clearTimeout(fetchItemsHandler.value);
-    fetchItemsHandler.value = setTimeout(() => {
-        fetchItems();
-    }, 300)
-},{
-    deep: true
-})
 
 </script>
 
@@ -119,7 +76,7 @@ watch(filters, () => {
                 </form>
             </Card>
 
-            <Button :href="route(`admin.roles.create`)">Add New</Button>
+            <Button :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
             <Card class="mt-4">
                 <Table :headers="headers" :items="items">
                     <template v-slot="{ item }">
@@ -130,7 +87,7 @@ watch(filters, () => {
                             {{ item.created_at_formatted }}
                         </Td>
                         <Td>
-                            <Actions :edit-link="route(`admin.roles.edit`, { id: item.id })"
+                            <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: item.id })"
                                 @deleteClicked="showDeleteModal(item)" />
                         </Td>
                     </template>
@@ -141,38 +98,25 @@ watch(filters, () => {
 
     </AuthenticatedLayout>
 
-    <!-- <ModalCommon v-model="deleteModal" :title="`Delete ${itemToDelete.name}`">
-        Are you sure you want to delete this item?
-
-        <template #footer>
-            <Button @click="handleDeleteItem" :disabled="isDeleting">
-                <span v-if="isDeleting">Deleting</span>
-                <span v-else>Delete</span>
-            </Button>
-        </template>
-    </ModalCommon> -->
-
     <Modal :show="deleteModel" @close="closeModal">
-        
+
         <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900">
-                    Delete {{ itemToDelete.name }}
-                </h2>
+            <h2 class="text-lg font-medium text-gray-900">
+                Delete Role: {{ itemToDelete.name }}
+            </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
-                    Are you sure you want to delete this item?
-                </p>
+            <p class="mt-1 text-sm text-gray-600">
+                Are you sure you want to delete this item?
+            </p>
 
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+            <div class="mt-6 flex justify-end">
+                <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
 
-                    <DangerButton class="ms-3" @click="handleDeleteItem"
-                            :disabled="isDeleting">
-                        <span v-if="isDeleting">Deleting</span>
-                        <span v-else>Delete</span>
-                    </DangerButton>
-                </div>
+                <DangerButton class="ms-3" @click="handleDeleteItem" :disabled="isDeleting">
+                    <span v-if="isDeleting">Deleting</span>
+                    <span v-else>Delete</span>
+                </DangerButton>
             </div>
+        </div>
     </Modal>
-
 </template>

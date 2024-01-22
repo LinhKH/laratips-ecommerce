@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
+    private string $routeResourceName = 'roles';
     public function index(Request $request)
     {
         $roles = Role::query()
@@ -36,7 +37,8 @@ class RolesController extends Controller
                     'name' => 'actions'
                 ]
                 ],
-                'filters' => (object) $request->all()
+                'filters' => (object) $request->all(),
+                'routeResourceName' => $this->routeResourceName
         ]);
     }
 
@@ -45,6 +47,7 @@ class RolesController extends Controller
         return Inertia::render('Role/Create', [
             'edit' => false,
             'title' => 'Create Role',
+            'routeResourceName' => $this->routeResourceName
         ]);
     }
 
@@ -62,6 +65,7 @@ class RolesController extends Controller
             'edit' => true,
             'title' => 'Edit Role',
             'item' => new RoleResource($role),
+            'routeResourceName' => $this->routeResourceName
         ]);
     }
 
