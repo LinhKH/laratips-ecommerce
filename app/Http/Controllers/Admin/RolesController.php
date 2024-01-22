@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RolesRequest;
 use App\Http\Resources\RoleResource;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::latest('id')->paginate();
+        $roles = Role::query()
+            ->select(['id', 'name', 'created_at'])
+            ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
+            ->latest('id')
+            ->paginate();
         return Inertia::render('Role/Index', [
             'title' => 'Roles List',
             'items' => RoleResource::collection($roles),
@@ -29,13 +35,14 @@ class RolesController extends Controller
                     'label' => 'Actions',
                     'name' => 'actions'
                 ]
-            ]
+                ],
+                'filters' => (object) $request->all()
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Role/Create' ,[
+        return Inertia::render('Role/Create', [
             'edit' => false,
             'title' => 'Create Role',
         ]);

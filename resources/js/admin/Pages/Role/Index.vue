@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 import Container from '@/Components/Container.vue';
@@ -12,9 +12,11 @@ import ModalCommon from "@/Components/ModalCommon.vue";
 import Modal from '@/Components/Modal.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 
 
-defineProps({
+const props = defineProps({
     items: {
         type: Object,
         default: () => ({})
@@ -26,7 +28,15 @@ defineProps({
     title: {
         type: String,
         default: () => ""
-    }
+    },
+    filters: {
+        type: Object,
+        default: () => ({})
+    },
+});
+
+onMounted(() => {
+    filters.value = props.filters
 });
 
 const deleteModel = ref(false);
@@ -61,6 +71,29 @@ const closeModal = () => {
 
 };
 
+const filters = ref({
+    name: ""
+});
+
+const fetchItemsHandler = ref(null);
+const fetchItems = () => {
+    router.get(route('admin.roles.index'), filters.value, 
+    {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true
+    });
+};
+
+watch(filters, () => {
+    clearTimeout(fetchItemsHandler.value);
+    fetchItemsHandler.value = setTimeout(() => {
+        fetchItems();
+    }, 300)
+},{
+    deep: true
+})
+
 </script>
 
 <template>
@@ -73,6 +106,19 @@ const closeModal = () => {
 
 
         <Container>
+            <Card class="mb-4">
+                <template #header>
+                    Filters
+                </template>
+                <form class="grid grid-cols-4 gap-8">
+                    <div>
+                        <InputLabel value="Name" />
+
+                        <TextInput type="text" class="mt-1 block w-full" v-model="filters.name" />
+                    </div>
+                </form>
+            </Card>
+
             <Button :href="route(`admin.roles.create`)">Add New</Button>
             <Card class="mt-4">
                 <Table :headers="headers" :items="items">
