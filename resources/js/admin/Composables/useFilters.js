@@ -9,7 +9,7 @@ export default function useFilters(params) {
     const fetchItemsHandler = ref(null);
     const isLoading = ref(false);
     const fetchItems = () => {
-        router.get(route("admin.roles.index"), filters.value, {
+        router.get(route(`admin.${routeResourceName}.index`), filters.value, {
             preserveState: true,
             preserveScroll: true,
             replace: true,

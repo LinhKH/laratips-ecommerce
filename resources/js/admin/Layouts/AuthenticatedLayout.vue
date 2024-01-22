@@ -34,6 +34,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
+                                    Permissions
+                                </NavLink>
                                 <NavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
                                     Roles
                                 </NavLink>
@@ -119,6 +122,9 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')">
+                            Permissions
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')">
                             Roles
