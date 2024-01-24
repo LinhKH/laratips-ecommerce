@@ -1,22 +1,29 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
+
 const message = ref("");
+const timeoutHandler = ref(null);
 
 
 watch(
     () => usePage().props.flash?.success,
-    (successMessage) => message.value = successMessage,
+    (successMessage) => {
+        message.value = successMessage;
+
+        if (successMessage) {
+            clearTimeout(timeoutHandler.value);
+            timeoutHandler.value = setTimeout(() => {
+                message.value = null;
+                usePage().props.flash.success = null;
+            }, 3000)
+        }
+    },
     {
-        immediate: true
+        immediate: true,
+        deep: true
     }
 );
-
-onMounted(() => {
-    setTimeout(() => {
-        message.value = null
-    }, 3000)
-});
 
 </script>
 
