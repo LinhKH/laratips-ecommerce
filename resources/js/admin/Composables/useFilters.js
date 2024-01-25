@@ -1,5 +1,6 @@
 import { ref, watch, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
+import pickBy from 'lodash/pickBy';
 
 export default function useFilters(params) {
     const { filters: defaultFilters, routeResourceName } = params;
@@ -9,7 +10,7 @@ export default function useFilters(params) {
     const fetchItemsHandler = ref(null);
     const isLoading = ref(false);
     const fetchItems = () => {
-        router.get(route(`admin.${routeResourceName}.index`), filters.value, {
+        router.get(route(`admin.${routeResourceName}.index`), pickBy(filters.value), {
             preserveState: true,
             preserveScroll: true,
             replace: true,
