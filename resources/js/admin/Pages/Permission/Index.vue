@@ -90,25 +90,7 @@ const { filters, isLoading } = useFilters({
 
     </AuthenticatedLayout>
 
-    <Modal :show="deleteModel" @close="closeModal">
-
-        <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">
-                Delete Permission: {{ itemToDelete.name }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Are you sure you want to delete this item?
-            </p>
-
-            <div class="mt-6 flex justify-end">
-                <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                <DangerButton class="ms-3" @click="handleDeleteItem" :disabled="isDeleting">
-                    <span v-if="isDeleting">Deleting</span>
-                    <span v-else>Delete</span>
-                </DangerButton>
-            </div>
-        </div>
+    <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
+        :is-deleting="isDeleting" needed-delete="Permission">
     </Modal>
 </template>

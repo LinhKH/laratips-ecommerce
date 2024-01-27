@@ -19,14 +19,10 @@ defineProps({
 <template>
     <div>
         <InputLabel>
-            <Checkbox :value="value"
-                      @update:checked="$emit('update:checked', $event)"
-                      v-bind="$attrs" />
+            <Checkbox :value="value" @update:checked="$emit('update:checked', $event)" v-bind="$attrs" />
             {{ label }}
         </InputLabel>
 
-        <InputError v-if="errorMessage"
-                    class="mt-1"
-                    :message="errorMessage" />
+        <InputError v-if="errorMessage" class="mt-1" :message="errorMessage" />
     </div>
 </template>

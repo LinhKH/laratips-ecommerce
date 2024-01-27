@@ -12,8 +12,11 @@ import DangerButton from "@/Components/DangerButton.vue";
 import Modal from "@/Components/Modal.vue";
 import Filters from "./Filters.vue";
 
+import AddNew from "@/Components/AddNew.vue";
+
 import useDeleteItem from "@/Composables/useDeleteItem.js";
 import useFilters from "@/Composables/useFilters.js";
+import { ref } from "vue";
 
 const props = defineProps({
     title: {
@@ -46,7 +49,7 @@ const {
     routeResourceName: props.routeResourceName,
 });
 
-const { filters, isLoading  } = useFilters({
+const { filters, isLoading } = useFilters({
     filters: props.filters,
     routeResourceName: props.routeResourceName,
 });
@@ -63,9 +66,13 @@ const { filters, isLoading  } = useFilters({
         </template>
 
         <Container>
-            <Filters v-model="filters" :categories="rootCategories" />
+            <AddNew>
+                <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
 
-            <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
+                <template #filters>
+                    <Filters v-model="filters" :categories="rootCategories" />
+                </template>
+            </AddNew>
 
             <Card class="mt-4" :is-loading="isLoading" no-padding>
                 <Table :headers="headers" :items="items">
@@ -99,9 +106,10 @@ const { filters, isLoading  } = useFilters({
         </Container>
     </AuthenticatedLayout>
 
-    <Modal :show="deleteModel" @close="closeModal">
+    <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
+        :is-deleting="isDeleting" needed-delete="Category">
 
-        <div class="p-6">
+        <!-- <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
                 Delete Category: {{ itemToDelete.name }}
             </h2>
@@ -118,6 +126,6 @@ const { filters, isLoading  } = useFilters({
                     <span v-else>Delete</span>
                 </DangerButton>
             </div>
-        </div>
+        </div> -->
     </Modal>
 </template>
