@@ -2,8 +2,8 @@
 import { ref, watch } from "vue";
 
 import Card from "@/Components/Card/Card.vue";
-import TextInput from '@/Components/TextInput.vue';
-import InputLabel from '@/Components/InputLabel.vue';
+import InputGroup from '@/Components/InputGroup.vue';
+import SelectGroup from '@/Components/SelectGroup.vue';
 
 const props = defineProps({
     modelValue: {
@@ -36,17 +36,13 @@ watch(
         </template>
 
         <form class="grid grid-cols-4 gap-8">
-        
-            <div>
-                <InputLabel value="Name" />
 
-                <TextInput type="text" class="mt-1 block w-full" v-model="filters.name" />
-            </div>
-            <div>
-                <InputLabel value="Email" />
+            <InputGroup v-model="filters.name" label="Name" />
 
-                <TextInput type="text" class="mt-1 block w-full" v-model="filters.email" />
-            </div>
+            <InputGroup v-model="filters.email" label="Email" />
+
+            <SelectGroup label="Role" v-model="filters.roleId" :items="roles" />
+
         </form>
     </Card>
 </template>
