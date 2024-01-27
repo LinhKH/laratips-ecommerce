@@ -3,6 +3,8 @@
 import { Head, router } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Container from "@/Components/Container.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 import Card from "@/Components/Card/Card.vue";
 import Table from "@/Components/Table/Table.vue";
 import Td from "@/Components/Table/Td.vue";
@@ -81,7 +83,7 @@ const { filters, isLoading } = useFilters({
                             {{ item.email }}
                         </Td>
                         <Td>
-                            <Button v-for="role in item.roles" :key="role.id" color="blue" small>
+                            <Button v-for="role in item.roles" :key="role.id" color="blue" small class="mx-2">
                                 {{ role.name }}
                             </Button>
                         </Td>

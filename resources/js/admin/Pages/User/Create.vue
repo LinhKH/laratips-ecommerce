@@ -4,10 +4,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Container from "@/Components/Container.vue";
 import Card from "@/Components/Card/Card.vue";
 import Button from "@/Components/Button.vue";
-import TextInput from '@/Components/TextInput.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-
+import InputGroup from "@/Components/InputGroup.vue";
+import SelectGroup from "@/Components/SelectGroup.vue";
 
 const props = defineProps({
     edit: {
@@ -36,22 +34,21 @@ const form = useForm({
     email: props.item.email ?? "",
     password: "",
     passwordConfirmation: "",
-    roleId: props.edit ? (props.item.roles[0]?.id ?? "") : "",
+    roleId: props.edit ? props.item.roles[0]?.id ?? "" : "",
 });
 
 const submit = () => {
     props.edit
         ? form.put(
-              route(`admin.${props.routeResourceName}.update`, {
-                  id: props.item.id,
-              })
-          )
+            route(`admin.${props.routeResourceName}.update`, {
+                id: props.item.id,
+            })
+        )
         : form.post(route(`admin.${props.routeResourceName}.store`));
 };
 </script>
 
 <template>
-
     <Head :title="title" />
 
     <AuthenticatedLayout>
@@ -65,41 +62,22 @@ const submit = () => {
             <Card>
                 <form @submit.prevent="submit">
                     <div class="grid grid-cols-2 gap-6">
+                        <InputGroup v-model="form.name" label="Name" :error-message="form.errors.name" />
 
-                        <div>
-                            <InputLabel value="Name" />
+                        <InputGroup type="email" v-model="form.email" label="Email" :error-message="form.errors.email" />
 
-                            <TextInput type="text" class="mt-1 block w-full" v-model="form.name" />
+                        <InputGroup type="password" v-model="form.password" label="Password"
+                            :error-message="form.errors.password" />
 
-                            <InputError class="mt-1" :message="form.errors.name" />
-                        </div>
-                        <div>
-                            <InputLabel value="Email" />
+                        <InputGroup type="password" v-model="form.passwordConfirmation" label="Confirm Password"
+                            :error-message="form.errors.passwordConfirmation" />
 
-                            <TextInput type="email" class="mt-1 block w-full" v-model="form.email" />
-
-                            <InputError class="mt-1" :message="form.errors.email" />
-                        </div>
-                        <div>
-                            <InputLabel value="Password" />
-
-                            <TextInput type="password" class="mt-1 block w-full" v-model="form.password" />
-
-                            <InputError class="mt-1" :message="form.errors.password" />
-                        </div>
-                        <div>
-                            <InputLabel value="Confirm Password" />
-
-                            <TextInput type="password" class="mt-1 block w-full" v-model="form.passwordConfirmation" />
-
-                            <InputError class="mt-1" :message="form.errors.passwordConfirmation" />
-                        </div>
-
+                        <SelectGroup label="Role" v-model="form.roleId" :items="roles" :error-message="form.errors.roleId" />
                     </div>
 
                     <div class="mt-4">
                         <Button :disabled="form.processing">
-                            {{ form.processing ? 'Saving...' : 'Save' }}
+                            {{ form.processing ? "Saving..." : "Save" }}
                         </Button>
                     </div>
                 </form>

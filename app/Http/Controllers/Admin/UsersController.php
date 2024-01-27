@@ -92,9 +92,11 @@ class UsersController extends Controller
 
     public function store(UsersRequest $request)
     {
+        $role = Role::findById($request->roleId);
+
         $user = User::create($request->safe()->only(['name', 'email', 'password']));
 
-        $user->assignRole($request->roleId);
+        $user->assignRole($role->name);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'User created successfully.');
     }
