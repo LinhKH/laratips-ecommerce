@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'parent_id' => $this->parent_id,
             'name' => $this->whenNotNull($this->name),
-            // 'slug' => $this->whenNotNull($this->slug),
+            'slug' => $this->whenNotNull($this->slug),
             'created_at_formatted' => $this->when($this->created_at, function () {
                 return $this->created_at->toDayDateTimeString();
             }),

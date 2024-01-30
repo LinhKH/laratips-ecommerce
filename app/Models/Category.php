@@ -30,6 +30,11 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
     public function scopeRoot($builder)
     {
         return $builder->whereNull('parent_id');
