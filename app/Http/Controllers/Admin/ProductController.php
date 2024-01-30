@@ -74,7 +74,7 @@ class ProductController extends Controller
                 fn (Builder $builder) => $builder->where('show_on_slider', $request->showOnSlider)
             )
             ->latest('id')
-            ->paginate(10);
+            ->paginate(10)->withQueryString();
 
         return Inertia::render('Product/Index', [
             'title' => 'Products',

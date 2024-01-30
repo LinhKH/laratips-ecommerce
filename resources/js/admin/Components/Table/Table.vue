@@ -28,11 +28,15 @@
             </div>
         </div>
     </div>
+    <div v-if="items.meta.links.length > 3" class="py-4">
+        <Pagination :links="items.meta.links" />
+    </div>
 </template>
 
 <script setup>
 import Th from '@/Components/Table/Th.vue';
 import Td from '@/Components/Table/Td.vue';
+import Pagination from "@/Components/Table/Pagination.vue";
 
 defineProps({
     headers: {
