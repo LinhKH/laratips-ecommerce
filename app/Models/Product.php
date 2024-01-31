@@ -25,7 +25,7 @@ class Product extends Model implements HasMedia
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function creator()

@@ -49,7 +49,7 @@ class ProductResource extends JsonResource
                     ]
                 )
             ),
-            'creator_id' => $this->whenNotNull('creator_id'),
+            'creator_id' => $this->whenNotNull($this->creator_id),
             'creator' => new UserResource($this->whenLoaded('creator')),
         ];
     }
