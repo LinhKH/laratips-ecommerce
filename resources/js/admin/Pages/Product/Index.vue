@@ -98,7 +98,7 @@ const { filters, isLoading, isFilled } = useFilters({
                             {{ item.created_at_formatted }}
                         </Td>
                         <Td>
-                            {{ item.creator.name }}
+                            {{ item.creator?.name }}
                         </Td>
                         <Td>
                             <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: item.id })"
