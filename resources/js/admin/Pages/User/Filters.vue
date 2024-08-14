@@ -1,9 +1,9 @@
 <script setup>
 import { ref, watch } from "vue";
 
-import Card from "@/Components/Card/Card.vue";
-import InputGroup from '@/Components/InputGroup.vue';
-import SelectGroup from '@/Components/SelectGroup.vue';
+import Card from "@/admin/Components/Card/Card.vue";
+import InputGroup from '@/admin/Components/InputGroup.vue';
+import SelectGroup from '@/admin/Components/SelectGroup.vue';
 
 const props = defineProps({
     modelValue: {

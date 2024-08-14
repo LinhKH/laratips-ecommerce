@@ -1,12 +1,12 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Container from '@/Components/Container.vue';
-import Card from '@/Components/Card/Card.vue';
-import TextInput from '@/Components/TextInput.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import Button from '@/Components/Button.vue';
+import AuthenticatedLayout from '@/admin/Layouts/AuthenticatedLayout.vue';
+import Container from '@/admin/Components/Container.vue';
+import Card from '@/admin/Components/Card/Card.vue';
+import TextInput from '@/admin/Components/TextInput.vue';
+import InputError from '@/admin/Components/InputError.vue';
+import InputLabel from '@/admin/Components/InputLabel.vue';
+import Button from '@/admin/Components/Button.vue';
 
 const props = defineProps({
     edit: {

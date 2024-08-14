@@ -39,7 +39,7 @@ class CategoryController extends Controller
             ->when(
                 $request->parentId,
                 fn (Builder $builder) => $builder->where('parent_id', $request->parentId),
-                fn (Builder $builder) => $builder->root()
+                // fn (Builder $builder) => $builder->root()
             )
             ->when(
                 $request->active !== null,
@@ -105,7 +105,6 @@ class CategoryController extends Controller
         $category = Category::create($data);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Category created successfully.');
-
     }
 
     public function edit(Category $category)

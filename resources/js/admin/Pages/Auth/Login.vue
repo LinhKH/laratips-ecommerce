@@ -1,10 +1,10 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Checkbox from '@/admin/Components/Checkbox.vue';
+import GuestLayout from '@/admin/Layouts/GuestLayout.vue';
+import InputError from '@/admin/Components/InputError.vue';
+import InputLabel from '@/admin/Components/InputLabel.vue';
+import PrimaryButton from '@/admin/Components/PrimaryButton.vue';
+import TextInput from '@/admin/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({

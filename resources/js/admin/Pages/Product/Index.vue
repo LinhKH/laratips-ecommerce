@@ -1,20 +1,20 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { Head } from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
-import Table from "@/Components/Table/Table.vue";
-import Td from "@/Components/Table/Td.vue";
-import Actions from "@/Components/Table/Actions.vue";
-import Button from "@/Components/Button.vue";
-import Modal from "@/Components/Modal.vue";
-import AddNew from "@/Components/AddNew.vue";
-import YesNoLabel from "@/Components/YesNoLabel.vue";
+import AuthenticatedLayout from "@/admin/Layouts/AuthenticatedLayout.vue";
+import Container from "@/admin/Components/Container.vue";
+import Card from "@/admin/Components/Card/Card.vue";
+import Table from "@/admin/Components/Table/Table.vue";
+import Td from "@/admin/Components/Table/Td.vue";
+import Actions from "@/admin/Components/Table/Actions.vue";
+import Button from "@/admin/Components/Button.vue";
+import Modal from "@/admin/Components/Modal.vue";
+import AddNew from "@/admin/Components/AddNew.vue";
+import YesNoLabel from "@/admin/Components/YesNoLabel.vue";
 import Filters from "./Filters.vue";
 
-import useDeleteItem from "@/Composables/useDeleteItem.js";
-import useFilters from "@/Composables/useFilters.js";
+import useDeleteItem from "@/admin/Composables/useDeleteItem.js";
+import useFilters from "@/admin/Composables/useFilters.js";
 
 const props = defineProps({
     title: {

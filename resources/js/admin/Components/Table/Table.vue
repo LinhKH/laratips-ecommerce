@@ -34,9 +34,9 @@
 </template>
 
 <script setup>
-import Th from '@/Components/Table/Th.vue';
-import Td from '@/Components/Table/Td.vue';
-import Pagination from "@/Components/Table/Pagination.vue";
+import Th from '@/admin/Components/Table/Th.vue';
+import Td from '@/admin/Components/Table/Td.vue';
+import Pagination from "@/admin/Components/Table/Pagination.vue";
 
 defineProps({
     headers: {

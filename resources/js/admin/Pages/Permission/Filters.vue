@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
-import Card from '@/Components/Card/Card.vue';
-import TextInput from '@/Components/TextInput.vue';
-import InputLabel from '@/Components/InputLabel.vue';
+import Card from '@/admin/Components/Card/Card.vue';
+import TextInput from '@/admin/Components/TextInput.vue';
+import InputLabel from '@/admin/Components/InputLabel.vue';
 
 const props = defineProps({
     filters: {

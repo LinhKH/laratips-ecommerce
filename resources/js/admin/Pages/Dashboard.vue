@@ -1,8 +1,8 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedLayout from '@/admin/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
+import Container from "@/admin/Components/Container.vue";
+import Card from "@/admin/Components/Card/Card.vue";
 </script>
 
 <template>

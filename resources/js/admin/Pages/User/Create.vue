@@ -1,11 +1,11 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
-import Button from "@/Components/Button.vue";
-import InputGroup from "@/Components/InputGroup.vue";
-import SelectGroup from "@/Components/SelectGroup.vue";
+import AuthenticatedLayout from "@/admin/Layouts/AuthenticatedLayout.vue";
+import Container from "@/admin/Components/Container.vue";
+import Card from "@/admin/Components/Card/Card.vue";
+import Button from "@/admin/Components/Button.vue";
+import InputGroup from "@/admin/Components/InputGroup.vue";
+import SelectGroup from "@/admin/Components/SelectGroup.vue";
 
 const props = defineProps({
     edit: {

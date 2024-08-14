@@ -1,21 +1,21 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedLayout from '@/admin/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
-import Container from '@/Components/Container.vue';
-import Card from '@/Components/Card/Card.vue';
-import Button from '@/Components/Button.vue';
-import Table from '@/Components/Table/Table.vue';
-import Td from "@/Components/Table/Td.vue";
-import Actions from "@/Components/Table/Actions.vue";
-import Modal from '@/Components/Modal.vue';
-import DangerButton from '@/Components/DangerButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import InputLabel from '@/Components/InputLabel.vue';
+import Container from '@/admin/Components/Container.vue';
+import Card from '@/admin/Components/Card/Card.vue';
+import Button from '@/admin/Components/Button.vue';
+import Table from '@/admin/Components/Table/Table.vue';
+import Td from "@/admin/Components/Table/Td.vue";
+import Actions from "@/admin/Components/Table/Actions.vue";
+import Modal from '@/admin/Components/Modal.vue';
+import DangerButton from '@/admin/Components/DangerButton.vue';
+import SecondaryButton from '@/admin/Components/SecondaryButton.vue';
+import TextInput from '@/admin/Components/TextInput.vue';
+import InputLabel from '@/admin/Components/InputLabel.vue';
 
-import useDeleteItem from "@/Composables/useDeleteItem.js";
-import useFilters from "@/Composables/useFilters.js";
+import useDeleteItem from "@/admin/Composables/useDeleteItem.js";
+import useFilters from "@/admin/Composables/useFilters.js";
 import Filters from './Filters.vue';
 
 const props = defineProps({

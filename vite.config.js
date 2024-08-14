@@ -20,7 +20,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            "@": "/resources/js/admin",
+            "@": "/resources/js",
         },
     },
 });

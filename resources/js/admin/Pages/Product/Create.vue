@@ -5,16 +5,16 @@ import { computed, watch } from "vue";
 import kebabCase from "lodash/kebabCase";
 import replace from "lodash/replace";
 
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
-import Button from "@/Components/Button.vue";
-import InputGroup from "@/Components/InputGroup.vue";
-import SelectGroup from "@/Components/SelectGroup.vue";
-import CheckboxGroup from "@/Components/CheckboxGroup.vue";
-import ImageUpload from "@/Components/ImageUpload.vue";
-import CrossIcon from "@/Components/Icons/Cross.vue";
-import EditorGroup from "@/Components/EditorGroup.vue";
+import AuthenticatedLayout from "@/admin/Layouts/AuthenticatedLayout.vue";
+import Container from "@/admin/Components/Container.vue";
+import Card from "@/admin/Components/Card/Card.vue";
+import Button from "@/admin/Components/Button.vue";
+import InputGroup from "@/admin/Components/InputGroup.vue";
+import SelectGroup from "@/admin/Components/SelectGroup.vue";
+import CheckboxGroup from "@/admin/Components/CheckboxGroup.vue";
+import ImageUpload from "@/admin/Components/ImageUpload.vue";
+import CrossIcon from "@/admin/Components/Icons/Cross.vue";
+import EditorGroup from "@/admin/Components/EditorGroup.vue";
 
 
 const props = defineProps({

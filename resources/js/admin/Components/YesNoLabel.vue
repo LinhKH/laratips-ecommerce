@@ -1,5 +1,5 @@
 <script setup>
-import Button from "@/Components/Button.vue";
+import Button from "@/admin/Components/Button.vue";
 
 defineProps({
     active: Boolean,

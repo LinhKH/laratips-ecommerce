@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineProps } from 'vue';
-import Button from "@/Components/Button.vue";
-import FilterIcon from "@/Components/Icons/FilterIcon.vue";
+import Button from "@/admin/Components/Button.vue";
+import FilterIcon from "@/admin/Components/Icons/FilterIcon.vue";
 const props = defineProps({
     show: {
         type: Boolean,

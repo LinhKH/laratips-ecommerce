@@ -1,8 +1,8 @@
 <script setup>
 
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import Select from "@/Components/Select.vue";
+import InputLabel from "@/admin/Components/InputLabel.vue";
+import InputError from "@/admin/Components/InputError.vue";
+import Select from "@/admin/Components/Select.vue";
 
 defineProps({
     modelValue: {},

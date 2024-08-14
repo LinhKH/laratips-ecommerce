@@ -1,7 +1,7 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
+import Checkbox from "@/admin/Components/Checkbox.vue";
+import InputLabel from "@/admin/Components/InputLabel.vue";
+import InputError from "@/admin/Components/InputError.vue";
 
 defineProps({
     value: {},

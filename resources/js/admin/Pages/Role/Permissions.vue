@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref } from "vue";
 import { router } from "@inertiajs/vue3";
-import Container from "@/Components/Container.vue";
-import Card from "@/Components/Card/Card.vue";
-import Button from "@/Components/Button.vue";
-import TextInput from "@/Components/TextInput.vue";
+import Container from "@/admin/Components/Container.vue";
+import Card from "@/admin/Components/Card/Card.vue";
+import Button from "@/admin/Components/Button.vue";
+import TextInput from "@/admin/Components/TextInput.vue";
 
 const props = defineProps({
     role: {

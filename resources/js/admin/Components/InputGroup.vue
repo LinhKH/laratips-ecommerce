@@ -1,7 +1,7 @@
 <script setup>
-import TextInput from "@/Components/TextInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
+import TextInput from "@/admin/Components/TextInput.vue";
+import InputLabel from "@/admin/Components/InputLabel.vue";
+import InputError from "@/admin/Components/InputError.vue";
 
 defineProps({
     modelValue: {},

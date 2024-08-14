@@ -1,8 +1,8 @@
 <script setup>
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import DangerButton from "@/Components/DangerButton.vue";
+import SecondaryButton from "@/admin/Components/SecondaryButton.vue";
+import DangerButton from "@/admin/Components/DangerButton.vue";
 
 const props = defineProps({
     show: {

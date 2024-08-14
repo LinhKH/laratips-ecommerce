@@ -33,8 +33,8 @@ class UsersRequest extends FormRequest
         return [
             'name' => ['bail', 'required', 'string', 'max:255'],
             'email' => ['bail', 'required', 'email', 'max:255', Rule::unique(User::class)->ignore($model->id ?? null)],
-            'password' => ['bail', ...$passwordRule, Password::defaults()],
-            'passwordConfirmation' => ['bail', ...$passwordRule, 'same:password'],
+            'password' => ['bail','sometimes', ...$passwordRule, Password::defaults()],
+            'passwordConfirmation' => ['bail', 'sometimes', ...$passwordRule, 'same:password'],
             'roleId' => ['bail', 'required', Rule::exists(Role::class, 'id')],
         ];
     }
