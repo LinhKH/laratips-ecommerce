@@ -49,7 +49,7 @@ const {
     routeResourceName: props.routeResourceName,
 });
 
-const { filters, isLoading } = useFilters({
+const { filters, isLoading, isFilled } = useFilters({
     filters: props.filters,
     routeResourceName: props.routeResourceName,
 });
@@ -66,7 +66,7 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <AddNew>
+            <AddNew :show="isFilled">
                 <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
 
                 <template #filters>
