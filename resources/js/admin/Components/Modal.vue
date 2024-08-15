@@ -13,6 +13,7 @@ const props = defineProps({
         type: String,
         default: '2xl',
     },
+    // close when click outside
     closeable: {
         type: Boolean,
         default: true,
