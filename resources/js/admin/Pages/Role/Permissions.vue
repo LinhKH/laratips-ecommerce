@@ -19,6 +19,7 @@ const props = defineProps({
 });
 
 const search = ref("");
+const loading = ref(false);
 
 const filteredPermissions = computed(() => {
     return props.permissions.filter((p) =>
@@ -40,6 +41,12 @@ const attachPermission = (permission) => {
         {
             preserveScroll: true,
             preserveState: true,
+            onBefore: (visit) => {
+                loading.value = true;
+            },
+            onFinish: visit => {
+                loading.value = false;
+            },
         }
     );
 };
@@ -54,6 +61,12 @@ const detachPermission = (permission) => {
         {
             preserveScroll: true,
             preserveState: true,
+            onBefore: (visit) => {
+                loading.value = true;
+            },
+            onFinish: visit => {
+                loading.value = false;
+            },
         }
     );
 };
@@ -78,9 +91,9 @@ const detachPermission = (permission) => {
                         'border-b': index < (permissions.length - 1),
                     }">
                     <div :class="{ 'text-green-700 font-bold': roleHasPermission(permission) }">{{ permission.name }}</div>
-                    <Button v-if="roleHasPermission(permission)" @click="detachPermission(permission)"
+                    <Button :disabled="loading" v-if="roleHasPermission(permission)" @click="detachPermission(permission)"
                         color="green">Detach</Button>
-                    <Button v-else @click="attachPermission(permission)">Attach</Button>
+                    <Button :disabled="loading" v-else @click="attachPermission(permission)">Attach</Button>
                 </li>
             </ul>
         </Card>

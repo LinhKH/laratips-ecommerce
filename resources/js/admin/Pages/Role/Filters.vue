@@ -5,13 +5,13 @@ import TextInput from '@/admin/Components/TextInput.vue';
 import InputLabel from '@/admin/Components/InputLabel.vue';
 
 const props = defineProps({
-    filters: {
+    modelValue: {
         type: Object,
-        default: () => ({})
+        default: () => ({}),
     },
 });
 
-const filters = ref({ ...props.filters });
+const filters = ref({ ...props.modelValue });
 
 const emits = defineEmits(['update:modelValue']);
 
