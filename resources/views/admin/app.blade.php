@@ -14,7 +14,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @routes
+        @routes {{-- package hỗ trợ viết route name của Laravel trong javascript --}}
         @vite(['resources/js/admin/app.js', "resources/js/admin/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>

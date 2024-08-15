@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
-    @routes
+    @routes {{-- package hỗ trợ viết route name của Laravel trong javascript --}}
     @vite(['resources/js/front/app.js', "resources/js/front/Pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
