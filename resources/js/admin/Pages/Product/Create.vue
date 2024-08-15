@@ -42,7 +42,7 @@ const props = defineProps({
 const form = useForm({
     name: props.item.name ?? "",
     slug: props.item.slug ?? "",
-    description: props.item.description ?? "",
+    description: props.item.description ?? "description",
     costPrice: props.item.cost_price ?? "",
     price: props.item.price ?? "",
     active: props.item.active ?? true,

@@ -21,7 +21,7 @@ class Product extends Model implements HasMedia
         'active' => 'boolean'
     ];
 
-    protected $fillable = ['name'];
+    protected $guarded  = [];
 
     public function categories()
     {
