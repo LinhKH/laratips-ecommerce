@@ -25,7 +25,6 @@ use App\Models\Country;
 use App\Models\Review;
 use App\Models\OrderProducts;
 use Illuminate\Support\Facades\Session;
-use Razorpay\Api\Api;
 use Exception;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -33,6 +32,7 @@ use Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Redirect;
 
 
 class UserController extends Controller
@@ -179,9 +179,9 @@ class UserController extends Controller
             'country' => $request->input('country'),
         ]);
         $request->session()->put('user_city', $request->city);
-        return back()->with(['success' => 'User Profile Updated Successfully.']);
-        //return $users;
+        Session::flash('success', 'User Profile Updated Successfully.');
 
+        return Inertia::location('/my-profile');
     }
 
     /**
@@ -332,9 +332,7 @@ class UserController extends Controller
             $state = State::select(['states.*'])->where('status', 1)->get();
             $city = City::select(['cities.*'])->where('status', 1)->get();
             return Inertia::render('MyProfile', ['user' => $user, 'city' => $city, 'state' => $state, 'country' => $country]);
-            // return view('public.my-profile',['user'=>$user,'city'=>$city,'state'=>$state,'country'=>$country]);
         } else {
-            // return redirect('user_login');
             return Inertia::render('UserLogin');
         }
     }

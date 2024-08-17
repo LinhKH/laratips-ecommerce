@@ -150,7 +150,7 @@ const {
                                         >
                                             <Link
                                                 class="dropdown-item"
-                                                href=""
+                                                :href="route('my_profile')"
                                             >
                                                 My Profile
                                             </Link>

@@ -17,5 +17,8 @@ Route::post('forgot-password', [UserController::class, 'forgotPassword_submit'])
 Route::get('reset-password', [UserController::class, 'resetPassword_show'])->name('user_reset_password');
 Route::post('reset-password', [UserController::class, 'submitResetPasswordForm'])->name('user_reset_password.store');
 
+Route::get('my-profile', [UserController::class, 'my_profile'])->name('my_profile');
+Route::post('my-profile', [UserController::class, 'update'])->name('my_profile.update');
+
 
 Route::get('search', [HomeController::class, 'search_products'])->name('search.products');
