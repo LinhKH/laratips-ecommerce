@@ -4,59 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'parent_id', 'active'];
-    use HasSlug;
     use HasFactory;
 
-    protected $casts = [
-        'active' => 'boolean',
+    protected $table = 'categories';
+    protected  $primaryKey = 'id';
+
+    protected $fillable = [
+        'category_name',
+        'category_icon',
+        'parent_category',
+        'meta_title',
+        'meta_desc',
+        'category_slug',
+        'status'
     ];
 
-    public function children(): HasMany
+    public function categories()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_category');
     }
 
-    public function parent(): BelongsTo
+    public function childrenCategories()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
-    }
-
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
-    public function scopeRoot($builder)
-    {
-        return $builder->whereNull('parent_id');
-    }
-
-    public function scopeActive($builder)
-    {
-        return $builder->where('active', true);
-    }
-
-    public function scopeInActive($builder)
-    {
-        return $builder->where('active', false);
-    }
-
-    /**
-     * Get the options for generating the slug.
-     */
-    public function getSlugOptions() : SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        return $this->hasMany(Category::class, 'parent_category')->with('categories');
     }
 }

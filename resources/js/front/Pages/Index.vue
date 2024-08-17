@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import FrontLayout from '@/front/Layouts/FrontLayout.vue';
 import Banner from '@/front/Pages/Banner.vue';
 import Category from '@/front/Pages/Category.vue';
+import TodayDeals from '@/front/Pages/TodayDeals.vue';
 
 
 </script>
@@ -12,8 +13,8 @@ import Category from '@/front/Pages/Category.vue';
     <FrontLayout>
         <Banner />
         <Category />
-        <!-- <TodayDeals />
-        <LastestProduct />
+        <TodayDeals />
+        <!-- <LastestProduct />
         <Flash_deals />
         <Flash_sale />
         <div className="py-4">

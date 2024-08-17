@@ -2,8 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Cart;
+use App\Models\Category;
+use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -38,13 +43,40 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = null;
+        $userSession = null;
+        $wishlist = 0;
+        $cart = 0;
+
+        if (Session::has('user_name')) {
+            $userSession['user_name'] = Session::get('user_name');
+            $userSession['user_id'] = Session::get('user_id');
+            $userSession['user_city'] = Session::get('user_city');
+        }
+
+        if (Session::has('user_id')) {
+            $user = Session::get('user_id');
+            $wishlist_items = Users::where('user_id', $user)->pluck('wishlist')->first();
+            $wishlist = count(array_filter(explode(',', $wishlist_items)));
+            $cart = Cart::where('product_user', $user)->count();
+        }
+        $allCategories = Category::with(['categories','childrenCategories'])->get();
+        
         return [
             ...parent::share($request),
+            'all_category' => $allCategories,
+            'generalSettings' => DB::table('general_settings')->first(),
+            'sitePages' => DB::table('pages')->where('status', '1')->get(),
+            'user' => $user,
+            'userSession' => $userSession,
+            'userWishlist' => $wishlist,
+            'userCart' => $cart,
             'auth' => [
                 'user' => $request->user(),
             ],
             'flash' => [
-                'success' => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+                'success' => fn () => $request->session()->get('success'),
             ],
             'menus' => [
                 [

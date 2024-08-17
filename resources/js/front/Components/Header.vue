@@ -1,3 +1,47 @@
+<script setup>
+import { usePage, Link, useForm, router  } from "@inertiajs/vue3";
+
+const baseUrl = import.meta.env.VITE_APP_URL;
+
+import ChildHeader from "./ChildHeader.vue"
+import { onMounted } from "vue";
+// import Swal from 'sweetalert2';
+
+const {
+        generalSettings,
+        sitePages,
+        userSession,
+        userWishlist,
+        userCart,
+        all_category,
+        flash,
+    } = usePage().props;
+
+    if (flash.success == "logout") {
+        Swal.fire({
+            title: "Logged out Successfully.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+        });
+    }
+
+    const data = useForm({
+        keyword: new URL(window.location.href).searchParams.get("keyword")
+            ? new URL(window.location.href).searchParams.get("keyword")
+            : "",
+        category: new URL(window.location.href).searchParams.get("category")
+            ? new URL(window.location.href).searchParams.get("category")
+            : "all",
+    });
+
+    function handleSubmit(e) {
+        // e.preventDefault();
+        router.get(baseUrl + "/search", data);
+    };
+    
+</script>
+
 <template>
     <div id="wrapper">
            
@@ -8,15 +52,14 @@
                             <div class="col-md-8">
                                 <ul class="top-address">
                                     
-                                    <li>
+                                    <li v-if="generalSettings.email">
                                         <i class="fa fa-envelope"></i>
-                                        mr.linh1090@gmail.com
+                                        {{generalSettings.email}}
                                     </li>
                                 
-                                
-                                    <li>
+                                    <li v-if="generalSettings.phone">
                                         <i class="fa fa-phone"></i>
-                                        0968146460
+                                        {{generalSettings.phone}}
                                     </li>
                                     
                                 </ul>
@@ -37,37 +80,43 @@
                     <div class="row my-2">
                         <div class="col-lg-3 col-md-4 col-sm-12 align-self-center">
                             <div class="logo">
-                                <a href="">
+                                <Link href="/">
                                     <img
-                                        src=""
-                                        alt=""
+                                        :src="`${baseUrl}/site/${generalSettings.site_logo}`"
+                                        :alt="generalSettings.site_logo"
                                     />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-8 col-sm-12">
                             <div class="searchbox position-relative my-3">
-                                <form
+                                <form @submit.prevent="handleSubmit"
                                     method="GET"
                                     class="search-form rounded-0 d-flex"
                                 >
                                     <input
                                         type="text"
                                         class="form-control rounded-0"
-                                        id="search"
                                         name="keyword"
-                                        value=""
+                                        v-model="data.keyword"
                                         placeholder="Search Product Here..."
                                     />
                                     <select
                                         class="form-select search-categories"
-                                        value=""
+                                        v-model="data.category"
                                         name="category"
                                         aria-label="Default select example"
                                     >
                                             <option value="all">
                                                 All Categories
                                             </option>
+                                            <template v-for="item in all_category" key="item.id">
+                                                <option v-if="item.parent_category == '0'" :value="item['category_slug']"  
+                                                >
+                                                   {{ item.category_name }}
+                                                </option>
+                                                <ChildHeader :children="item.id" />
+                                            </template>
                                     </select>
                                     <button
                                         type="submit"
@@ -81,84 +130,81 @@
                         </div>
                         <div class="col-lg-4 col-md-12 col-sm-12">
                             <ul class="header-as ml-auto mr-0 text-lg-right text-center">
-                            
-                                    <li>
-                                        <div class="dropdown">
-                                            <a
-                                                href="#"
-                                                class="dropdown-toggle"
-                                                id="dropdownMenuButton"
-                                                data-toggle="dropdown"
-                                            >
-                                                <i class="far fa-user"></i>
-                                                Hello,
-                                                {userSession.user_name.substring(
-                                                    0,
-                                                    10
-                                                ) + "..."}
-                                            </a>
-                                            <div
-                                                class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton"
-                                            >
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    My Profile
-                                                </a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    My Cart
-                                                </a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    My Orders
-                                                </a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    My Reviews
-                                                </a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    Change Password
-                                                </a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href=""
-                                                >
-                                                    Log Out
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                               
-                                    
-                                        <li>
-                                            <a
+                                <li v-if="userSession">
+                                    <div class="dropdown">
+                                        <a
+                                            href="#"
+                                            class="dropdown-toggle"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                        >
+                                            <i class="far fa-user"></i>
+                                            Hello, {{ userSession.user_name.substring(
+                                                0,
+                                                10
+                                            ) + "..." }}
+                                        </a>
+                                        <div
+                                            class="dropdown-menu"
+                                            aria-labelledby="dropdownMenuButton"
+                                        >
+                                            <Link
+                                                class="dropdown-item"
                                                 href=""
                                             >
-                                                <i class="far fa-user"></i>
-                                                My Account
-                                            </a>
-                                        </li>
+                                                My Profile
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                href=""
+                                            >
+                                                My Cart
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                href=""
+                                            >
+                                                My Orders
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                href=""
+                                            >
+                                                My Reviews
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                href=""
+                                            >
+                                                Change Password
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                :href="route('user_logout')"
+                                            >
+                                                Log Out
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li v-else>
+                                    <Link
+                                        :href="route('user_login')"
+                                    >
+                                        <i class="far fa-user"></i>
+                                        My Account
+                                    </Link>
+                                </li>
                                    
                            
                                 <li>
-                                    <a href="">
+                                    <Link :href="route('user_login')">
                                         <i class="far fa-heart"></i>
                                         Wishlist
-                                    </a>
+                                    </Link>
                                     <span class="wishlist-count">
-                                        5
+                                        {{ userWishlist }}
                                     </span>
                                 </li>
                                 <li>
@@ -166,7 +212,7 @@
                                         <i class="fas fa-shopping-cart"></i>
                                         Cart
                                     </a>
-                                    <span class="cartlist">{userCart}</span>
+                                    <span class="cartlist">{{ userCart }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -177,7 +223,7 @@
                 <div class="container-xl container-fluid">
                     <div class="navbar-brand" href="#">
                         <div class="nav-item dropdown">
-                            <a
+                            <Link
                                 class="nav-a dropdown-toggle"
                                 href="#"
                                 id="navbarDropdownMenua"
@@ -185,22 +231,22 @@
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                shopping by Categories
-                            </a>
+                                Shopping By Categories
+                            </Link>
                             <ul
                                 class="dropdown-menu"
                                 aria-labelledby="navbarDropdownMenua"
                             >
-                                
-                                        <li key={cat_menu.id}>
-                                            <a
-                                                class="dropdown-item"
-                                                href=""
-                                            >
-                                            category_name
-                                            </a>
-                                        </li>
-                                            
+                                <template v-for="cat_menu in all_category" :key="cat_menu.id">
+                                    <li v-if="cat_menu.parent_category == '0'">
+                                        <Link
+                                            class="dropdown-item"
+                                            href=""
+                                        >
+                                        {{ cat_menu.category_name }}
+                                        </Link>
+                                    </li>
+                                </template>
                             </ul>
                         </div>
                     </div>
@@ -221,35 +267,37 @@
                     >
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a
+                                <Link
                                     class="nav-a active"
                                     aria-current="page"
-                                    href=""
+                                    :href="`${baseUrl}`"
                                 >
                                     Home
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
-                                <a
+                                <Link
                                     class="nav-a active"
                                     aria-current="page"
                                     href=""
                                 >
                                     Shop
-                                </a>
+                                </Link>
                             </li>
-                                        <li
-                                            class="nav-item"
-                                            key={page.page_id}
-                                        >
-                                            <a
-                                                href=""
-                                                class="nav-a active"
-                                                aria-current="page"
-                                            >
-                                            page_title
-                                            </a>
-                                        </li>
+                            <template v-for="page in sitePages">
+                                <li v-if="page.show_in_header == '1'"
+                                    class="nav-item"
+                                    key="page.page_id"
+                                >
+                                    <Link
+                                        href=""
+                                        class="nav-a active"
+                                        aria-current="page"
+                                    >
+                                    {{ page.page_title }}
+                                    </Link>
+                                </li>
+                            </template>
                         </ul>
                     </div>
                 </div>
