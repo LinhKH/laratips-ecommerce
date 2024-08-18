@@ -171,13 +171,13 @@ const {
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
-                                                href=""
+                                                :href="route('my_reviews')"
                                             >
                                                 My Reviews
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
-                                                href=""
+                                                :href="route('changepassword')"
                                             >
                                                 Change Password
                                             </Link>

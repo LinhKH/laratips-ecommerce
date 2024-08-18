@@ -675,13 +675,12 @@ class UserController extends Controller
 
     public function my_reviews()
     {
-        Paginator::useBootstrap();
         if (Session::has('user_id')) {
             $user = session()->get('user_id');
             $reviews = Review::select(['reviews.*', 'products.product_name'])
                 ->where('user', $user)
                 ->leftJoin('products', 'products.id', '=', 'reviews.product')
-                ->paginate(10);
+                ->paginate(4);
             return Inertia::render('MyReviews', ['reviews' => $reviews]);
         } else {
             return Inertia::render('UserLogin');
