@@ -35,22 +35,22 @@ class HomeController extends Controller
         //     ->limit(3)
         //     ->get();
 
-        // $new_products = Product::select(['products.id', 'products.product_name', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'products.unit_price', 'products.taxable_price', 'products.discount', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
-        //     ->leftjoin('brands', 'brands.id', '=', 'products.brand')
-        //     ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
-        //     ->where('products.status', '1')
-        //     ->where('products.quantity', '>', '1')
-        //     ->orderBy('products.id', 'DESC')
-        //     ->groupBy('products.id')
-        //     ->limit(8)
-        //     ->get();
-        // if ($new_products) {
-        //     foreach ($new_products as $product) {
-        //         $price = get_product_price($product->id);
-        //         $product->discount = $price->old_price - $price->new_price;
-        //         $product->discount_percent = $price->discount;
-        //     }
-        // }
+        $new_products = Product::select(['products.id', 'products.product_name', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'products.unit_price', 'products.taxable_price', 'products.discount', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
+            ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
+            ->where('products.status', '1')
+            ->where('products.quantity', '>', '1')
+            ->orderBy('products.id', 'DESC')
+            ->groupBy('products.id')
+            ->limit(8)
+            ->get();
+        if ($new_products) {
+            foreach ($new_products as $product) {
+                $price = get_product_price($product->id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
+        }
 
         // $flash_products = FlashProduct::select(['products.id', 'products.product_name', 'products.thumbnail_img', 'products.taxable_price', 'products.discount', 'products.slug', 'brands.brand_name', 'flash_deals.flash_date_range', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
         //     ->leftjoin('flash_deals', 'flash_deals.id', '=', 'flash_products.deals_id')
@@ -119,8 +119,8 @@ class HomeController extends Controller
         //     }
         // }
 
-        return Inertia::render('Index', ['banner' => $banner, 'today_deal_products' => $today_deals,
-            // 'flash_deals' => $flash_deals, 'flash_products' => $flash_products, 'latest_products' => $new_products, 'rating' => $review, 'orderProducts' => $orderProducts
+        return Inertia::render('Index', ['banner' => $banner, 'today_deal_products' => $today_deals, 'latest_products' => $new_products
+            // 'flash_deals' => $flash_deals, 'flash_products' => $flash_products, 'rating' => $review, 'orderProducts' => $orderProducts
         
         ]);
     }

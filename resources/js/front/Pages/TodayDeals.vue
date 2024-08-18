@@ -1,12 +1,19 @@
 <script setup>
 import { usePage, Link, useForm, router } from "@inertiajs/vue3";
 const baseUrl = import.meta.env.VITE_APP_URL;
-import ProductGrid from "./ProductGrid.vue";
-
-const { today_deal_products } = usePage().props;
 
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Navigation } from 'vue3-carousel';
+import { computed } from "vue";
+
+import ProductGrid from "./ProductGrid.vue";
+
+
+const today_deal_products = computed(() => {
+    return usePage().props.today_deal_products
+});
+
+
 const settings = {
     itemsToShow: 1,
     snapAlign: 'center',
@@ -44,7 +51,7 @@ const breakpoints = {
             <div className="row">
                 <div className="col-12">
                     <Carousel v-bind="settings" :breakpoints="breakpoints" class="owl-theme product-carousel">
-                        <slide v-for="today_deal in today_deal_products" key="today_deal.id">
+                        <slide v-for="today_deal in today_deal_products" :key="today_deal.id">
                             <div class="item">
                                 <ProductGrid key="today_deal.id" :product="today_deal" />
                             </div>

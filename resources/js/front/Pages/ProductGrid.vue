@@ -1,7 +1,10 @@
 <script setup>
 import { usePage, Link, router } from "@inertiajs/vue3";
 import ProductRating from "./ProductRating.vue";
+import { computed } from "vue";
 const baseUrl = import.meta.env.VITE_APP_URL;
+
+const { userSession, generalSettings } = usePage().props;
 
 const props = defineProps({
     product: {
@@ -10,14 +13,14 @@ const props = defineProps({
     },
 });
 
+const auth = computed(() => usePage().props.auth.user)
+
 const checkWishList = (product_id) => {
-    let wishlist_items = auth.user.wishlist;
+    let wishlist_items = auth.value.wishlist;
     let wishlist = wishlist_items.split(',');
 
     return wishlist.includes(product_id.toString()) ? true : false;
 }
-
-const { userSession, generalSettings, auth } = usePage().props;
 
 const productName =
     props.product.product_name.length > 25
@@ -26,22 +29,27 @@ const productName =
 
 
 const handleAddWishlist = (product_id) => {
-    Swal.fire({
-        title: "Item Added to Wishlist",
-        showConfirmButton: false,
-        timer: 1000,
-        icon: "success",
-        showCancelButton: true,
-    }).then((result) => {
-        router.post(
-            route('add_wishlist'),
-            { id: product_id },
-            {
-                preserveScroll: true,
-                preserveState: true,
+    
+    router.post(
+        route('add_wishlist'),
+        { id: product_id },
+        {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: (response) => {
+            if (response.props.flash.success) {
+                Swal.fire({
+                    title: "Item Added to Wishlist",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    icon: "success",
+                    showCancelButton: true,
+                });
             }
-        );
-    });
+        },
+        }
+    );
+
 };
 
 function handleRemoveFromWishlist(product_id) {
@@ -69,7 +77,7 @@ function handleRemoveFromWishlist(product_id) {
 
 <template>
 
-    <div class="product-grid" key="product.id">
+    <div class="product-grid" :key="product.id">
         <div class="product-image">
             <Link :href="`${baseUrl}/product/${product.slug}`" class="image">
             <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img.split(',')[0]}`" :alt="`${product.product_name}`" />
