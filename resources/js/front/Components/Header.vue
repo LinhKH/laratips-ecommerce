@@ -4,7 +4,7 @@ import { usePage, Link, useForm, router  } from "@inertiajs/vue3";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 import ChildHeader from "./ChildHeader.vue"
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 // import Swal from 'sweetalert2';
 
 const {
@@ -16,6 +16,9 @@ const {
         all_category,
         flash,
     } = usePage().props;
+
+    const wishlistTotal = computed(() => usePage().props.userWishlist);
+    const cartTotal = computed(() => usePage().props.userCart);
 
     if (flash.success == "logout") {
         Swal.fire({
@@ -156,7 +159,7 @@ const {
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
-                                                href=""
+                                                :href="route('my_cart')"
                                             >
                                                 My Cart
                                             </Link>
@@ -198,21 +201,21 @@ const {
                                 </li>
                                    
                            
-                                <li>
-                                    <Link :href="route('user_login')">
+                                <li v-if="userSession">
+                                    <Link :href="route('my_wishlists')">
                                         <i class="far fa-heart"></i>
                                         Wishlist
                                     </Link>
                                     <span class="wishlist-count">
-                                        {{ userWishlist }}
+                                        {{ wishlistTotal }}
                                     </span>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <Link :href="route('my_cart')">
                                         <i class="fas fa-shopping-cart"></i>
                                         Cart
-                                    </a>
-                                    <span class="cartlist">{{ userCart }}</span>
+                                    </Link>
+                                    <span class="cartlist">{{ cartTotal }}</span>
                                 </li>
                             </ul>
                         </div>

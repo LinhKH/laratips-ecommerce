@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -72,7 +73,7 @@ class HandleInertiaRequests extends Middleware
             'userWishlist' => $wishlist,
             'userCart' => $cart,
             'auth' => [
-                'user' => $request->user(),
+                'user' => Users::where('user_id', $user)->first(),
             ],
             'flash' => [
                 'error' => fn () => $request->session()->get('error'),

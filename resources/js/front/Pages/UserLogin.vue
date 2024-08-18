@@ -25,7 +25,7 @@ function handleSubmit(e) {
                     timer: 1500,
                 });
                 setTimeout(() => {
-                    window.location.href = document.referrer;
+                    window.location.href = '/';
                 }, 1000);
             }
         },

@@ -390,11 +390,16 @@ class UserController extends Controller
             $products = Product::select(['products.*', 'brands.brand_name'])
                 ->leftjoin('brands', 'brands.id', '=', 'products.brand')
                 ->whereIn('products.id', $wishlist)->get();
+            if ($products) {
+                foreach ($products as $product) {
+                    $price = get_product_price($product->id);
+                    $product->discount = $price->old_price - $price->new_price;
+                    $product->discount_percent = $price->discount;
+                }
+            }
             return Inertia::render('WishList', ['products' => $products, 'component' => "wishlist", 'wishlist' => $wishlist]);
-            // return view('public.wishlists',['products'=>$products]);
         } else {
             return Inertia::render('UserLogin');
-            // return redirect('user_login');
         }
     }
 

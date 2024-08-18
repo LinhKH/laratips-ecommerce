@@ -1,5 +1,5 @@
 <script setup>
-import { usePage, Link, useForm } from "@inertiajs/vue3";
+import { usePage, Link, useForm, Head } from "@inertiajs/vue3";
 
 import Preloader from "../Components/Preloader.vue";
 const baseUrl = import.meta.env.VITE_APP_URL;
