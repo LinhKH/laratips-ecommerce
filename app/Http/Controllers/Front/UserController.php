@@ -181,7 +181,7 @@ class UserController extends Controller
         $request->session()->put('user_city', $request->city);
         Session::flash('success', 'User Profile Updated Successfully.');
 
-        return Inertia::location('/my-profile');
+        return to_route('my_profile');
     }
 
     /**

@@ -18,7 +18,7 @@ const {
 // });
 
 const photo_or_blank_image = computed(() => {
-    return user.user_img ? `${baseUrl}/users/${user.user_img}` : `${baseUrl}/users/default.png`;
+    return usePage().props.user.user_img ? `${baseUrl}/users/${usePage().props.user.user_img}` : `${baseUrl}/users/default.png`;
 });
 
 const data = useForm({
@@ -35,7 +35,7 @@ const data = useForm({
 function handleSubmit(e) {
     data.post(route('my_profile.update'), {
         preserveScroll: true,
-        preserveState: true,
+        preserveState: false,
         onSuccess: () => data.reset('img'),
     });
 }
