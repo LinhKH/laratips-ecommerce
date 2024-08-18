@@ -128,7 +128,6 @@ class HomeController extends Controller
     // today deals page
     public function todayDeals()
     {
-        Paginator::useBootstrap();
         $today_deals = Product::select(['products.id', 'products.product_name', 'products.taxable_price', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'brands.brand_name'])
             ->leftjoin('brands', 'brands.id', '=', 'products.brand')
             ->where('products.status', '1')

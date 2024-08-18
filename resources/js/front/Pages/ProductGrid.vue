@@ -43,7 +43,6 @@ const handleAddWishlist = (product_id) => {
                     showConfirmButton: false,
                     timer: 1000,
                     icon: "success",
-                    showCancelButton: true,
                 });
             }
         },
@@ -80,7 +79,8 @@ function handleRemoveFromWishlist(product_id) {
     <div class="product-grid" :key="product.id">
         <div class="product-image">
             <Link :href="`${baseUrl}/product/${product.slug}`" class="image">
-            <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img.split(',')[0]}`" :alt="`${product.product_name}`" />
+            <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img.split(',')[0]}`"
+                :alt="`${product.product_name}`" />
             </Link>
             <span v-if="product.discount != '0'" class="product-discount-label">
                 {{ product.discount_percent }} off
@@ -116,41 +116,30 @@ function handleRemoveFromWishlist(product_id) {
             </span>
             <ul className="product-links">
                 <li>
-                    <Link
-                        :href="`${baseUrl}/product/${product.slug}`"
-                        data-id="product.id"
-                    >
-                        Add to cart
+                    <Link :href="`${baseUrl}/product/${product.slug}`" data-id="product.id">
+                    Add to cart
                     </Link>
                 </li>
-                <li v-if="userSession && !checkWishList(product.id) " >
-                    <Link
-                        href="#"
-                        data-tip="Add To Wishlist"
-                        data-id="product.id"
-                        @click="handleAddWishlist(product.id)"
-                    >
-                        <i class="far fa-heart"></i>
+                <li v-if="userSession">
+                    <Link v-if="!checkWishList(product.id)" href="#" data-tip="Add To Wishlist" data-id="product.id"
+                        @click="handleAddWishlist(product.id)">
+                    <i class="far fa-heart"></i>
+                    </Link>
+                    <Link v-if="checkWishList(product.id)" href="#" data-tip="Remove From Wishlist" data-id="product.id"
+                        @click="handleRemoveFromWishlist(product.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-heart-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                    </svg>
                     </Link>
                 </li>
-                <li v-else-if="!userSession" >
-                    <Link
-                        :href="`${baseUrl}/user_login`"
-                        data-tip="Add To Wishlist"
-                        data-id="product.id"
-                    >
-                        <i class="far fa-heart"></i>
+                <li v-else>
+                    <Link :href="`${baseUrl}/user_login`" data-tip="Add To Wishlist" data-id="product.id">
+                    <i class="far fa-heart"></i>
                     </Link>
                 </li>
             </ul>
-            <button v-if="userSession && checkWishList(product.id)"
-                type="button"
-                class="btn btn-danger btn-sm mt-2"
-                data-id="product.id"
-                @click="handleRemoveFromWishlist(product.id)"
-            >
-                Remove from wishlist
-            </button>
 
         </div>
     </div>

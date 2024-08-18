@@ -201,12 +201,12 @@ const {
                                 </li>
                                    
                            
-                                <li v-if="userSession">
+                                <li>
                                     <Link :href="route('my_wishlists')">
                                         <i class="far fa-heart"></i>
                                         Wishlist
                                     </Link>
-                                    <span class="wishlist-count">
+                                    <span class="wishlist-count badge badge-pill badge-danger" v-if="wishlistTotal">
                                         {{ wishlistTotal }}
                                     </span>
                                 </li>
@@ -215,7 +215,7 @@ const {
                                         <i class="fas fa-shopping-cart"></i>
                                         Cart
                                     </Link>
-                                    <span class="cartlist">{{ cartTotal }}</span>
+                                    <span class="cartlist badge badge-pill badge-danger" v-if="cartTotal">{{ cartTotal }}</span>
                                 </li>
                             </ul>
                         </div>

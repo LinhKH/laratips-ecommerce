@@ -57,12 +57,9 @@ const { reviews } = usePage().props;
 
                     </div>
 
-                    <div className="row">
-                        <div className="col-12 mb-5">
-                            <Paginate :pagination="reviews"></Paginate>
-                        </div>
-                    </div>
                 </div>
+                <Paginate v-if="reviews.from != reviews.last_page" :pagination="reviews"></Paginate>
+                
             </div>
         </div>
     </FrontLayout>
