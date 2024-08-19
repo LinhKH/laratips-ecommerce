@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import Attribute from './Attribute.vue';
+import Attribute from '../Components/Attribute.vue';
 import { computed } from 'vue';
 import { parseInt } from 'lodash';
 import FrontLayout from '../Layouts/FrontLayout.vue';
