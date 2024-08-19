@@ -1,5 +1,5 @@
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import ProductGrid from './ProductGrid.vue';
 
 import Paginate from '../Components/Paginate.vue';
@@ -11,17 +11,18 @@ const { today_deal_products } = usePage().props;
 </script>
 
 <template>
+    <Head title="All Today Deals"></Head>
     <FrontLayout>
         <div id="banner" class="d-flex flex-row justify-content-center">
             <div class="align-self-center">
-                <h2>Today Deals</h2>
+                <h2>All Today Deals</h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center p-0">
                         <li class="breadcrumb-item">
                             <Link href="/">Home</Link>
                         </li>
                         <li class="breadcrumb-item active">
-                            Today Deals
+                            All Today Deals
                         </li>
                     </ol>
                 </nav>

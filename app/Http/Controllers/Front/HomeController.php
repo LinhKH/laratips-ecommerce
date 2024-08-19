@@ -29,11 +29,11 @@ class HomeController extends Controller
     {
         $banner = Banner::select(['banner.*'])->get();
 
-        // $flash_deals = FlashDeal::select(['flash_deals.*'])
-        //     ->orderBy('flash_deals.id', 'DESC')
-        //     ->where('status', '1')
-        //     ->limit(3)
-        //     ->get();
+        $flash_deals = FlashDeal::select(['flash_deals.*'])
+            ->orderBy('flash_deals.id', 'DESC')
+            ->where('status', '1')
+            ->limit(3)
+            ->get();
 
         $new_products = Product::select(['products.id', 'products.product_name', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'products.unit_price', 'products.taxable_price', 'products.discount', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
             ->leftjoin('brands', 'brands.id', '=', 'products.brand')
@@ -52,26 +52,26 @@ class HomeController extends Controller
             }
         }
 
-        // $flash_products = FlashProduct::select(['products.id', 'products.product_name', 'products.thumbnail_img', 'products.taxable_price', 'products.discount', 'products.slug', 'brands.brand_name', 'flash_deals.flash_date_range', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
-        //     ->leftjoin('flash_deals', 'flash_deals.id', '=', 'flash_products.deals_id')
-        //     ->leftjoin('products', 'products.id', '=', 'flash_products.product_id')
-        //     ->leftjoin('brands', 'brands.id', '=', 'products.brand')
-        //     ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
-        //     ->where('products.status', '1')
-        //     ->where('flash_deals.status', '1')
-        //     ->orderBy('flash_products.id', 'DESC')
-        //     ->groupBy('products.id')
-        //     ->limit(10)
-        //     ->get();
-        //     // dd($flash_products);
+        $flash_products = FlashProduct::select(['products.id', 'products.product_name', 'products.thumbnail_img', 'products.taxable_price', 'products.discount', 'products.slug', 'brands.brand_name', 'flash_deals.flash_date_range', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
+            ->leftjoin('flash_deals', 'flash_deals.id', '=', 'flash_products.deals_id')
+            ->leftjoin('products', 'products.id', '=', 'flash_products.product_id')
+            ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
+            ->where('products.status', '1')
+            ->where('flash_deals.status', '1')
+            ->orderBy('flash_products.id', 'DESC')
+            ->groupBy('products.id')
+            ->limit(10)
+            ->get();
+            // dd($flash_products);
 
-        // if ($flash_products) {
-        //     foreach ($flash_products as $product) {
-        //         $price = get_product_price($product->id);
-        //         $product->discount = $price->old_price - $price->new_price;
-        //         $product->discount_percent = $price->discount;
-        //     }
-        // }
+        if ($flash_products) {
+            foreach ($flash_products as $product) {
+                $price = get_product_price($product->id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
+        }
 
         $today_deals = Product::select(['products.id', 'products.product_name', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'products.taxable_price', 'products.discount', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
             ->leftjoin('brands', 'brands.id', '=', 'products.brand')
@@ -119,8 +119,8 @@ class HomeController extends Controller
         //     }
         // }
 
-        return Inertia::render('Index', ['banner' => $banner, 'today_deal_products' => $today_deals, 'latest_products' => $new_products
-            // 'flash_deals' => $flash_deals, 'flash_products' => $flash_products, 'rating' => $review, 'orderProducts' => $orderProducts
+        return Inertia::render('Index', ['banner' => $banner, 'today_deal_products' => $today_deals, 'latest_products' => $new_products, 'flash_deals' => $flash_deals, 'flash_products' => $flash_products, 
+            //'rating' => $review, 'orderProducts' => $orderProducts
         
         ]);
     }
@@ -296,7 +296,6 @@ class HomeController extends Controller
     // all flash deals page
     public function allflashdeals()
     {
-        Paginator::useBootstrap();
         $flash_deals = FlashDeal::select(['flash_deals.*'])
             ->where('status', '1')
             ->orderBy('flash_deals.id', 'DESC')
@@ -306,7 +305,6 @@ class HomeController extends Controller
     // flash deal products page
     public function flashproducts($text)
     {
-        Paginator::useBootstrap();
         $flash_deal = FlashDeal::select(['flash_deals.*'])
             ->where(['flash_deals.flash_slug' => $text])
             ->first();
@@ -333,7 +331,6 @@ class HomeController extends Controller
     // all flash products page
     public function allflashproducts()
     {
-        Paginator::useBootstrap();
         $flash_products = FlashProduct::select(['flash_products.*', 'products.id', 'products.product_name', 'products.taxable_price', 'products.thumbnail_img', 'products.slug', 'brands.brand_name', 'flash_deals.status', 'flash_deals.flash_date_range'])
             ->leftjoin('flash_deals', 'flash_deals.id', '=', 'flash_products.deals_id')
             ->leftjoin('products', 'products.id', '=', 'flash_products.product_id')

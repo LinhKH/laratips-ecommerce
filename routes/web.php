@@ -37,6 +37,9 @@ Route::get('/wishlists', [UserController::class, 'my_wishlist'])->name('my_wishl
 
 
 Route::get('/today-deals', [HomeController::class, 'todayDeals']);
+Route::get('/all-flash-deals', [HomeController::class, 'allflashdeals']);
+Route::get('/flash-products', [HomeController::class, 'allflashproducts']);
+Route::get('/flash-products/{text}', [HomeController::class, 'flashproducts']);
 
 Route::get('/checkout', [UserController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [UserController::class, 'order_products'])->name('checkout.store');
