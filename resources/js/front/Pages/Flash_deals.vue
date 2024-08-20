@@ -43,7 +43,7 @@ const deals = flash_deals.filter((deal) => {
                 </div>
             </div>
             <div class="row">
-                <div v-for="flash_deal in deals" class="col-md-4 flash-deal-box" :key="`${flash_deal.id}`">
+                <div v-for="flash_deal in deals" class="col-lg-4 col-md-6 col-sm-6 mb-5 text-center" :key="`${flash_deal.id}`">
                     <div class="banner-inner">
                         <Link :href="`${baseUrl}/flash-products/${flash_deal.flash_slug}`" >
                         <img :width='225' :height='225' :src="`${baseUrl}/flash-deals/${flash_deal.flash_image.split(',')[0]} `" :alt="`${flash_deal.flash_slug}`" />

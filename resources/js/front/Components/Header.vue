@@ -132,7 +132,7 @@ const {
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-12 col-sm-12">
-                            <ul class="header-as ml-auto mr-0 text-lg-right text-center">
+                            <ul class="header-links ml-auto mr-0 text-lg-right text-center">
                                 <li v-if="userSession">
                                     <div class="dropdown">
                                         <a
@@ -195,7 +195,7 @@ const {
                                     <Link
                                         :href="route('user_login')"
                                     >
-                                        <i class="far fa-user"></i>
+                                        <i class="far fa-user"></i>{{ " " }}
                                         My Account
                                     </Link>
                                 </li>
@@ -206,7 +206,7 @@ const {
                                         <i class="far fa-heart"></i>
                                         Wishlist
                                     </Link>
-                                    <span class="wishlist-count badge badge-pill badge-danger" v-if="wishlistTotal">
+                                    <span class="wishlist-count" v-if="wishlistTotal">
                                         {{ wishlistTotal }}
                                     </span>
                                 </li>
@@ -215,7 +215,7 @@ const {
                                         <i class="fas fa-shopping-cart"></i>
                                         Cart
                                     </Link>
-                                    <span class="cartlist badge badge-pill badge-danger" v-if="cartTotal">{{ cartTotal }}</span>
+                                    <span class="cartlist" v-if="cartTotal">{{ cartTotal }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -227,7 +227,7 @@ const {
                     <div class="navbar-brand" href="#">
                         <div class="nav-item dropdown">
                             <Link
-                                class="nav-a dropdown-toggle"
+                                class="nav-link dropdown-toggle"
                                 href="#"
                                 id="navbarDropdownMenua"
                                 role="button"
@@ -282,7 +282,7 @@ const {
                                 <Link
                                     class="nav-a active"
                                     aria-current="page"
-                                    href=""
+                                    :href="`${baseUrl}/all-products`"
                                 >
                                     Shop
                                 </Link>
@@ -293,7 +293,7 @@ const {
                                     key="page.page_id"
                                 >
                                     <Link
-                                        href=""
+                                        :href="`${baseUrl}/${page.page_slug}`"
                                         class="nav-a active"
                                         aria-current="page"
                                     >

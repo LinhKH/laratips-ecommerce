@@ -8,6 +8,9 @@ import TodayDeals from '@/front/Pages/TodayDeals.vue';
 import LastestProduct from '@/front/Pages/LastestProduct.vue';
 import Flash_deals from '@/front/Pages/Flash_deals.vue';
 import Flash_sale from '@/front/Pages/Flash_sale.vue';
+import SellingBlog from '@/front/Pages/SellingBlog.vue';
+import SaleBlog from '@/front/Pages/SaleBlog.vue';
+import RatedBlog from './RatedBlog.vue';
 
 
 </script>
@@ -20,14 +23,14 @@ import Flash_sale from '@/front/Pages/Flash_sale.vue';
         <LastestProduct />
         <Flash_deals />
         <Flash_sale />
-        <!-- <div className="py-4">
-            <div className="container">
-                <div className="row">
+        <<div class="py-4">
+            <div class="container">
+                <div class="row">
                     <SellingBlog />
                     <SaleBlog />
                     <RatedBlog />
                 </div>
             </div>
-        </div> -->
+        </div>
     </FrontLayout>
 </template>

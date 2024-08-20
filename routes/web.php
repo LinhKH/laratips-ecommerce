@@ -45,4 +45,10 @@ Route::get('/checkout', [UserController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [UserController::class, 'order_products'])->name('checkout.store');
 
 
-Route::get('search', [HomeController::class, 'search_products'])->name('search.products');
+Route::get('search', [HomeController::class, 'search_products']);
+Route::get('/all-products', [HomeController::class, 'search_products']);
+Route::get('/c/{text}', [HomeController::class, 'search_products']);
+Route::get('/product/{text}', [HomeController::class, 'productpage']);
+
+
+Route::get('{page}', [HomeController::class, 'site_pages']);

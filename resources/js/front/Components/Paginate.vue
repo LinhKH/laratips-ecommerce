@@ -16,7 +16,7 @@
                     </li>
                     <li v-else class="page-item disabled" :class="{ 'active disabled': link.active }">
                         <Link class="page-link" v-html="link.label.replace(' Previous', '').replace('Next ', '')" preserveScroll
-                            :href="link.url">
+                            :href="link.url ?? ''">
                         </Link>
                     </li>
         

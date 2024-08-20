@@ -31,7 +31,6 @@ const products = computed(() => usePage().props.products)
 const handleChangeQty = (e) => {
     let val = e.target.value;
     let id = e.target.id.replace("cart", "");
-    console.log(val, id)
     router.post(
         route('update_cart_qty'),
         { id: id, qty: val },
@@ -172,7 +171,7 @@ function handleRemoveCart(cart_id) {
                                     <td colSpan="3" align="right">
                                         <b>Total Amount</b>
                                     </td>
-                                    <td class="">
+                                    <td colspan="2">
                                         {{ generalSettings.currency }}
                                         <span>{{ total }}</span>
                                     </td>

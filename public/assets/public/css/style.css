@@ -597,6 +597,10 @@ button:focus{ outline: none; }
     color: #FCA10B;
     font-size: 12px;
 }
+.rating li{
+    color: #059473 !important;
+    font-size: 12px;
+}
 .product-grid .rating li.disable{ color: #999; }
 .product-grid .rating li.count{ 
     color:#52525c;

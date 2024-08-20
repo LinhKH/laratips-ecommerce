@@ -461,7 +461,7 @@ class UserController extends Controller
 
     public function save_cart(Request $request)
     {
-        //   return $request->input();
+        // dd($request->all());
         $product_id = $request->product_id;
         $color_id = '';
         if ($request->color && $request->color != '') {
@@ -471,7 +471,9 @@ class UserController extends Controller
         foreach ($request->input() as $key => $value) {
             if ($key != 'product_id' && $key != 'color' && $key != 'location') {
                 $attr_key = Attribute::where('title', ucfirst($key))->pluck('id')->first();
-                array_push($attr_array, "{$attr_key}:{$value}");
+                if ($attr_key) {
+                    array_push($attr_array, "{$attr_key}:{$value}");
+                }
             }
         }
         $attrvalues = implode(',', $attr_array);

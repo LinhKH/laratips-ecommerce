@@ -55,9 +55,9 @@ const breakpoints = {
                 <div class="col-12">
                     <div class="section-heading">
                         <h2 class="title">Flash Sale</h2>
-                        <a :href="`${baseUrl}/flash-products`" class="btn btn-primary">
+                        <Link :href="`${baseUrl}/flash-products`" class="btn btn-primary">
                             Show All
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

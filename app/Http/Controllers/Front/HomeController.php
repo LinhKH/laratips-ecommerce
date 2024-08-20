@@ -92,35 +92,35 @@ class HomeController extends Controller
             }
         }
 
-        // $review = Review::select(['reviews.id', 'reviews.rating', 'products.id as product_id', 'products.slug', 'products.thumbnail_img', 'products.product_name', 'products.unit_price', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
-        //     ->leftjoin('products', 'products.id', '=', 'reviews.product')
-        //     ->where('reviews.rating', '5')
-        //     ->groupBy('products.id')
-        //     ->limit(5)->get();
-        // if ($review) {
-        //     foreach ($review as $product) {
-        //         $price = get_product_price($product->product_id);
-        //         $product->discount = $price->old_price - $price->new_price;
-        //         $product->discount_percent = $price->discount;
-        //     }
-        // }
+        $review = Review::select(['reviews.id', 'reviews.rating', 'products.id as product_id', 'products.slug', 'products.thumbnail_img', 'products.product_name', 'products.unit_price', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
+            ->leftjoin('products', 'products.id', '=', 'reviews.product')
+            ->where('reviews.rating', '5')
+            ->groupBy('products.id')
+            ->limit(5)->get();
+        if ($review) {
+            foreach ($review as $product) {
+                $price = get_product_price($product->product_id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
+        }
 
-        // $orderProducts = OrderProducts::select(['order_products.product_id', 'products.product_name', 'products.slug', 'products.thumbnail_img', 'products.unit_price', 'products.discount', DB::raw('SUM(order_products.product_qty) AS total_qty'), DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
-        //     ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
-        //     ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
-        //     ->groupBy('order_products.product_id', 'products.product_name', 'products.thumbnail_img', 'products.unit_price')
-        //     ->orderBy('total_qty', 'desc')->limit(5)->get();
+        $orderProducts = OrderProducts::select(['order_products.product_id', 'products.product_name', 'products.slug', 'products.thumbnail_img', 'products.unit_price', 'products.discount', DB::raw('SUM(order_products.product_qty) AS total_qty'), DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
+            ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
+            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
+            ->groupBy('order_products.product_id', 'products.product_name', 'products.thumbnail_img', 'products.unit_price')
+            ->orderBy('total_qty', 'desc')->limit(5)->get();
 
-        // if ($orderProducts) {
-        //     foreach ($orderProducts as $product) {
-        //         $price = get_product_price($product->product_id);
-        //         $product->discount = $price->old_price - $price->new_price;
-        //         $product->discount_percent = $price->discount;
-        //     }
-        // }
+        if ($orderProducts) {
+            foreach ($orderProducts as $product) {
+                $price = get_product_price($product->product_id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
+        }
 
         return Inertia::render('Index', ['banner' => $banner, 'today_deal_products' => $today_deals, 'latest_products' => $new_products, 'flash_deals' => $flash_deals, 'flash_products' => $flash_products, 
-            //'rating' => $review, 'orderProducts' => $orderProducts
+            'rating' => $review, 'orderProducts' => $orderProducts
         
         ]);
     }
@@ -271,13 +271,18 @@ class HomeController extends Controller
                 ->orderByRaw($order)
                 ->paginate($limit);
         } else {
-            $products = Product::select(['products.*', 'brands.brand_name'])
+            $products = Product::select(['products.*', 'brands.brand_name',DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
                 ->leftJoin('brands', 'brands.id', '=', 'products.brand')
+                ->leftJoin('reviews', 'reviews.product', '=', 'products.id')
+                ->orderByRaw($order)
+                ->groupBy('products.id')
                 ->paginate($limit);
         }
         $url_search = url()->current();
 
-        return Inertia::render('AllProducts', ['keyword' => $keyword, 'cat_detail' => $cat_detail, 'cat_array' => $cat_array, 'products' => $products, 'brands' => $brands, 'limit' => $limit, 'breadcrumb' => $breadcrumb, 'url_search' => $url_search]);
+        return Inertia::render('AllProducts', ['keyword' => $keyword, 'cat_detail' => $cat_detail, 'cat_array' => $cat_array, 'products' => $products, 
+            'brands' => $brands, 'limit' => $limit, 'breadcrumb' => $breadcrumb, 'url_search' => $url_search, 
+            'slug' => $slug]);
     }
 
     public function get_child_id($id, $ids)

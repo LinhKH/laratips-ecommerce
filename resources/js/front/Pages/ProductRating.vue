@@ -5,7 +5,7 @@ const props = defineProps({
         type: Number
     },
     rating_sum: {
-        type: Number
+        type: [Number,String]
     },
 })
 
