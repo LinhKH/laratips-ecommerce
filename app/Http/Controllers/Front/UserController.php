@@ -682,6 +682,7 @@ class UserController extends Controller
             $reviews = Review::select(['reviews.*', 'products.product_name'])
                 ->where('user', $user)
                 ->leftJoin('products', 'products.id', '=', 'reviews.product')
+                ->orderBy('id', 'DESC')
                 ->paginate(4);
             return Inertia::render('MyReviews', ['reviews' => $reviews]);
         } else {

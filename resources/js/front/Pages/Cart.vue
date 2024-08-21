@@ -120,7 +120,9 @@ function handleRemoveCart(cart_id) {
                                                 }
                                                     "></label>
                                             </span>
-                                            <Attribute :product="product" />
+                                            <ul>
+                                                <Attribute :product="product" />
+                                            </ul>
 
                                             <span v-if="product.shipping_charges == 'free'">
                                                 Free Delivery

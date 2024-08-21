@@ -165,7 +165,7 @@ const {
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
-                                                href=""
+                                                href="/my_orders"
                                             >
                                                 My Orders
                                             </Link>

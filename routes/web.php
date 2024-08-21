@@ -30,6 +30,8 @@ Route::post('/update_cart_qty', [UserController::class, 'update_cart_qty'])->nam
 Route::get('review/create/{id}', [ReviewController::class, 'create'])->name('review.create');
 Route::post('review/store', [ReviewController::class, 'store'])->name('review.store');
 Route::get('my-reviews', [UserController::class, 'my_reviews'])->name('my_reviews');
+Route::get('/my_orders', [UserController::class, 'my_orders'])->name('my_orders');
+Route::post('/my_orders', [UserController::class, 'my_orders'])->name('my_orders.store');
 
 Route::post('/add-wishlist', [UserController::class, 'add_wishlist'])->name('add_wishlist');
 Route::post('/remove-wishlist', [UserController::class, 'remove_wishlist'])->name('remove_wishlist');
