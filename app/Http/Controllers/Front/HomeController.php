@@ -164,6 +164,9 @@ class HomeController extends Controller
         $product->discount = $price->old_price - $price->new_price;
         $product->discount_percent = $price->discount;
 
+        $cat_detail = Category::select('*')->where('categories.id', $product->category)->first();
+        $breadcrumb_ids = get_category_breadcrumb($cat_detail->id);
+        $breadcrumb = Category::select(['id', 'category_name', 'category_slug'])->whereIn('id', $breadcrumb_ids)->orderBy('id', 'ASC')->get();
 
         $reviews = Review::select(['reviews.*', 'users.name'])
             ->leftJoin('users', 'reviews.user', '=', 'users.user_id')
@@ -192,14 +195,14 @@ class HomeController extends Controller
             ->leftjoin('states', 'states.id', '=', 'cities.state')
             ->get();
 
-        return Inertia::render('Product', ['attrvalues' => $attrvalues, 'attributes' => $attributes, 'colors' => $colors, 'product' => $product, 'cities' => $cities, 'related' => $related, 'cart' => $cart, 'reviews' => $reviews]);
+        return Inertia::render('Product', ['attrvalues' => $attrvalues, 'attributes' => $attributes, 'colors' => $colors, 'product' => $product, 'cities' => $cities, 'related' => $related, 'cart' => $cart, 'reviews' => $reviews, 'breadcrumb' => $breadcrumb]);
     }
 
 
     // category and search page
     public function search_products(Request $request, $slug = '')
     {
-        Paginator::useBootstrap();
+        // Paginator::useBootstrap();
         if ($request->category && $request->category != 'all') {
             $slug = $request->category;
         }
@@ -240,7 +243,8 @@ class HomeController extends Controller
         } else {
             $keyword = $request->keyword;
             if ($keyword != '') {
-                $where .= "products.product_name LIKE '%{$request->keyword}%' OR products.tags LIKE '%{$request->keyword}%'";
+                // $where .= "products.product_name LIKE '%{$request->keyword}%' OR products.tags LIKE '%{$request->keyword}%'";
+                $where .= " (products.product_name LIKE '%{$request->keyword}%' OR products.tags LIKE '%{$request->keyword}%') ";
             }
             $cat_detail = null;
             $cat_array = null;
@@ -259,7 +263,7 @@ class HomeController extends Controller
             }
             $where .= 'products.brand IN (' . implode(',', $request->brand) .')';
         }
-        // dd($brands);
+        // dd($where);
 
         $limit = 6;
         if ($where != '') {
@@ -269,19 +273,20 @@ class HomeController extends Controller
                 ->whereRaw($where)
                 ->groupBy('products.id')
                 ->orderByRaw($order)
-                ->paginate($limit);
+                ->paginate($limit)->withQueryString();
         } else {
             $products = Product::select(['products.*', 'brands.brand_name',DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
                 ->leftJoin('brands', 'brands.id', '=', 'products.brand')
                 ->leftJoin('reviews', 'reviews.product', '=', 'products.id')
                 ->orderByRaw($order)
                 ->groupBy('products.id')
-                ->paginate($limit);
+                ->paginate($limit)->withQueryString();
         }
         $url_search = url()->current();
+        $filters = $request->query->all();
 
         return Inertia::render('AllProducts', ['keyword' => $keyword, 'cat_detail' => $cat_detail, 'cat_array' => $cat_array, 'products' => $products, 
-            'brands' => $brands, 'limit' => $limit, 'breadcrumb' => $breadcrumb, 'url_search' => $url_search, 
+            'brands' => $brands, 'limit' => $limit, 'breadcrumb' => $breadcrumb, 'url_search' => $url_search, 'filters' => $filters,
             'slug' => $slug]);
     }
 

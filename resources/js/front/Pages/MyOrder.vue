@@ -4,6 +4,7 @@ import FrontLayout from '../Layouts/FrontLayout.vue';
 import Paginate from '../Components/Paginate.vue';
 import { computed, ref, watch, watchEffect } from 'vue';
 import OrderProducts from '../Components/OrderProducts.vue';
+import Preloader from '../Components/Preloader.vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const { my_orders, reviews } = usePage().props;
@@ -18,6 +19,8 @@ const props = defineProps({
     },
 });
 
+let isLoading = ref(false)
+
 // Watch for changes in props.myProp
 watch(() => props.order_detail, (newValue, oldValue) => {
     // React to prop changes
@@ -31,17 +34,22 @@ const handleShowDetails = (id) => {
         {
             preserveScroll: true,
             preserveState: true,
+            onBefore: () => {
+                isLoading.value = true;
+            },
+            onFinish: () => {
+                isLoading.value = false;
+            }
             // replace: true,
             // only : ['order_detail','order_products'],
         }
     );
 };
 
-
-
 </script>
 
 <template>
+    <Preloader v-if="isLoading" />
     <Head title="My Orders"></Head>
     <FrontLayout>
         <div id="site-content">
@@ -95,7 +103,8 @@ const handleShowDetails = (id) => {
                                             class="btn btn-primary"
                                             @click="handleShowDetails(order.id)"
                                         >
-                                            <i class="fa fa-eye"></i>
+                                            <i v-if="orderDetail?.order?.id == order.id" class="fa fa-eye-slash"></i>
+                                            <i v-else class="fa fa-eye"></i>
                                         </button>
                                     </td>
                                 </tr>

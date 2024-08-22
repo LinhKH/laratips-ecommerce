@@ -1,5 +1,5 @@
 <script setup>
-import { usePage, Link, useForm, router } from '@inertiajs/vue3';
+import { usePage, Link, useForm, router, Head } from '@inertiajs/vue3';
 import FrontLayout from '../Layouts/FrontLayout.vue';
 import { computed, onMounted, ref, watch } from 'vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
@@ -33,7 +33,7 @@ const {
         cities,
         reviews,
         cart,
-        flash,
+        breadcrumb,
     } = usePage().props;
     
     const charges = ref(null);
@@ -114,6 +114,7 @@ let data = useForm({
 </script>
 
 <template>
+    <Head :title="product.product_name"></Head>
     <FrontLayout>
         <section id="site-content" class="py-3">
             <div class="container">
@@ -150,8 +151,23 @@ let data = useForm({
                     <div class="col-md-6">
                         <form method="POST" @submit.prevent="handleSubmit" noValidate>
                             <div class="product-info">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb justify-content p-0 align-items-center">
+                                        <li class="product-name">Category :</li>
+                                        <template v-if="breadcrumb != null">
+                                            <template v-for="value in breadcrumb" :key="value.id">
+                                                
+                                                <li class="breadcrumb-item">
+                                                    <Link :href="`${baseUrl}/search?category=${value.category_slug}`">
+                                                    {{ value.category_name }}
+                                                    </Link>
+                                                </li>
+                                            </template>
+                                        </template>
+                                    </ol>
+                                </nav>
                                 <span class="brand-name">
-                                    {{ product.brand_name }}
+                                    Brand: {{ product.brand_name }}
                                 </span>
                                 <p class="product-name">
                                     {{ product.product_name }}

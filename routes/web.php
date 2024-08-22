@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ReviewController;
 use App\Http\Controllers\Front\UserController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,14 @@ Route::get('/flash-products/{text}', [HomeController::class, 'flashproducts']);
 Route::get('/checkout', [UserController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [UserController::class, 'order_products'])->name('checkout.store');
 
+Route::get('success', [PaymentController::class, 'success']);
+Route::get('pay-with-cod/{amount}', [PaymentController::class, 'payWithCod']);
+Route::get('pay-with-paypal/{amount}', [PaymentController::class, 'payWithpaypalCustomize']);
+Route::get('/paypal/status', [PaymentController::class, 'getPaymentStatus'])->name('paypal-status');
+Route::get('checkout/paypal/success', [PaymentController::class, 'paypalSuccess'])->name('paypal.success');
+Route::get('checkout/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('checkout/payment/failed', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
+
 
 Route::get('search', [HomeController::class, 'search_products']);
 Route::get('/all-products', [HomeController::class, 'search_products']);
@@ -54,3 +63,6 @@ Route::get('/product/{text}', [HomeController::class, 'productpage']);
 
 
 Route::get('{page}', [HomeController::class, 'site_pages']);
+
+
+Route::get('/pay-with-razorpay/{id}/{text}', [PaymentController::class, 'yb_payWithRazorpay']);

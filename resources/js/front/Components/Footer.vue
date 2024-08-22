@@ -27,7 +27,7 @@ const { generalSettings, sitePages, all_category } = usePage().props;
                         <ul class="widget-list">
                             <template v-for="cat_menu in all_category" :key="cat_menu.id">
                                 <li v-if="cat_menu.parent_category == '0'">
-                                    <Link :href="`${baseUrl}/c/${cat_menu.category_slug}`">
+                                    <Link :href="`${baseUrl}/search?category=${cat_menu.category_slug}`">
                                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                                     {{ cat_menu.category_name }}
                                     </Link>

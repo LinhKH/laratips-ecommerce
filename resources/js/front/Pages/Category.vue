@@ -15,15 +15,15 @@ const settings = {
 };
 const breakpoints = {
     0: {
-        itemsToShow: 3,
+        itemsToShow: 5,
         snapAlign: 'center',
     },
     600: {
-        itemsToShow: 5,
+        itemsToShow: 8,
         snapAlign: 'start',
     },
     1000: {
-        itemsToShow: 9,
+        itemsToShow: 12,
         snapAlign: 'start',
     },
 };
@@ -39,7 +39,7 @@ const breakpoints = {
                             <div class="item">
                                 <div class="category-grid text-center">
                                     <h4>
-                                        <Link :href="`${baseUrl}/c/${category.category_slug}`">
+                                        <Link :href="`${baseUrl}/search?category=${category.category_slug}`">
                                             {{ category.category_name }}
                                         </Link>
                                     </h4>
@@ -55,3 +55,15 @@ const breakpoints = {
         </div>
     </section>
 </template>
+<style scoped>
+
+@media only screen and (max-width: 770px) {
+    .category-grid h4 a {
+        background: var(--main-color);
+        font-size: 10px;
+        font-weight: 200;
+        width: 60px;
+        height: 60px;
+    }
+}
+</style>

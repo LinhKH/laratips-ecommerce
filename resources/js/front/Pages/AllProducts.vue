@@ -7,11 +7,12 @@ import Sidebar from '../Components/Sidebar.vue';
 import ProductGrid from './ProductGrid.vue';
 import Paginate from '../Components/Paginate.vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
+import {pickBy} from 'lodash';
 
 const {
     slug,
     cat_detail,
-
+    filters,
     breadcrumb,
     links,
     keyword,
@@ -28,13 +29,20 @@ const change = ref(false);
 let data = useForm({
     sort: "latest",
     brand: [],
-    min_price: "0",
-    max_price: "100000",
+    min_price: filters.min_price || "0",
+    max_price: filters.max_price || "100000",
+    keyword: new URL(window.location.href).searchParams.get("keyword")
+        ? new URL(window.location.href).searchParams.get("keyword")
+        : "",
+    category: new URL(window.location.href).searchParams.get("category")
+        ? new URL(window.location.href).searchParams.get("category")
+        : "all",
 });
 
 const handleFilter = () => {
-    data.get(
-        url_search,
+    data.transform((data) => pickBy(data))
+    .get(
+        baseUrl + "/search",
         {
             preserveState: true,
             preserveScroll: true,
@@ -82,7 +90,7 @@ const sortOptions = [
                                     {{ value.category_name }}
                                 </li>
                                 <li v-else class="breadcrumb-item">
-                                    <Link :href="`${baseUrl}/c/${value.category_slug}`">
+                                    <Link :href="`${baseUrl}/search?category=${value.category_slug}`">
                                     {{ value.category_name }}
                                     </Link>
                                 </li>
@@ -115,6 +123,7 @@ const sortOptions = [
                                                 {{ products.to }} of
                                                 {{ products.total }}
                                             </p>
+                                            <p class="result-count" v-else>Showing Totals : <b style="font-size: 12px;"> {{ products.total }}</b></p>
                                         </div>
                                         <div class="col-md-4"></div>
                                         <div

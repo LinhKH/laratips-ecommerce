@@ -17,7 +17,7 @@ const { all_category, cat_detail, cat_array } = usePage().props;
                 </Link>
             </li>
             <li class="category_name">
-                <Link preserveScroll :href="`${baseUrl}/c/${cat_array.category_slug}`" >
+                <Link preserveScroll :href="`${baseUrl}/search?category=${cat_array.category_slug}`" >
                     
                     <i v-if="cat_detail.id == cat_array.id" class="fas fa-angle-right"></i>
                  
@@ -30,7 +30,7 @@ const { all_category, cat_detail, cat_array } = usePage().props;
             <template v-for="item in all_category" :key="item.id">
                 <li v-if="item.parent_category == '0' && item.id != cat_array.id">
                     <Link preserveScroll
-                        :href="`${baseUrl}/c/${item.category_slug}`"
+                        :href="`${baseUrl}/search?category=${item.category_slug}`"
                     >
                         {{ item.category_name }}
                     </Link>
@@ -41,7 +41,7 @@ const { all_category, cat_detail, cat_array } = usePage().props;
         <template v-else v-for="item in all_category" :key="item.id">
             <li v-if="item.parent_category == '0'">
                 <Link preserveScroll
-                    :href="`${baseUrl}/c/${item.category_slug}`"
+                    :href="`${baseUrl}/search?category=${item.category_slug}`"
                 >
                     {{ item.category_name }}
                 </Link>

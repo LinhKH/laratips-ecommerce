@@ -86,100 +86,103 @@ function handleRemoveCart(cart_id) {
                 <div class="col-md-12">
                     <form v-if="products.length > 0" :action="route('checkout.store')">
                         <input type="hidden" name="_token" :value="token" />
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
-                                    <th>Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="product in products" :key="product.id">
-                                    <td class="d-flex flex-row">
-                                        <input type="hidden" name="product_id[]" value="product.id" />
-                                        <input type="hidden" name="product_attr[{{$product->id}}]"
-                                            value="product.attrvalues" />
-                                        <input type="hidden" name="product_color[{{$product->id}}]"
-                                            value={product.color} />
-                                        <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img}`
-                                            " :alt="product.product_name" width="100px" />
-                                        <div class="ml-2">
-                                            {{ product.product_name }}
-                                            <span v-if="product.color_code" class="d-flex">
-                                                <b>Color : </b>
-                                                <label class="border" :style="{
-                                                    backgroundColor: product.color_code,
-                                                    marginLeft: '10px',
-                                                    borderRadius: '50%',
-                                                    cursor: 'auto',
-                                                    height: '25px',
-                                                    width: '25px',
-                                                }
-                                                    "></label>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Qty</th>
+                                        <th>Total</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product in products" :key="product.id">
+                                        <td class="d-flex flex-row">
+                                            <input type="hidden" name="product_id[]" value="product.id" />
+                                            <input type="hidden" name="product_attr[{{$product->id}}]"
+                                                value="product.attrvalues" />
+                                            <input type="hidden" name="product_color[{{$product->id}}]"
+                                                value={product.color} />
+                                            <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img}`
+                                                " :alt="product.product_name" width="100px" />
+                                            <div class="ml-2">
+                                                {{ product.product_name }}
+                                                <span v-if="product.color_code" class="d-flex">
+                                                    <b>Color : </b>
+                                                    <label class="border" :style="{
+                                                        backgroundColor: product.color_code,
+                                                        marginLeft: '10px',
+                                                        borderRadius: '50%',
+                                                        cursor: 'auto',
+                                                        height: '25px',
+                                                        width: '25px',
+                                                    }
+                                                        "></label>
+                                                </span>
+                                                <ul>
+                                                    <Attribute :product="product" />
+                                                </ul>
+    
+                                                <span v-if="product.shipping_charges == 'free'">
+                                                    Free Delivery
+                                                </span>
+    
+                                                <span v-else>
+                                                    Delivery Charges : {{ generalSettings.currency }} {{ charges }}
+                                                </span>
+    
+                                            </div>
+                                        </td>
+                                        <td :style="{'min-width':'100px'}">
+                                            {{ generalSettings.currency }}
+                                            {{ product.taxable_price }}
+                                        </td>
+                                        <td>
+                                            <input :style="{'min-width': '70px'}" type="number" class="form-control" :name="`qty[${product.id}]`" min="1"
+                                                style="width: '80px'" :defaultValue="product.qty"
+                                                :id="`cart${product.cart_id}`" @change="handleChangeQty" />
+                                            <input type="number" class="product-price" :name="`price[${product.id}]`"
+                                                :defaultValue="product.taxable_price" hidden />
+                                            <input type="number" class="product-shipping" :defaultValue="charges" hidden />
+                                        </td>
+                                        <td>
+                                            {{ generalSettings.currency }}
+                                            <span class="product-total" v-if="product.shipping_charges == 'free'">
+                                                {{ parseInt(
+                                                    product.taxable_price *
+                                                    product.qty
+                                                ) }}
                                             </span>
-                                            <ul>
-                                                <Attribute :product="product" />
-                                            </ul>
-
-                                            <span v-if="product.shipping_charges == 'free'">
-                                                Free Delivery
-                                            </span>
-
                                             <span v-else>
-                                                Delivery Charges : {{ generalSettings.currency }} {{ charges }}
+                                                {{ parseInt(
+                                                    product.taxable_price *
+                                                    product.qty
+                                                ) +
+                                                    parseInt(charges) }}
                                             </span>
-
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{ generalSettings.currency }}
-                                        {{ product.taxable_price }}
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" :name="`qty[${product.id}]`" min="1"
-                                            style="width: '80px'" :defaultValue="product.qty"
-                                            :id="`cart${product.cart_id}`" @change="handleChangeQty" />
-                                        <input type="number" class="product-price" :name="`price[${product.id}]`"
-                                            :defaultValue="product.taxable_price" hidden />
-                                        <input type="number" class="product-shipping" :defaultValue="charges" hidden />
-                                    </td>
-                                    <td>
-                                        {{ generalSettings.currency }}
-                                        <span class="product-total" v-if="product.shipping_charges == 'free'">
-                                            {{ parseInt(
-                                                product.taxable_price *
-                                                product.qty
-                                            ) }}
-                                        </span>
-                                        <span v-else>
-                                            {{ parseInt(
-                                                product.taxable_price *
-                                                product.qty
-                                            ) +
-                                                parseInt(charges) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" @click="handleRemoveCart(product.id)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="3" align="right">
-                                        <b>Total Amount</b>
-                                    </td>
-                                    <td colspan="2">
-                                        {{ generalSettings.currency }}
-                                        <span>{{ total }}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" @click="handleRemoveCart(product.id)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan="3" align="right">
+                                            <b>Total Amount</b>
+                                        </td>
+                                        <td colspan="2">
+                                            {{ generalSettings.currency }}
+                                            <span>{{ total }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
                         <Link class="btn btn-primary" href="/">
                         Continue Shopping
                         </Link>

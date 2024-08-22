@@ -14,7 +14,7 @@ const props = defineProps({
 <template>
     <ul class="subcategory-list pl-3">
         <li v-for="subCategory in subcategories" :key="subCategory.id">
-            <Link preserveScroll :href="`${baseUrl}/c/${subCategory.category_slug}`">
+            <Link preserveScroll :href="`${baseUrl}/search?category=${subCategory.category_slug}`">
                 <i v-if="cat_detail !== null && cat_detail.id == subCategory.id" class="fas fa-angle-right"></i>
                 {{ subCategory.category_name }}
             </Link>

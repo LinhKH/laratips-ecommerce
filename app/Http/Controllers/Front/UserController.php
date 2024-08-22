@@ -387,8 +387,10 @@ class UserController extends Controller
             $user = Session::get('user_id');
             $wishlist = Users::where('user_id', $user)->pluck('wishlist')->first();
             $wishlist = array_filter(explode(',', $wishlist));
-            $products = Product::select(['products.*', 'brands.brand_name'])
+            $products = Product::select(['products.*', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
                 ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+                ->leftJoin('reviews', 'reviews.product', '=', 'products.id')
+                ->groupBy('products.id')
                 ->whereIn('products.id', $wishlist)->get();
             if ($products) {
                 foreach ($products as $product) {

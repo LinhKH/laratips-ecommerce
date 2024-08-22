@@ -5,6 +5,7 @@ const baseUrl = import.meta.env.VITE_APP_URL;
 
 import ChildHeader from "./ChildHeader.vue"
 import { computed, onMounted } from "vue";
+import {pickBy} from 'lodash';
 // import Swal from 'sweetalert2';
 
 const {
@@ -39,8 +40,9 @@ const {
     });
 
     function handleSubmit(e) {
-        // e.preventDefault();
-        router.get(baseUrl + "/search", data);
+        data.transform((data) => 
+            pickBy(data)
+        ).get(baseUrl + "/search");
     };
     
 </script>
@@ -52,7 +54,7 @@ const {
                 <div class="top-header d-lg-block">
                     <div class="container-xl container-fluid">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <ul class="top-address">
                                     
                                     <li v-if="generalSettings.email">
@@ -64,12 +66,7 @@ const {
                                         <i class="fa fa-phone"></i>
                                         {{generalSettings.phone}}
                                     </li>
-                                    
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <ul class="top-right-menu text-end">
-                                    <li>
+                                    <li class="float-end">
                                         <span class="welcome-message">
                                             welcome to our store!
                                         </span>
@@ -142,10 +139,7 @@ const {
                                             data-toggle="dropdown"
                                         >
                                             <i class="far fa-user"></i>
-                                            Hello, {{ userSession.user_name.substring(
-                                                0,
-                                                10
-                                            ) + "..." }}
+                                            {{ userSession.user_name }}
                                         </a>
                                         <div
                                             class="dropdown-menu"
@@ -244,7 +238,7 @@ const {
                                     <li v-if="cat_menu.parent_category == '0'">
                                         <Link
                                             class="dropdown-item"
-                                            href=""
+                                            :href="`${baseUrl}/search?category=${cat_menu.category_slug}`"
                                         >
                                         {{ cat_menu.category_name }}
                                         </Link>
@@ -307,3 +301,10 @@ const {
             </nav>
         </div>
 </template>
+<style scoped>
+@media only screen and (max-width: 770px) {
+    .welcome-message {
+        display: none;
+    }
+}
+</style>
