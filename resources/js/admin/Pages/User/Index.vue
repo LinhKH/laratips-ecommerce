@@ -40,7 +40,7 @@ const props = defineProps({
         required: true,
     },
     can: Object,
-    roles: Array,
+    // roles: Array,
 });
 
 const {
@@ -69,7 +69,7 @@ const { filters, isLoading } = useFilters({
         </template>
 
         <Container>
-            <Filters v-model="filters" :roles="roles" />
+            <Filters v-model="filters" />
 
             <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
 
@@ -82,11 +82,11 @@ const { filters, isLoading } = useFilters({
                         <Td>
                             {{ item.email }}
                         </Td>
-                        <Td>
+                        <!-- <Td>
                             <Button v-for="role in item.roles" :key="role.id" color="blue" small class="mx-2">
                                 {{ role.name }}
                             </Button>
-                        </Td>
+                        </Td> -->
                         <Td>
                             {{ item.created_at_formatted }}
                         </Td>

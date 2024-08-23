@@ -23,10 +23,10 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    roles: {
-        type: Array,
-        required: true,
-    },
+    // roles: {
+    //     type: Array,
+    //     required: true,
+    // },
 });
 
 const form = useForm({
@@ -34,7 +34,7 @@ const form = useForm({
     email: props.item.email ?? "",
     password: "",
     passwordConfirmation: "",
-    roleId: props.edit ? props.item.roles[0]?.id ?? "" : "",
+    // roleId: props.edit ? props.item.roles[0]?.id ?? "" : "",
 });
 
 const submit = () => {
@@ -72,7 +72,7 @@ const submit = () => {
                         <InputGroup type="password" v-model="form.passwordConfirmation" label="Confirm Password"
                             :error-message="form.errors.passwordConfirmation" />
 
-                        <SelectGroup label="Role" v-model="form.roleId" :items="roles" :error-message="form.errors.roleId" />
+                        <!-- <SelectGroup label="Role" v-model="form.roleId" :items="roles" :error-message="form.errors.roleId" /> -->
                     </div>
 
                     <div class="mt-4">

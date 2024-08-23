@@ -9,7 +9,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\User;
+use App\Models\Users;
 use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
@@ -18,30 +18,30 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:view users list')->only('index');
-        $this->middleware('can:create user')->only(['create', 'store']);
-        $this->middleware('can:edit user')->only(['edit', 'update']);
-        $this->middleware('can:delete user')->only('destroy');
+        // $this->middleware('can:view users list')->only('index');
+        // $this->middleware('can:create user')->only(['create', 'store']);
+        // $this->middleware('can:edit user')->only(['edit', 'update']);
+        // $this->middleware('can:delete user')->only('destroy');
     }
 
     public function index(Request $request)
     {
-        $users = User::query()
+        $users = Users::query()
             ->select([
-                'id',
+                'user_id',
                 'name',
                 'email',
                 'created_at',
             ])
-            ->with(['roles:roles.id,roles.name'])
+            // ->with(['roles:roles.id,roles.name'])
             ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
             ->when($request->email, fn (Builder $builder, $email) => $builder->where('email', 'like', "%{$email}%"))
-            ->when($request->roleId, fn (Builder $builder, $roleId) => $builder->whereHas(
-                    'roles',
-                    fn (Builder $builder) => $builder->where('roles.id', $roleId)
-                )
-            )
-            ->latest('id')
+            // ->when($request->roleId, fn (Builder $builder, $roleId) => $builder->whereHas(
+            //         'roles',
+            //         fn (Builder $builder) => $builder->where('roles.id', $roleId)
+            //     )
+            // )
+            ->latest('user_id')
             ->paginate(10);
 
         return Inertia::render('User/Index', [
@@ -57,10 +57,6 @@ class UsersController extends Controller
                     'name' => 'headers',
                 ],
                 [
-                    'label' => 'Role',
-                    'name' => 'role',
-                ],
-                [
                     'label' => 'Created At',
                     'name' => 'created_at',
                 ],
@@ -71,9 +67,10 @@ class UsersController extends Controller
             ],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
-            'roles' => RoleResource::collection(Role::get(['id', 'name'])),
+            // 'roles' => RoleResource::collection(Role::get(['id', 'name'])),
             'can' => [
-                'create' => $request->user()->can('create user'),
+                // 'create' => $request->user()->can('create user'),
+                'create' => true,
             ],
         ]);
     }
@@ -84,44 +81,44 @@ class UsersController extends Controller
             'edit' => false,
             'title' => 'Add User',
             'routeResourceName' => $this->routeResourceName,
-            'roles' => RoleResource::collection(Role::get(['id', 'name'])),
+            // 'roles' => RoleResource::collection(Role::get(['id', 'name'])),
         ]);
     }
 
     public function store(UsersRequest $request)
     {
-        $role = Role::findById($request->roleId);
+        // $role = Role::findById($request->roleId);
 
-        $user = User::create($request->safe()->only(['name', 'email', 'password']));
+        $user = Users::create($request->safe()->only(['name', 'email', 'password']));
 
-        $user->assignRole($role->name);
+        // $user->assignRole($role->name);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'User created successfully.');
     }
 
-    public function edit(User $user)
+    public function edit(Users $user)
     {
-        $user->load(['roles:roles.id']);
+        // $user->load(['roles:roles.id']);
 
         return Inertia::render('User/Create', [
             'edit' => true,
             'title' => 'Edit User',
             'item' => new UserResource($user),
             'routeResourceName' => $this->routeResourceName,
-            'roles' => RoleResource::collection(Role::get(['id', 'name'])),
+            // 'roles' => RoleResource::collection(Role::get(['id', 'name'])),
         ]);
     }
 
-    public function update(UsersRequest $request, User $user)
+    public function update(UsersRequest $request, Users $user)
     {
         $user->update($request->safe()->only(['name', 'email', 'password']));
 
-        $user->syncRoles($request->roleId);
+        // $user->syncRoles($request->roleId);
 
         return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'User updated successfully.');
     }
 
-    public function destroy(User $user)
+    public function destroy(Users $user)
     {
         $user->delete();
 

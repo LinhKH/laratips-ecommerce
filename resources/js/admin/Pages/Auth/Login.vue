@@ -36,6 +36,13 @@ const submit = () => {
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
+        <div v-if="$page.props.flash.error" class="mb-4 font-medium text-sm text-danger-600">
+            {{ $page.props.flash.error }}
+        </div>
+
+        <div v-if="$page.props.flash.success" class="mb-4 font-medium text-sm text-success-600">
+            {{ $page.props.flash.success }}
+        </div>
 
         <form @submit.prevent="submit">
             <div>

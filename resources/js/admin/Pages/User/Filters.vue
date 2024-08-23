@@ -41,7 +41,7 @@ watch(
 
             <InputGroup v-model="filters.email" label="Email" />
 
-            <SelectGroup label="Role" v-model="filters.roleId" :items="roles" />
+            <!-- <SelectGroup label="Role" v-model="filters.roleId" :items="roles" /> -->
 
         </form>
     </Card>
