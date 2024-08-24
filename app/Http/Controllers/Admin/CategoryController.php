@@ -3,135 +3,295 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CategoryRequest;
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Attribute;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    private string $routeResourceName = 'categories';
-
-    public function __construct()
-    {
-        $this->middleware('can:view categories list')->only('index');
-        $this->middleware('can:create category')->only(['create', 'store']);
-        $this->middleware('can:edit category')->only(['edit', 'update']);
-        $this->middleware('can:delete category')->only('destroy');
-    }
-
+    private string $routeResourceName = 'category';
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        $categories = Category::query()
-            ->select([
-                'id',
-                'parent_id',
-                'name',
-                'created_at',
-                'active',
-            ])
-            ->withCount([
-                'children'
-            ])
-            ->when($request->name, fn (Builder $builder, $name) => $builder->where('name', 'like', "%{$name}%"))
-            ->when(
-                $request->parentId,
-                fn (Builder $builder) => $builder->where('parent_id', $request->parentId),
-                // fn (Builder $builder) => $builder->root()
-            )
-            ->when(
-                $request->active !== null,
-                fn (Builder $builder) => $builder->when(
-                    $request->active,
-                    fn (Builder $builder) => $builder->active(),
-                    fn (Builder $builder) => $builder->inActive(),
-                )
-            )
-
-            ->latest('id')
-            ->paginate(10);
-
+        $data = Category::with(['categories','childrenCategories'])->select(['categories.*','t2.category_name as parent_name'])
+                ->leftJoin('categories as t2','t2.id','=','categories.parent_category')
+                ->orderBy('id','desc');
+        if ($request->name) {
+            $data->where('categories.category_name', 'like', "%{$request->name}%");
+        }
+        if ($request->parentId) {
+            $data->where('categories.parent_category', $request->parentId);
+        }
+        $data = $data->paginate(10);
         return Inertia::render('Category/Index', [
-            'title' => 'Categories',
-            'items' => CategoryResource::collection($categories),
-            'headers' => [
-                [
-                    'label' => 'Name',
-                    'name' => 'name',
-                ],
-                [
-                    'label' => 'Children',
-                    'name' => 'children_count',
-                ],
-                [
-                    'label' => 'Active',
-                    'name' => 'active',
-                ],
-                [
-                    'label' => 'Created At',
-                    'name' => 'created_at',
-                ],
-                [
-                    'label' => 'Actions',
-                    'name' => 'actions',
-                ],
-            ],
+            'data' => $data,
+            'title' => 'Categories Management',
+            'breadcrumb' => ['Dashboard'=>'admin.dashboard'],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
-            'rootCategories' => CategoryResource::collection(Category::root()->get(['id', 'name'])),
-            'can' => [
-                'create' => $request->user()->can('create category'),
-            ],
+            'rootCategories' => Category::where('parent_category', 0)->get(['id', 'category_name'])
         ]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        return Inertia::render('Category/Create', [
-            'edit' => false,
-            'title' => 'Add Category',
-            'routeResourceName' => $this->routeResourceName,
-            'rootCategories' => CategoryResource::collection(Category::root()->get(['id', 'name'])),
-        ]);
+        $category = Category::where('parent_category', 0)
+                    ->with('childrenCategories')
+                    ->get();
+        $attributes = Attribute::get();
+        return view('admin.category.create',['category'=>$category,'attributes'=>$attributes]);
     }
 
-    public function store(CategoryRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $data = $request->safe()->only(['name', 'slug', 'active']);
-        $data['parent_id'] = $request->parentId;
 
-        $category = Category::create($data);
+        $check_exist = Category::where('category_name',$request->name)->where('parent_category','0')->first();
+        if($check_exist){
+            return 'Category Name is Already Exists.';
+        }
+        if($request->img){
+            $image = $request->img->getClientOriginalName();
+            $request->img->move(public_path('category'), $image);
+        }
 
-        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Category created successfully.');
+        $slug = str_replace(array('_',' ',),'-',strtolower($request->input("name")));
+        $check_slug = Category::where('category_slug',$slug)->first();
+        if($check_slug){
+            $n_slug = Category::where('id',$request->parent)->pluck('category_slug')->first();
+            $slug = $n_slug.'-'.$slug;
+        }
+
+        $meta_title = str_replace(array('_',' ',),'-',strtolower($request->input("name")));
+
+        $category = new Category();
+        if($request->img){
+            $category->category_icon = $image;
+        }
+        if($request->order){
+            $category->order = $request->order;
+        }
+        if ($request->parent != "0") {
+            $category->parent_category = $request->parent;
+
+            $parent = Category::find($request->parent);
+            $category->level = $parent->level + 1 ;
+        }
+        $category->category_name = $request->name;
+        $category->parent_category = $request->parent;
+        if($request->meta_title != ''){
+            $category->meta_title = $request->meta_title;
+        }else{
+            $category->meta_title = $meta_title;
+        }
+        $category->meta_desc = $request->meta_desc;
+        $category->category_slug = $slug;
+        if($request->cat_attributes){
+            $category->filter_attr = implode(',',$request->input('cat_attributes'));
+        }
+        $result = $category->save();
+        return $result;
     }
 
-    public function edit(Category $category)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        return Inertia::render('Category/Create', [
-            'edit' => true,
-            'title' => 'Edit Category',
-            'item' => new CategoryResource($category),
-            'routeResourceName' => $this->routeResourceName,
-            'rootCategories' => CategoryResource::collection(Category::root()->where('id', '!=', $category->id)->get(['id', 'name'])),
-        ]);
+        //
     }
 
-    public function update(CategoryRequest $request, Category $category)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-        $data = $request->safe()->only(['name', 'slug', 'active']);
-        $data['parent_id'] = $request->parentId;
-
-        $category->update($data);
-
-        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Category updated successfully.');
+        //
+        $category = Category::where(['id'=>$id])->first();
+        $categories = Category::where('parent_category', 0)
+        ->with('childrenCategories')
+        ->get();
+        $attributes = Attribute::get();
+        return view('admin.category.edit',['category'=>$category,'categories'=>$categories,'attributes'=>$attributes]);
     }
 
-    public function destroy(Category $category)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $category->delete();
+        // return $request->input();
+        // $request->validate([
+        //     'name'=>'required|unique:categories,category_name,' .$id. ',id',
+        //     'img'=>'image|mimes:jpeg,jpg,png,svg|max:2048',
+        //     'category_status'=>'required'
+        // ]);
 
-        return back()->with('success', 'Category deleted successfully.');
+        $check_exist = Category::where('category_name',$request->name)->where('parent_category','0')
+        ->where('id','!=',$id)->first();
+        if($check_exist){
+            return 'Category Name is Already Exists.';
+        }
+
+        //update Brand Image
+        if($request->img != ''){
+            $path = public_path().'/category/';
+            //code for remove old file
+            if($request->old_img != '' && $request->old_img != null){
+                $file_old = $path.$request->old_img;
+                if(file_exists($file_old)){
+                    unlink($file_old);
+                }
+            }
+
+            //upload new file
+            $file = $request->img;
+            $image = $request->img->getClientOriginalName();
+            $file->move($path, $image);
+        }else{
+            $image = $request->old_img;
+        }
+
+        if($request->slug != ''){
+            $slug = str_replace(array('_',' ',),'-',strtolower($request->input('slug')));
+        }else{
+            $slug = str_replace(array('_',' ',),'-',strtolower($request->input('name')));
+        }
+
+        $check_slug = Category::where('category_slug',$slug)->where('id','!=',$id)->first();
+        if($check_slug){
+            $n_slug = Category::where('id',$request->parent)->pluck('category_slug')->first();
+            $slug = $n_slug.'-'.$slug;
+        }
+
+        if($request->meta_title != ''){
+            $meta_title = str_replace(array('_',' ',),'-',strtolower($request->input('meta_title')));
+        }else{
+            $meta_title = str_replace(array('_',' ',),'-',strtolower($request->input('name')));
+        }
+
+        $category = Category::FindOrFail($id);
+
+        $category->category_name = $request->name;
+        // $category->parent_category = $request->parent;
+
+        $previous_level = $category->level;
+
+        if($request->order){
+            $category->order = $request->order;
+        }
+        if ($request->parent != "0") {
+            $category->parent_category = $request->parent;
+
+            $parent = Category::find($request->parent);
+            $category->level = $parent->level + 1 ;
+        }else{
+            $category->parent_category = 0;
+            $category->level = 0;
+        }
+
+        
+
+        if($category->level > $previous_level){
+            // return 'gr';
+            $this->move_level_down($category->id);
+        }
+        elseif ($category->level < $previous_level) {
+            // return 'lr';
+            $this->move_level_up($category->id);
+        }
+
+        $category->meta_title = $meta_title;
+        $category->meta_desc = $request->meta_desc;
+        $category->category_slug = $slug;
+        if(isset($request->cat_attributes)){
+            $attr = $request->cat_attributes;
+            $category->filter_attr = implode(',',$attr);
+        }
+        $category->status = $request->status;
+        $update = $category->save();
+        return $update;
+
+
+
+        // $category = Category::where(['id'=>$id])->update([
+        //     'category_name'=>$request->input('name'),
+        //     'category_icon'=>$image,
+        //     'meta_title'=>$meta_title,
+        //     'meta_desc'=>$request->input('meta_desc'),
+        //     'category_slug'=>$slug,
+        //     'status'=>$request->input('category_status')
+        // ]);
+        return $update;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $child =Category::where('parent_category',$id)->count();
+        $check =Product::where('category',$id)->count();
+        // return $child;
+        if($child == 0 && $check == 0){
+            $destroy = Category::where(['id'=>$id])->delete();
+            return $destroy;
+        }else{
+            return "You won't Delete this (This Category have children categories or used in Products.)";
+        }
+    }
+
+
+    public function move_level_up($id){
+        $children = Category::select('id')->where('parent_category', $id)->orderBy('order', 'desc')->pluck('id');
+        if (count($children) > 0) {
+            foreach ($children as $value) {
+                $category = Category::find($value);
+                $category->level -= 1;
+                $category->save();
+                $this->move_level_up($value);
+            }
+        }
+    }
+
+    public function move_level_down($id){
+        $children = Category::select('id')->where('parent_category', $id)->orderBy('order', 'desc')->pluck('id');
+        if (count($children) > 0) {
+            foreach ($children as $value) {
+                $category = Category::find($value);
+                $category->level += 1;
+                $category->save();
+                $this->move_level_down($value);
+            }
+        }
     }
 }

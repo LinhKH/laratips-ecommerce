@@ -35,6 +35,7 @@ class HandleInertiaRequestsForAdmin extends Middleware
      */
     public function share(Request $request): array
     {
+        $allCategories = Category::with(['categories','childrenCategories'])->get();
        
         return [
             ...parent::share($request),
@@ -45,44 +46,9 @@ class HandleInertiaRequestsForAdmin extends Middleware
                 'error' => fn () => $request->session()->get('error'),
                 'success' => fn () => $request->session()->get('success'),
             ],
-            'menus' => [
-                [
-                    'label' => 'Dashboard',
-                    'url' => route('admin.dashboard'),
-                    'isActive' => $request->routeIs('admin.dashboard'),
-                    'isVisible' => true,
-                ],
-                [
-                    'label' => 'Permissions',
-                    'url' => route('admin.permissions.index'),
-                    'isActive' => $request->routeIs('admin.permissions.*'),
-                    'isVisible' => true
-                ],
-                [
-                    'label' => 'Roles',
-                    'url' => route('admin.roles.index'),
-                    'isActive' => $request->routeIs('admin.roles.*'),
-                    'isVisible' => true
-                ],
-                [
-                    'label' => 'Users',
-                    'url' => route('admin.users.index'),
-                    'isActive' => $request->routeIs('admin.users.*'),
-                    'isVisible' => true
-                ],
-                [
-                    'label' => 'Categories',
-                    'url' => route('admin.categories.index'),
-                    'isActive' => $request->routeIs('admin.categories.*'),
-                    'isVisible' => true
-                ],
-                [
-                    'label' => 'Products',
-                    'url' => route('admin.products.index'),
-                    'isActive' => $request->routeIs('admin.products.*'),
-                    'isVisible' => true
-                ],
-            ],
+            'all_category' => $allCategories,
+            'generalSettings' => DB::table('general_settings')->first(),
+            'sitePages' => DB::table('pages')->where('status', '1')->get(),
         ];
     }
 }

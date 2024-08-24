@@ -1,36 +1,23 @@
 <script setup>
-import { Head } from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/admin/Layouts/AuthenticatedLayout.vue";
-import Container from "@/admin/Components/Container.vue";
-import Card from "@/admin/Components/Card/Card.vue";
-import Table from "@/admin/Components/Table/Table.vue";
-import Td from "@/admin/Components/Table/Td.vue";
-import Actions from "@/admin/Components/Table/Actions.vue";
-import Button from "@/admin/Components/Button.vue";
-import SecondaryButton from "@/admin/Components/SecondaryButton.vue";
-import DangerButton from "@/admin/Components/DangerButton.vue";
-import Modal from "@/admin/Components/Modal.vue";
-import Filters from "./Filters.vue";
 
-import AddNew from "@/admin/Components/AddNew.vue";
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import BackendLayout from '@/admin/Layouts/BackendLayout.vue';
+import BreadCrumb from '../../Components/BreadCrumb.vue';
+import { computed, reactive, ref } from 'vue';
+import Paginate from '@/admin/Components/Paginate.vue';
+import Filters from './Filters.vue';
 
-import useDeleteItem from "@/admin/Composables/useDeleteItem.js";
+const { generalSettings, sitePages, all_category } = usePage().props;
+
 import useFilters from "@/admin/Composables/useFilters.js";
-import { ref } from "vue";
 
 const props = defineProps({
-    title: {
-        type: String,
-        required: true,
-    },
-    items: {
+    data: {
         type: Object,
         default: () => ({}),
     },
-    headers: {
-        type: Array,
-        default: () => [],
-    },
+    title: String,
+    breadcrumb: Object,
     filters: {
         type: Object,
         default: () => ({}),
@@ -39,16 +26,8 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    can: Object,
     rootCategories: Array,
 });
-
-const {
-    showDeleteModal, deleteModel, closeModal, itemToDelete, handleDeleteItem, isDeleting,
-} = useDeleteItem({
-    routeResourceName: props.routeResourceName,
-});
-
 const { filters, isLoading, isFilled } = useFilters({
     filters: props.filters,
     routeResourceName: props.routeResourceName,
@@ -56,76 +35,75 @@ const { filters, isLoading, isFilled } = useFilters({
 </script>
 
 <template>
+
     <Head :title="title" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ title }}
-            </h2>
-        </template>
+    <BackendLayout>
+        <div class="content-wrapper">
 
-        <Container>
-            <AddNew :show="isFilled">
-                <Button v-if="can.create" :href="route(`admin.${routeResourceName}.create`)">Add New</Button>
-
-                <template #filters>
-                    <Filters v-model="filters" :categories="rootCategories" />
+            <BreadCrumb :breadcrumb='breadcrumb' :title="`All Category`" :active='`All Category`'>
+                <template #add_btn>
+                    <Link :href="route('admin.category.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
                 </template>
-            </AddNew>
+            </BreadCrumb>
+            <section class="content">
+                <div class="container-fluid">
+                    <Filters v-model="filters" :categories="rootCategories" />
+                    <div class="card">
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S No</th>
+                                        <th>Name</th>
+                                        <th>Parent Category</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="row in data.data" :key="row.user_id">
+                                        <td>{{ row.id }}</td>
+                                        <td>
+                                            <Link v-if="row?.children_categories.length > 0"
+                                                :href="route(`admin.${routeResourceName}.index`, { parentId: row.id })">
+                                                {{ row.category_name }}({{ row.children_categories.length }})
+                                            </Link>
+                                            <span v-else>{{ row.category_name }}({{ row?.children_categories.length }})</span>
+                                        </td>
+                                        <td>{{ row.parent_name }}</td>
+                                        <td>
+                                            <span v-if="row.status == '1'" class="badge badge-success">Active</span>
+                                            <span v-else class="badge badge-danger">Inactive</span>
+                                        </td>
+                                        <td>
+                                            <Link :href="route('admin.category.edit', row.id)" class="btn btn-success btn-sm">
+                                            Edit</Link>
+                                            <Link :href="route('admin.category.destroy', row.id)" class="btn btn-danger btn-sm">
+                                            Delete
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>S No</th>
+                                        <th>Name</th>
+                                        <th>Parent Category</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+        
+                            <Paginate v-if="data.from != data.last_page" :pagination="data"></Paginate>
+                        </div> <!-- /.card-body -->
+                    </div> <!-- /.card -->
+                </div>
+            </section>
 
-            <Card class="mt-4" :is-loading="isLoading" no-padding>
-                <Table :headers="headers" :items="items">
-                    <template v-slot="{ item }">
-                        <Td>
-                            {{ item.name }}
-                        </Td>
-                        <Td>
-                            <Button v-if="item.children_count > 0"
-                                :href="route(`admin.${routeResourceName}.index`, { parentId: item.id })" small>
-                                {{ item.children_count }}
-                            </Button>
-                            <span v-else>{{ item.children_count }}</span>
-                        </Td>
-                        <Td>
-                            <Button :color="item.active ? 'green' : 'red'" small>
-                                {{ item.active ? 'Active' : 'Inactive' }}
-                            </Button>
-                        </Td>
-                        <Td>
-                            {{ item.created_at_formatted }}
-                        </Td>
-                        <Td>
-                            <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: item.id })"
-                                :show-edit="item.can.edit" :show-delete="item.can.delete"
-                                @deleteClicked="showDeleteModal(item)" />
-                        </Td>
-                    </template>
-                </Table>
-            </Card>
-        </Container>
-    </AuthenticatedLayout>
+        </div>
+    </BackendLayout>
 
-    <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-        :is-deleting="isDeleting" needed-delete="Category">
 
-        <!-- <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">
-                Delete Category: {{ itemToDelete.name }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Are you sure you want to delete this item?
-            </p>
-
-            <div class="mt-6 flex justify-end">
-                <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                <DangerButton class="ms-3" @click="handleDeleteItem" :disabled="isDeleting">
-                    <span v-if="isDeleting">Deleting</span>
-                    <span v-else>Delete</span>
-                </DangerButton>
-            </div>
-        </div> -->
-    </Modal>
 </template>

@@ -44,26 +44,17 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        if ($request->ajax()) {
-            $data = Users::select(['users.*', 'cities.city_name', 'states.state_name', 'countries.country_name'])
+        $data = Users::select(['users.*', 'cities.city_name', 'states.state_name', 'countries.country_name'])
                 ->leftJoin('cities', 'cities.id', '=', 'users.city')
                 ->leftJoin('states', 'states.id', '=', 'users.state')
                 ->leftJoin('countries', 'countries.id', '=', 'users.country')
                 ->orderBy('user_id', 'desc')->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    if ($row->status == '1') {
-                        $btn = '<button class="btn btn-warning btn-sm userBlock" data-status="' . $row->status . '" data-id="' . $row->user_id . '">Block</button>';
-                    } else {
-                        $btn = '<button class="btn btn-success btn-sm userBlock" data-status="' . $row->status . '" data-id="' . $row->user_id . '">Unblock</button>';
-                    }
-                    return $btn;
-                })
-                ->make(true);
-        }
-        return view('admin.users.index');
+
+        return Inertia::render('User/Index', [
+            'data' => $data , 
+            'title' => 'Users Management', 
+            'breadcrumb' => ['Dashboard'=>'admin.dashboard']
+        ]);
     }
 
     /**
@@ -73,7 +64,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
         if (session()->has('user_name')) {
             return Inertia::render('/');
         } else {
@@ -204,7 +194,7 @@ class UserController extends Controller
             $user = Users::where('user_id', $id)->update([
                 'status' => $status,
             ]);
-            return $user;
+            return to_route('admin.users.index');
         }
     }
 
