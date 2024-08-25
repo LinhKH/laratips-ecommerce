@@ -37,7 +37,7 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                     </li>
                     <li
                         class="nav-item has-treeview {{ Request::path() == 'admin/products' || Request::path() == 'admin/category' || Request::path() == 'admin/sub-category' || Request::path() == 'admin/brand' || Request::path() == 'admin/colors' || Request::path() == 'admin/attribute' || Request::path() == 'admin/attribute-values' || Request::path() == 'admin/tax' ? 'menu-open' : '' }}"
-                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*')}">
+                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') }">
                         <a href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
@@ -66,11 +66,11 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/colors') }}"
-                                    class="nav-link {{ Request::path() == 'admin/colors' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.colors.index')"
+                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.colors.*')}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Colors</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('admin/attribute') }}"

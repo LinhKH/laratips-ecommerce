@@ -6,15 +6,11 @@ import BreadCrumb from '../../Components/BreadCrumb.vue';
 import { computed, reactive, ref } from 'vue';
 import Paginate from '@/admin/Components/Paginate.vue';
 import Filters from './Filters.vue';
-
-const { generalSettings, sitePages, all_category } = usePage().props;
-
 import useDeleteItem from "@/admin/Composables/useDeleteItem.js";
 import useFilters from "@/admin/Composables/useFilters.js";
 import Actions from '@/admin/Components/Table/Actions.vue';
 
 import Modal from "@/admin/Components/Modal.vue";
-
 
 const props = defineProps({
     data: {
@@ -31,7 +27,6 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    rootCategories: Array,
 });
 
 const {
@@ -46,21 +41,17 @@ const { filters, isLoading, isFilled } = useFilters({
 </script>
 
 <template>
-
     <Head :title="title" />
-
     <BackendLayout>
-
-        <BreadCrumb :breadcrumb='breadcrumb' :title="`All Category`" :active='`All Category`'>
+        <BreadCrumb :breadcrumb='breadcrumb' :title="`All Colors`" :active='`All Colors`'>
             <template #add_btn>
-                <Link :href="route('admin.category.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.colors.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
             </template>
+            
         </BreadCrumb>
         <section class="content">
             <div class="container-fluid">
-
-                <Filters v-model="filters" :categories="rootCategories" :show="isFilled" />
-
+                <Filters v-model="filters" :show="isFilled" />
                 <div class="card">
                     <div class="card-body table-responsive">
                         <table class="table table-bordered table-striped">
@@ -68,25 +59,18 @@ const { filters, isLoading, isFilled } = useFilters({
                                 <tr>
                                     <th>S No</th>
                                     <th>Name</th>
-                                    <th>Parent Category</th>
-                                    <th>Status</th>
+                                    <th>Color Code</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in data.data" :key="row.user_id">
+                                <tr v-for="row in data.data" :key="row.id">
                                     <td>{{ row.id }}</td>
                                     <td>
-                                        <Link v-if="row?.children_categories.length > 0"
-                                            :href="route(`admin.${routeResourceName}.index`, { parentId: row.id })">
-                                            {{ row.category_name }}({{ row.children_categories.length }})
-                                        </Link>
-                                        <span v-else>{{ row.category_name }}({{ row?.children_categories.length }})</span>
+                                        {{ row.color_name }}
                                     </td>
-                                    <td>{{ row.parent_name }}</td>
                                     <td>
-                                        <span v-if="row.status == '1'" class="badge badge-success">Active</span>
-                                        <span v-else class="badge badge-danger">Inactive</span>
+                                        <span style="padding: 5px 20px;" :style="{backgroundColor: row.color_code}"></span>
                                     </td>
                                     <td>
                                         <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"
@@ -97,13 +81,15 @@ const { filters, isLoading, isFilled } = useFilters({
                         </table>
     
                         <Paginate v-if="data.from != data.last_page" :pagination="data"></Paginate>
-                    </div> <!-- /.card-body -->
-                </div> <!-- /.card -->
+                    </div>
+                </div>
             </div>
         </section>
-
     </BackendLayout>
     <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-    :is-deleting="isDeleting" needed-delete="Category"> </Modal>
-
+    :is-deleting="isDeleting" needed-delete="Colors"> </Modal>
 </template>
+
+<style scoped>
+
+</style>

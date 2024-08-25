@@ -18,7 +18,7 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
-    itemToDelete: String,
+    itemToDelete: Object,
     neededDelete: String,
     isDeleting: Boolean,
 });
@@ -69,7 +69,7 @@ const maxWidthClass = computed(() => {
 <template>
     <Teleport to="body">
         <Transition leave-active-class="duration-200">
-            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
+            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region style="z-index: 9999;">
                 <Transition enter-active-class="ease-out duration-300" enter-from-class="opacity-0"
                     enter-to-class="opacity-100" leave-active-class="ease-in duration-200" leave-from-class="opacity-100"
                     leave-to-class="opacity-0">
@@ -89,7 +89,7 @@ const maxWidthClass = computed(() => {
                         <!-- <slot v-if="show" /> -->
                         <div class="p-6">
                             <h2 class="text-lg font-medium text-gray-900">
-                                Delete {{ neededDelete }}: {{ itemToDelete.name }}
+                                Delete {{ neededDelete }}: {{ itemToDelete.name ||  itemToDelete.category_name || itemToDelete.color_name}}
                             </h2>
 
                             <p class="mt-1 text-sm text-gray-600">

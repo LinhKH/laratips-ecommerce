@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 
 
 use App\Http\Controllers\Admin\AttachPermissionToRoleController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeleteImageController;
 use App\Http\Controllers\Admin\DetachPermissionFromRoleController;
@@ -46,7 +47,7 @@ Route::middleware(['auth','admin'])->group(function () {
     // Route::resource('products', ProductController::class);
     // Route::post('get-attrvalue', [ProductController::class, 'get_attrvalue']);
     // Route::resource('tax', TaxController::class);
-    // Route::resource('colors', ColorController::class);
+    Route::resource('colors', ColorController::class);
     // Route::resource('attribute', AttributeController::class);
     // Route::resource('attribute-values', AttrvaluesController::class);
     // Route::resource('countries', CountryController::class);

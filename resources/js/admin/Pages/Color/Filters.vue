@@ -1,17 +1,12 @@
 <script setup>
-import { usePage } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
 
-const {
-        all_category,
-    } = usePage().props;
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     modelValue: {
         type: Object,
         default: () => ({}),
     },
-    categories: Array,
     show: {
         type: Boolean,
         default: false,
@@ -52,15 +47,6 @@ watch(
                     <div class="form-group" >
                         <label>Name</label>
                         <input v-model="filters.name" type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Root Category</label>
-                        <select class="form-control" style="width: 100%;" v-model="filters.parentId">
-                            <option value=''>Select</option>
-                            <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.category_name }}</option>
-                        </select>
                     </div>
                 </div>
             </div>

@@ -36,7 +36,6 @@ const handleBlock = (item => {
     <Head :title="title" />
 
     <BackendLayout>
-        <div class="content-wrapper">
             
             <BreadCrumb :breadcrumb='breadcrumb' :title="`All Users`" :active='`All Users`' >
                 <template #add_btn>
@@ -88,8 +87,8 @@ const handleBlock = (item => {
                         </tfoot>
                     </table>
                 </div> <!-- /.card-body -->
-            </div> <!-- /.card -->
-        </div>
+            </div> 
+
     </BackendLayout>
 
     
