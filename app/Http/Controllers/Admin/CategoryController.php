@@ -29,7 +29,7 @@ class CategoryController extends Controller
         if ($request->parentId) {
             $data->where('categories.parent_category', $request->parentId);
         }
-        $data = $data->paginate(10);
+        $data = $data->paginate(10)->withQueryString();
         return inertia()->render('Category/Index', [
             'data' => $data,
             'title' => 'Categories Management',
@@ -64,7 +64,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request):\Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'parentId' => ['bail', 'nullable', 'integer'],
@@ -165,7 +165,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) : \Illuminate\Http\RedirectResponse
     {
 
         $request->validate([
@@ -249,7 +249,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id):\Illuminate\Http\RedirectResponse
     {
         $child = Category::where('parent_category', $id)->count();
         $check = Product::where('category', $id)->count();

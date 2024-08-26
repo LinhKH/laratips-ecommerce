@@ -1,5 +1,5 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import { onMounted, watch } from "vue";
 import BackendLayout from "@/admin/Layouts/BackendLayout.vue";
 import InputGroup from "../../Components/InputGroup.vue";
@@ -65,7 +65,6 @@ const submit = () => {
                         timer: 2000,
                         title: page.props.flash.success
                     })
-                    resetFormData();
                 },
             }
         )
@@ -79,7 +78,6 @@ const submit = () => {
                     timer: 2000,
                     title: page.props.flash.success
                 })
-                resetFormData();
             },
         });
 };
@@ -89,7 +87,10 @@ const submit = () => {
 <template>
     <Head :title="title" />
     <BackendLayout>
-        <BreadCrumb :breadcrumb='breadcrumb' :title="`Add Category`" :active='`Add Category`'>
+        <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
+            <template #add_btn>
+                <Link :href="route('admin.category.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+            </template>
         </BreadCrumb>
         <section class="content card">
             <div class="container-fluid card-body">

@@ -37,7 +37,7 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                     </li>
                     <li
                         class="nav-item has-treeview {{ Request::path() == 'admin/products' || Request::path() == 'admin/category' || Request::path() == 'admin/sub-category' || Request::path() == 'admin/brand' || Request::path() == 'admin/colors' || Request::path() == 'admin/attribute' || Request::path() == 'admin/attribute-values' || Request::path() == 'admin/tax' ? 'menu-open' : '' }}"
-                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') }">
+                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') }">
                         <a href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
@@ -59,11 +59,11 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ url('admin/brand') }}"
-                                    class="nav-link {{ Request::path() == 'admin/brand' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.brand.index')"
+                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.brand.*')}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Brand</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <Link :href="route('admin.colors.index')"

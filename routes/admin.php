@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 
 
 use App\Http\Controllers\Admin\AttachPermissionToRoleController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeleteImageController;
@@ -41,7 +42,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::post('profile-settings/change-password', [SettingsController::class, 'change_password']);
     Route::any('social-settings', [SettingsController::class, 'social_settings']);
     // Route::resource('banner', BannerController::class);
-    // Route::resource('brand', BrandController::class);
+    Route::resource('brand', BrandController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('sub-category', SubcategoryController::class);
     // Route::resource('products', ProductController::class);

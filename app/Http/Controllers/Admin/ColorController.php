@@ -18,7 +18,7 @@ class ColorController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Color::latest()->when($request->name, fn(Builder $builder, $name) => $builder->where('color_name', 'like', "%{$name}%"))->orderBy('id', 'desc')->paginate(10);
+        $data = Color::latest()->when($request->name, fn(Builder $builder, $name) => $builder->where('color_name', 'like', "%{$name}%"))->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
         return inertia()->render('Color/Index', [
             'data' => $data,
@@ -50,7 +50,7 @@ class ColorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request):\Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'color_name' => 'required|unique:colors,color_name',
@@ -100,7 +100,7 @@ class ColorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id):\Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'color_name' => 'required|unique:colors,color_name,' . $id . ',id',
@@ -120,7 +120,7 @@ class ColorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id):\Illuminate\Http\RedirectResponse
     {
         $check = Product::where('colors', 'LIKE', "%{$id}%")->count();
         if ($check == '0') {

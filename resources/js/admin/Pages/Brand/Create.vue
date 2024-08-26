@@ -1,9 +1,13 @@
 <script setup>
-import { Head, useForm, Link } from "@inertiajs/vue3";
-import { onMounted, watch } from "vue";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { computed, onMounted, ref, watch } from "vue";
 import BackendLayout from "@/admin/Layouts/BackendLayout.vue";
 import BreadCrumb from "../../Components/BreadCrumb.vue";
-import VueMultiselect from "vue-multiselect";
+const baseUrl = import.meta.env.VITE_APP_URL;
+import Treeselect from 'vue3-treeselect'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
+
+const { category } = usePage().props;
 
 const props = defineProps({
     edit: {
@@ -22,16 +26,25 @@ const props = defineProps({
         required: true,
     },
     breadcrumb: Object,
+    category: Object,
 });
 const form = useForm({
-    color_name: props.item.color_name ?? "",
-    color_code: props.item.color_code ?? "",
+    name: props.item.brand_name ?? "",
+    brand_img: null,
+    old_img: props.item.brand_img ?? "",
+    brand_cat: props.item.brand_subcat?.split(",") ?? "",
 });
 
+const photo_or_blank_image = computed(() => {
+    return props.item.brand_img ? `${baseUrl}/brand/${props.item.brand_img}` : `${baseUrl}/brand/default.png`;
+});
 
 const submit = () => {
     props.edit
-        ? form.put(
+        ? form.transform((data) => ({
+            ...data,
+            brand_cat: treeSelect,
+        })).put(
             route(`admin.${props.routeResourceName}.update`, {
                 id: props.item.id,
             }), {
@@ -47,7 +60,10 @@ const submit = () => {
                 },
             }
         )
-        : form.post(route(`admin.${props.routeResourceName}.store`), {
+        : form.transform((data) => ({
+            ...data,
+            brand_cat: treeSelect,
+        })).post(route(`admin.${props.routeResourceName}.store`), {
             onSuccess: page => {
                     Swal.fire({
                         toast: true,
@@ -61,15 +77,17 @@ const submit = () => {
         });
 };
 
+// define options
+let treeSelect = props.item.brand_subcat?.split(",").map(item => parseInt(item)) ?? null;
+
 </script>
 
 <template>
-
     <Head :title="title" />
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.colors.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+                <Link :href="route('admin.brand.index')" class="align-top btn btn-sm btn-primary">Back</Link>
             </template>
         </BreadCrumb>
         <section class="content card">
@@ -79,7 +97,7 @@ const submit = () => {
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Colors Details</h3>
+                                    <h3 class="card-title">Brand Details</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -88,10 +106,10 @@ const submit = () => {
                                                 <span>Name</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control"  v-model="form.color_name" placeholder="Name">
-                                                <div v-show="$page.props.errors.color_name">
+                                                <input type="text" class="form-control" v-model="form.name" placeholder="Name">
+                                                <div v-show="$page.props.errors.name">
                                                     <p class="text-sm text-red-600">
-                                                        {{ $page.props.errors.color_name }}
+                                                        {{ $page.props.errors.name }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -100,18 +118,34 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Color Code</span>
+                                                <span>Logo</span>
                                             </div>
-                                            <div class="col-md-10">
-                                                <input type="color" class="form-control" v-model="form.color_code" >
-                                                <div v-show="$page.props.errors.color_code">
+                                            <div class="custom-file col-md-7">
+                                                <input type="hidden" class="custom-file-input" v-model="form.old_img" />
+                                                <input type="file" class="custom-file-input" @input="form.brand_img = $event.target.files[0]" name="brand_img">
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <img id="image" :src="photo_or_blank_image" alt="" width="150px">
+                                                <div v-show="$page.props.errors.brand_img">
                                                     <p class="text-sm text-red-600">
-                                                        {{ $page.props.errors.color_code }}
+                                                        {{ $page.props.errors.brand_img }}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <span>Category</span>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <treeselect v-model="treeSelect" :multiple="true" :options="category" :flat="false"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
