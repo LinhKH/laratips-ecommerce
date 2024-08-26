@@ -64,7 +64,9 @@ watch(
                     </div>
                 </div>
             </div>
-
+            <div>
+                <button type="button" class="btn bg-danger" @click="filters = {}" >Clear Filter</button>
+            </div>
         </div>
 
 

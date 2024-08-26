@@ -45,7 +45,7 @@ watch(
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label>Name</label>
+                        <label>Filter Values And Attribute</label>
                         <input v-model="filters.name" type="text" class="form-control">
                     </div>
                 </div>
@@ -53,6 +53,7 @@ watch(
             <div>
                 <button type="button" class="btn bg-danger" @click="filters = {}" >Clear Filter</button>
             </div>
+
         </div>
 
 

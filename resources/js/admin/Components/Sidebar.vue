@@ -37,7 +37,7 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                     </li>
                     <li
                         class="nav-item has-treeview {{ Request::path() == 'admin/products' || Request::path() == 'admin/category' || Request::path() == 'admin/sub-category' || Request::path() == 'admin/brand' || Request::path() == 'admin/colors' || Request::path() == 'admin/attribute' || Request::path() == 'admin/attribute-values' || Request::path() == 'admin/tax' ? 'menu-open' : '' }}"
-                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') }">
+                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') }">
                         <a href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
@@ -73,18 +73,18 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/attribute') }}"
-                                    class="nav-link {{ Request::path() == 'admin/attribute' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.attribute.index')"
+                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.attribute.*')}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Attribute Sets</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/attribute-values') }}"
-                                    class="nav-link {{ Request::path() == 'admin/attribute-values' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.attribute-values.index')"
+                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.attribute-values.*')}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Attribute Values</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('admin/flash-deals') }}"
