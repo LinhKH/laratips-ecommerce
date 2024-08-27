@@ -128,11 +128,14 @@ class HomeController extends Controller
     // today deals page
     public function todayDeals()
     {
-        $today_deals = Product::select(['products.id', 'products.product_name', 'products.taxable_price', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'brands.brand_name'])
+        $today_deals = Product::select(['products.id', 'products.product_name', 'products.taxable_price', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'brands.brand_name',
+                        DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
             ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
             ->where('products.status', '1')
             ->where('products.today_deal', '1')
             ->where('products.quantity', '>', '1')
+            ->groupBy('products.id')
             ->orderBy('products.id', 'DESC')
             ->paginate(12);
         foreach ($today_deals as $product) {
@@ -341,12 +344,15 @@ class HomeController extends Controller
     // all flash products page
     public function allflashproducts()
     {
-        $flash_products = FlashProduct::select(['flash_products.*', 'products.id', 'products.product_name', 'products.taxable_price', 'products.thumbnail_img', 'products.slug', 'brands.brand_name', 'flash_deals.status', 'flash_deals.flash_date_range'])
+        $flash_products = FlashProduct::select(['products.id', 'products.product_name', 'products.taxable_price', 'products.thumbnail_img', 'products.slug', 'brands.brand_name', 'flash_deals.status', 'flash_deals.flash_date_range',
+                        DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
             ->leftjoin('flash_deals', 'flash_deals.id', '=', 'flash_products.deals_id')
             ->leftjoin('products', 'products.id', '=', 'flash_products.product_id')
             ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
             ->orderBy('flash_products.id', 'DESC')
-            ->paginate(8);
+            ->groupBy('products.id')
+            ->paginate(12);
         foreach ($flash_products as $product) {
             $price = get_product_price($product->id);
             $product->discount = $price->old_price - $price->new_price;

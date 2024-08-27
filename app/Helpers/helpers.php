@@ -110,6 +110,7 @@ if (!function_exists('get_product_price')) {
         $product = Product::select(['products.taxable_price', 'products.date_range', 'products.discount', 'products.discount_type', 'flash_products.product_discount', 'flash_products.product_discount_type', 'flash_deals.flash_date_range', 'flash_deals.status as deal_status'])
             ->leftJoin('flash_products', 'products.id', '=', 'flash_products.product_id')
             ->leftJoin('flash_deals', 'flash_products.deals_id', '=', 'flash_deals.id')
+            ->orderBy('flash_products.product_discount', 'DESC')
             ->where('products.id', $id)->first();
         if ($product->taxable_price != NULL && $product->taxable_price != '') {
             $price->new_price = $product->taxable_price;
