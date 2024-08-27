@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\AttrvaluesController;
+use App\Http\Controllers\Admin\FlashdealController;
 use App\Http\Controllers\Front\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,9 +69,9 @@ Route::middleware(['auth','admin'])->group(function () {
     // Route::get('product-stock', [ReportController::class, 'product_stock']);
     // Route::resource('payment-method', PaymentmethodController::class);
     // Route::post('payment-method/status', [PaymentmethodController::class, 'changeStatus']);
-    // Route::resource('flash-deals', FlashdealController::class);
-    // Route::post('get-flash', [FlashdealController::class, 'get_flash']);
-    // Route::post('get-flash-edit', [FlashdealController::class, 'get_flash_edit']);
+    Route::resource('flash-deals', FlashdealController::class);
+    Route::post('get-flash', [FlashdealController::class, 'get_flash']);
+    Route::post('get-flash-edit', [FlashdealController::class, 'get_flash_edit']);
     // Route::get('reviews/{id}/edit', [ReviewController::class, 'edit']);
     // Route::put('reviews/{id}', [ReviewController::class, 'update']);
     // Route::post('view_review', [ReviewController::class, 'show']);

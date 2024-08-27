@@ -20,6 +20,7 @@
     "dependencies": {
         "@ckeditor/ckeditor5-vue": "^7.0.0",
         "@tinymce/tinymce-vue": "^5.1.1",
+        "@vuepic/vue-datepicker": "^9.0.2",
         "ckeditor5": "^43.0.0",
         "ckeditor5-premium-features": "^43.0.0",
         "dropzone": "^6.0.0-beta.2",

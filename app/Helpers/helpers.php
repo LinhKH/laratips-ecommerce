@@ -121,10 +121,10 @@ if (!function_exists('get_product_price')) {
         $price->discount = '';
         if ($product->flash_date_range != '' && $product->deal_status == '1') {
             $datetimes = explode('-', $product->flash_date_range);
-            $currentDatetimes = date('Y-m-d H:i A');
+            $currentDatetimes = date('Y-m-d');
             if ($product->flash_date_range != '') {
-                $startDatetimes = date('Y-m-d H:i A', strtotime("$datetimes[0]"));
-                $endDatetimes = date('Y-m-d H:i A', strtotime("$datetimes[1]"));
+                $startDatetimes = date('Y-m-d', strtotime("$datetimes[0]"));
+                $endDatetimes = date('Y-m-d', strtotime("$datetimes[1]"));
             } else {
                 $startDatetimes = '';
                 $endDatetimes = '';

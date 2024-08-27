@@ -32,7 +32,7 @@ class HomeController extends Controller
         $flash_deals = FlashDeal::select(['flash_deals.*'])
             ->orderBy('flash_deals.id', 'DESC')
             ->where('status', '1')
-            ->limit(3)
+            ->limit(6)
             ->get();
 
         $new_products = Product::select(['products.id', 'products.product_name', 'products.gallery_img', 'products.thumbnail_img', 'products.slug', 'products.unit_price', 'products.taxable_price', 'products.discount', 'brands.brand_name', DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])

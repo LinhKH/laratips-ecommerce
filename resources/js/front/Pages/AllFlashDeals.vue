@@ -49,7 +49,7 @@ const isCheckShow = (flash_deal) => {
             <div class="container-xl container-fluid">
                 <div class="row">
                     <template v-for="flash_deal in flash_deals.data" :key="`${flash_deal.id}`">
-                        <div v-if="isCheckShow(flash_deal)" class="col-md-4 flash-deal-box">
+                        <div v-if="isCheckShow(flash_deal)" class="col-md-4 flash-deal-box mb-5">
                             <div class="banner-inner">
                                 <Link :href="`${baseUrl}/flash-products/${flash_deal.flash_slug}`">
                                 <img :width="225" :height="225"

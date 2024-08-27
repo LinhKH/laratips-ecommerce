@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="{{asset('assets/css/summernote-bs4.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{asset('assets/css/image-uploader.css')}}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <link rel="stylesheet" href="{{asset('assets/css/Taginput.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/tokenfield.css')}}">
@@ -185,7 +184,6 @@
     <script src="{{ asset('assets/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('assets/js/summernote-bs4.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="{{ asset('assets/js/image-uploader.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
@@ -197,35 +195,6 @@
 
             $('#summernote').summernote({
                 height: 200,
-            });
-
-            $(function() {
-
-                $('input[name="datefilter"]').daterangepicker({
-                    autoUpdateInput: false,
-                    locale: {
-                        cancelLabel: 'Clear'
-                    }
-                });
-
-                $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate
-                        .format('MM/DD/YYYY'));
-                });
-
-                $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-                    $(this).val('');
-                });
-
-            });
-
-            $(function() {
-                $('input[name="datetimes"]').daterangepicker({
-                    timePicker: true,
-                    locale: {
-                        format: 'M/DD/Y hh:mm A',
-                    }
-                });
             });
 
         });

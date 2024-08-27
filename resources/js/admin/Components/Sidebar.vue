@@ -37,7 +37,7 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                     </li>
                     <li
                         class="nav-item has-treeview {{ Request::path() == 'admin/products' || Request::path() == 'admin/category' || Request::path() == 'admin/sub-category' || Request::path() == 'admin/brand' || Request::path() == 'admin/colors' || Request::path() == 'admin/attribute' || Request::path() == 'admin/attribute-values' || Request::path() == 'admin/tax' ? 'menu-open' : '' }}"
-                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') }">
+                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') || route().current('admin.flash-deals.*') }">
                         <a href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
@@ -87,11 +87,11 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/flash-deals') }}"
-                                    class="nav-link {{ Request::path() == 'admin/flash-deals' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.flash-deals.index')"
+                                    :class="['nav-link', route().current('admin.flash-deals.*') ? 'active bg-primary' : '']">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Flash Deals</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('admin/tax') }}"
