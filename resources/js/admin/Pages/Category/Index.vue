@@ -78,7 +78,7 @@ const { filters, isLoading, isFilled } = useFilters({
                                     <td>{{ row.id }}</td>
                                     <td>
                                         <Link v-if="row?.children_categories.length > 0"
-                                            :href="route(`admin.${routeResourceName}.index`, { parentId: row.id })">
+                                            :href="route(`admin.${routeResourceName}.index`, { parentId: row.id })" class="text-blue-500; font-weight-bold">
                                             {{ row.category_name }}({{ row.children_categories.length }})
                                         </Link>
                                         <span v-else>{{ row.category_name }}({{ row?.children_categories.length }})</span>
@@ -96,7 +96,7 @@ const { filters, isLoading, isFilled } = useFilters({
                             </tbody>
                         </table>
     
-                        <Paginate v-if="data.from != data.last_page" :pagination="data"></Paginate>
+                        <Paginate v-if="data.from != data.last_page && data.total > 0" :pagination="data"></Paginate>
                     </div> <!-- /.card-body -->
                 </div> <!-- /.card -->
             </div>
@@ -104,6 +104,6 @@ const { filters, isLoading, isFilled } = useFilters({
 
     </BackendLayout>
     <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-    :is-deleting="isDeleting" needed-delete="Category"> </Modal>
+    :is-deleting="isDeleting" needed-delete="Category" field-name="category_name" > </Modal>
 
 </template>

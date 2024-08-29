@@ -7,41 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-
-class Product extends Model implements HasMedia
+class Product extends Model
 {
     use HasFactory, HasSlug;
-    use InteractsWithMedia;
 
-    protected $casts = [
-        'featured' => 'boolean',
-        'show_on_slider' => 'boolean',
-        'active' => 'boolean'
-    ];
+    protected $table = 'products';
 
-    protected $guarded  = [];
+    // protected $casts = [
+    //     'featured' => 'boolean',
+    //     'show_on_slider' => 'boolean',
+    //     'active' => 'boolean'
+    // ];
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class)->withTimestamps();
-    }
+    // protected $guarded  = [];
 
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'creator_id');
-    }
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(Category::class)->withTimestamps();
+    // }
 
-    public function scopeActive($builder)
-    {
-        return $builder->where('active', true);
-    }
+    // public function creator()
+    // {
+    //     return $this->belongsTo(User::class, 'creator_id');
+    // }
 
-    public function scopeInActive($builder)
-    {
-        return $builder->where('active', false);
-    }
+    // public function scopeActive($builder)
+    // {
+    //     return $builder->where('active', true);
+    // }
+
+    // public function scopeInActive($builder)
+    // {
+    //     return $builder->where('active', false);
+    // }
 
 
     /**
@@ -50,7 +48,7 @@ class Product extends Model implements HasMedia
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
+            ->generateSlugsFrom('product_name')
             ->saveSlugsTo('slug');
     }
 }

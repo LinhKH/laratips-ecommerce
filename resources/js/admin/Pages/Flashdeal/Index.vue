@@ -96,7 +96,7 @@ const { filters, isLoading, isFilled } = useFilters({
         </section>
     </BackendLayout>
     <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-    :is-deleting="isDeleting" needed-delete="Brand"> </Modal>
+    :is-deleting="isDeleting" needed-delete="Flash Deal" field-name="flash_title"> </Modal>
 </template>
 
 <style scoped>

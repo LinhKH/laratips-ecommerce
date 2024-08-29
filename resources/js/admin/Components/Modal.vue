@@ -20,6 +20,10 @@ const props = defineProps({
     },
     itemToDelete: Object,
     neededDelete: String,
+    fieldName: {
+        type: String,
+        default: 'name',
+    },
     isDeleting: Boolean,
 });
 
@@ -89,7 +93,8 @@ const maxWidthClass = computed(() => {
                         <!-- <slot v-if="show" /> -->
                         <div class="p-6">
                             <h2 class="text-lg font-medium text-gray-900">
-                                Delete {{ neededDelete }}: {{ itemToDelete.name ||  itemToDelete.category_name || itemToDelete.color_name || itemToDelete.brand_name || itemToDelete.value || itemToDelete.title || itemToDelete.flash_title }}
+                                <!-- ||  itemToDelete.category_name || itemToDelete.color_name || itemToDelete.brand_name || itemToDelete.product_name || itemToDelete.value || itemToDelete.title || itemToDelete.flash_title -->
+                                Delete {{ neededDelete }}: {{ itemToDelete[fieldName] }}
                             </h2>
 
                             <p class="mt-1 text-sm text-gray-600">

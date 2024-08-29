@@ -44,11 +44,11 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('admin/products') }}"
-                                    class="nav-link {{ Request::path() == 'admin/products' ? 'active bg-primary' : '' }}">
+                                <Link :href="route('admin.products.index')"
+                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.products.*')}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>All Products</p>
-                                </a>
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <Link :href="route('admin.category.index')"

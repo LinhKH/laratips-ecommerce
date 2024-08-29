@@ -80,14 +80,14 @@ const { filters, isLoading, isFilled } = useFilters({
                             </tbody>
                         </table>
     
-                        <Paginate v-if="data.from != data.last_page" :pagination="data"></Paginate>
+                        <Paginate v-if="data.from != data.last_page && data.total > 0" :pagination="data"></Paginate>
                     </div>
                 </div>
             </div>
         </section>
     </BackendLayout>
     <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-    :is-deleting="isDeleting" needed-delete="Brand"> </Modal>
+    :is-deleting="isDeleting" needed-delete="Brand" field-name="brand_name"> </Modal>
 </template>
 
 <style scoped>

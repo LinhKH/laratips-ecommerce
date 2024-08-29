@@ -25,8 +25,9 @@ const baseUrl = import.meta.env.VITE_APP_URL;
                     Admin
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{url('admin/profile-settings')}}">My Profile</a>
-                    <a class="dropdown-item logout admin-logout" href="#">Log Out</a>
+                    <Link class="dropdown-item" :href="route('admin.profile_settings')">My Profile</Link>
+                    
+                    <Link class="dropdown-item logout" :href="route('admin.logout')" method="post" as="button">Log Out</Link>
                 </div>
             </div>
         </ul>

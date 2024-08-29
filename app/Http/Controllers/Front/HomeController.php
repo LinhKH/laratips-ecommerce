@@ -285,6 +285,15 @@ class HomeController extends Controller
                 ->groupBy('products.id')
                 ->paginate($limit)->withQueryString();
         }
+
+        if ($products) {
+            foreach ($products as $product) {
+                $price = get_product_price($product->id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
+        }
+
         $url_search = url()->current();
         $filters = $request->query->all();
 
