@@ -31,7 +31,14 @@ class ProductController extends Controller
         $data = Product::latest()
         ->when($request->name, fn(Builder $builder, $name) => $builder->where('product_name', 'like', "%{$name}%"))
         ->when($request->brand, fn(Builder $builder, $brand) => $builder->where('brand', '=', $brand))
-        ->when($request->today_deal, fn(Builder $builder, $today_deal) => $builder->where('today_deal', '=', $today_deal))
+        ->when(
+            $request->today_deal !== null,
+            fn (Builder $builder) => $builder->when(
+                $request->today_deal,
+                fn (Builder $builder) => $builder->where('today_deal', '=', 1),
+                fn (Builder $builder) => $builder->where('today_deal', '=', 0)
+            )
+        )
         ->orderBy('id', 'desc')->paginate(8);
         $brands = Brand::where('status',1)->get(['id','brand_name']);
         return inertia()->render('Product/Index', [
@@ -82,25 +89,23 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) :\Illuminate\Http\RedirectResponse
+    public function store(Request $request) 
     {
-        // return $request->input();
         $request->validate([
             'product_name' => 'required',
             'category' => 'required',
-            // 'sub_category'=>'required',
-            // 'brand'=>'required',
-            // 'unit'=>'required',
-            'min_qty' => 'required',
+            'brand'=>'required',
+            'unit_price'=>'required',
+            // 'min_qty' => 'required',
             'tags' => 'required',
             // 'barcode'=>'required',
             'thumbnail_img' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'unit_price' => 'required',
+            // 'unit_price' => 'required',
             // 'tax' => 'required',
             'quantity' => 'required',
             // 'product_status'=>'required',
-            'shipping_charges' => 'required',
-            'shipping_days' => 'required',
+            // 'shipping_charges' => 'required',
+            // 'shipping_days' => 'required',
         ]);
 
         if ($request->thumbnail_img) {
@@ -118,7 +123,7 @@ class ProductController extends Controller
                 $gallary[] = $name;
             }
         }
-
+        dd($request->all());
         if ($request->refundable) {
             $refundable = 1;
         } else {
@@ -144,47 +149,47 @@ class ProductController extends Controller
         $products->thumbnail_img = $image;
         $products->gallery_img = implode(',', $gallary);
         $products->product_name = $request->input('product_name');
-        $products->category = $request->input('category');
-        // $products->subcategory = $request->input('sub_category');
+        $products->category = $request->input('category')['id'];
         $products->brand = $request->input('brand');
         $products->unit = $request->input('unit');
-        $products->min_qty = $request->input('min_qty');
-        $products->tags = $request->input('tags');
-        $products->barcode = $request->input('barcode');
+        // $products->min_qty = $request->input('min_qty');
+         if ($request->tags) {
+            $products->tags = implode(',', $request->input('tags'));
+        }
         $products->refundable = $refundable;
         if ($request->color) {
             $products->colors = implode(',', $request->input('color'));
         }
-        $products->unit_price = $request->input('unit_price');
-        $products->tax = $request->input('tax');
-        $products->taxable_price = $request->input('taxable_price');
-        $products->quantity = $request->input('quantity');
-        $products->date_range = $request->input('datefilter');
-        $products->discount = $request->input('discount');
-        $products->discount_type = $request->input('discount_type');
-        $products->description = htmlspecialchars($request->input('description'));
-        $products->meta_title = $meta_title;
-        $products->meta_desc = $request->input('meta_desc');
-        // $products->slug = $slug;
-        $products->show_quantity = $show_qty;
-        $products->today_deal = $today_deal;
-        $products->shipping_charges = $request->input('shipping_charges');
-        $products->shipping_days = $request->input('shipping_days');
-        $products->status = $request->input('product_status');
+        // $products->unit_price = $request->input('unit_price');
+        // $products->tax = $request->input('tax');
+        // $products->taxable_price = $request->input('taxable_price');
+        // $products->quantity = $request->input('quantity');
+        // $products->date_range = $request->input('datefilter');
+        // $products->discount = $request->input('discount');
+        // $products->discount_type = $request->input('discount_type');
+        // $products->description = htmlspecialchars($request->input('description'));
+        // $products->meta_title = $meta_title;
+        // $products->meta_desc = $request->input('meta_desc');
+        // // $products->slug = $slug;
+        // $products->show_quantity = $show_qty;
+        // $products->today_deal = $today_deal;
+        // $products->shipping_charges = $request->input('shipping_charges');
+        // $products->shipping_days = $request->input('shipping_days');
+        // $products->status = $request->input('product_status');
         $result = $products->save();
 
-        if ($request->attribute) {
-            $attribute_id = $request->input('attribute');
+        // if ($request->attribute) {
+        //     $attribute_id = $request->input('attribute');
 
-            for ($i = 0; $i < count($attribute_id); $i++) {
-                $datasave = [
-                    'attribute_id' => $attribute_id[$i],
-                    'attrvalues' => implode(',', $request->input('attrvalue' . $i + 1)),
-                    'product_id' => $products->id
-                ];
-                Attribute_value::insert($datasave);
-            }
-        }
+        //     for ($i = 0; $i < count($attribute_id); $i++) {
+        //         $datasave = [
+        //             'attribute_id' => $attribute_id[$i],
+        //             'attrvalues' => implode(',', $request->input('attrvalue' . $i + 1)),
+        //             'product_id' => $products->id
+        //         ];
+        //         Attribute_value::insert($datasave);
+        //     }
+        // }
         return to_route('admin.' . $this->routeResourceName . '.index')->with('success', 'Product Created Successfuly!.');
     }
 

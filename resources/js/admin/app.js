@@ -2,6 +2,9 @@ import './bootstrap';
 import '../../css/admin/app.css';
 
 import { createApp, h } from 'vue';
+
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../../vendor/tightenco/ziggy/dist/vue.m'; //package hỗ trợ viết route name của Laravel trong javascript
@@ -17,6 +20,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(ElementPlus)
             .use(CkeditorPlugin)
             .mount(el);
     },

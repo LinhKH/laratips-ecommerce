@@ -19,11 +19,13 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-vue": "^7.0.0",
+        "@element-plus/icons-vue": "^2.3.1",
         "@tinymce/tinymce-vue": "^5.1.1",
         "@vuepic/vue-datepicker": "^9.0.2",
         "ckeditor5": "^43.0.0",
         "ckeditor5-premium-features": "^43.0.0",
         "dropzone": "^6.0.0-beta.2",
+        "element-plus": "^2.8.1",
         "lodash": "^4.17.21",
         "lodash.kebabcase": "^4.1.1",
         "swiper": "^11.1.9",
@@ -31,6 +33,7 @@
         "vue-multiselect": "^3.0.0",
         "vue-sweetalert2": "^5.0.11",
         "vue3-carousel": "^0.3.3",
+        "vue3-tags-input": "^1.0.12",
         "vue3-treeselect": "^0.1.10"
     }
 }

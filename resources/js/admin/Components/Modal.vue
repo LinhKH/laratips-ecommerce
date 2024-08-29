@@ -27,7 +27,7 @@ const props = defineProps({
     isDeleting: Boolean,
 });
 
-const emit = defineEmits(['close', 'handle-delete-item']);
+const emit = defineEmits(['close', 'handleDeleteItem']);
 
 watch(
     () => props.show,

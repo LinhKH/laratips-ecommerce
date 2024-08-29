@@ -56,7 +56,7 @@ defineProps({
                             <div class="icon">
                                 <i class="fa fa-cubes"></i>
                             </div>
-                            <Link href="{{ url('admin/products') }}" class="small-box-footer">More info <i
+                            <Link :href="route('admin.products.index')" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></Link>
                         </div>
                     </div>
@@ -71,8 +71,8 @@ defineProps({
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="{{ url('admin/users') }}" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <Link :href="route('admin.users.index')" class="small-box-footer">More info <i
+                                    class="fas fa-arrow-circle-right"></i></Link>
                         </div>
                     </div>
                     <!-- ./col -->
