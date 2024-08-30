@@ -17,7 +17,7 @@ const c_attr = (row,item1) => {
 
 const checkValue = (row, item1) => {
     const value = row.attrvalues.split(",").filter((val) => val !== "");
-    return value.includes(item1.id.toString())
+    return value?.includes(item1.id.toString())
 }
 
 const slideTo = (val) => {
@@ -200,7 +200,7 @@ let data = useForm({
                                     <label>Color:</label>
                                     <ul class="option-list">
                                         <template v-for="item1 in colors" :key="item1.id">
-                                            <li v-if="product.colors.includes(item1.id)" class="radio-button">
+                                            <li v-if="product.colors?.includes(item1.id)" class="radio-button">
                                                 <input type="radio" name="color"
                                                     :id="`color${item1.id}`"
                                                     :value="item1.id"
@@ -269,7 +269,7 @@ let data = useForm({
                                 </div>
                                 <div class="product-btn">
                                     <template v-if="userSession != null">
-                                        <Link v-if="cart_list.includes(product.id)"
+                                        <Link v-if="cart_list?.includes(product.id)"
                                             :href="`${baseUrl}/cart`"
                                             class="btn btn-primary"
                                         >

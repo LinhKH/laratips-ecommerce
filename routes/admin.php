@@ -49,6 +49,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('category', CategoryController::class);
     Route::resource('sub-category', SubcategoryController::class);
     Route::resource('products', ProductController::class);
+    Route::delete('products/{id}/image/{name}', [ProductController::class, 'deleteImage'])->name('products.image.delete');
     // Route::post('get-attrvalue', [ProductController::class, 'get_attrvalue']);
     // Route::resource('tax', TaxController::class);
     Route::resource('colors', ColorController::class);

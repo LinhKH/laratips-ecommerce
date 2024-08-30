@@ -91,22 +91,26 @@ class ProductController extends Controller
      */
     public function store(Request $request) 
     {
+        
         $request->validate([
             'product_name' => 'required',
             'category' => 'required',
-            'brand'=>'required',
-            'unit_price'=>'required',
-            // 'min_qty' => 'required',
             'tags' => 'required',
-            // 'barcode'=>'required',
-            'thumbnail_img' => 'image|mimes:jpeg,png,jpg|max:2048',
-            // 'unit_price' => 'required',
-            // 'tax' => 'required',
+            'unit_price'=>'required',
             'quantity' => 'required',
-            // 'product_status'=>'required',
-            // 'shipping_charges' => 'required',
-            // 'shipping_days' => 'required',
+            'shipping_charges' => 'required',
+            'brand'=>'required',
+            'thumbnail_img' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            // 'min_qty' => 'required',
+            // 'barcode'=>'required',
+            // 'tax' => 'required',
+            // 'product_status'=>'required','attributes' => 'required|array',
+            'attributes.*.id' => 'required|distinct'
+        ],[
+            'attributes.*.id.distinct' => 'Thuộc tính không được trùng nhau',
         ]);
+
+        // dd($request->all());
 
         if ($request->thumbnail_img) {
             $image = $request->thumbnail_img->getClientOriginalName();
@@ -123,17 +127,10 @@ class ProductController extends Controller
                 $gallary[] = $name;
             }
         }
-        dd($request->all());
         if ($request->refundable) {
             $refundable = 1;
         } else {
             $refundable = 0;
-        }
-
-        if ($request->show_qty) {
-            $show_qty = 1;
-        } else {
-            $show_qty = 0;
         }
 
         if ($request->today_deal) {
@@ -160,36 +157,32 @@ class ProductController extends Controller
         if ($request->color) {
             $products->colors = implode(',', $request->input('color'));
         }
-        // $products->unit_price = $request->input('unit_price');
-        // $products->tax = $request->input('tax');
-        // $products->taxable_price = $request->input('taxable_price');
-        // $products->quantity = $request->input('quantity');
-        // $products->date_range = $request->input('datefilter');
-        // $products->discount = $request->input('discount');
-        // $products->discount_type = $request->input('discount_type');
-        // $products->description = htmlspecialchars($request->input('description'));
-        // $products->meta_title = $meta_title;
-        // $products->meta_desc = $request->input('meta_desc');
-        // // $products->slug = $slug;
-        // $products->show_quantity = $show_qty;
-        // $products->today_deal = $today_deal;
-        // $products->shipping_charges = $request->input('shipping_charges');
-        // $products->shipping_days = $request->input('shipping_days');
-        // $products->status = $request->input('product_status');
+        $products->unit_price = $request->input('unit_price');
+        $products->quantity = $request->input('quantity');
+        $products->date_range = $request->input('datefilter');
+        $products->discount = $request->input('discount');
+        $products->discount_type = $request->input('discount_type');
+        $products->description = htmlspecialchars($request->input('description'));
+        $products->meta_title = $meta_title;
+        $products->meta_desc = $request->input('meta_desc');
+        $products->today_deal = $today_deal;
+        $products->shipping_charges = $request->input('shipping_charges');
+        $products->shipping_days = $request->input('shipping_days');
+        $products->status = $request->input('product_status');
         $result = $products->save();
 
-        // if ($request->attribute) {
-        //     $attribute_id = $request->input('attribute');
-
-        //     for ($i = 0; $i < count($attribute_id); $i++) {
-        //         $datasave = [
-        //             'attribute_id' => $attribute_id[$i],
-        //             'attrvalues' => implode(',', $request->input('attrvalue' . $i + 1)),
-        //             'product_id' => $products->id
-        //         ];
-        //         Attribute_value::insert($datasave);
-        //     }
-        // }
+        if ($request->attributes) {
+            $arrAttributes = $request->input('attributes');
+            $datasave = [];
+            for ($i = 0; $i < count($arrAttributes); $i++) {
+                $datasave = [
+                    'attribute_id' => $arrAttributes[$i]['id'],
+                    'attrvalues' => implode(',', \Arr::pluck($arrAttributes[$i]['value'], 'id') ),
+                    'product_id' => $products->id
+                ];
+                Attribute_value::insert($datasave);
+            }
+        }
         return to_route('admin.' . $this->routeResourceName . '.index')->with('success', 'Product Created Successfuly!.');
     }
 
@@ -212,8 +205,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $products = Product::where(['id' => $id])->first();
-        $tax = Tax::all();
+        $products = Product::where(['id' => $id])->first()->toArray();
+        // $tax = Tax::all();
         $category = Category::where('parent_category', 0)
             ->with('childrenCategories')
             ->get();
@@ -226,11 +219,25 @@ class ProductController extends Controller
         $attribute = Attribute::select(['attributes.*'])
             ->get();
         $attribute_values = Attribute_value::where(['product_id' => $id])->get();
+
+        $products['attributes'] = [];
+        $products['category'] = Category::where('id', $products['category'])->get()->toArray();
+
+        if (!empty($attribute_values)) {
+            foreach ($attribute_values as $attribute_value) {
+                // dd(Attrvalue::whereIn('id', explode(",", $attribute_value->attrvalues))->get()->toArray());
+                $products['attributes'][] = [
+                    'id' => $attribute_value->attribute_id,
+                    'value' => Attrvalue::whereIn('id', explode(",", $attribute_value->attrvalues))->get()->toArray(),
+                ];
+            }
+        }
+
         return inertia()->render('Product/Create', [
             'title' => 'Edit Product',
             'edit' => true,
             'item' => $products,
-            'tax' => $tax,
+            // 'tax' => $tax,
             'category' => $category,
             'brand' => $brand,
             'attrvalues' => $attrvalues,
@@ -251,18 +258,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id) :\Illuminate\Http\RedirectResponse
     {
-        // return $request->input();
+        // dd($request->input());
         $request->validate([
             'product_name' => 'required',
             'category' => 'required',
-            'min_qty' => 'required',
             'tags' => 'required',
-            'thumbnail_img' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'unit_price' => 'required',
-            // 'tax' => 'required',
+            'unit_price'=>'required',
             'quantity' => 'required',
             'shipping_charges' => 'required',
-            'shipping_days' => 'required'
+            'brand'=>'required',
+            'thumbnail_img' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'attributes.*.id' => 'required|distinct'
+        ],[
+            'attributes.*.id.distinct' => 'Thuộc tính không được trùng nhau',
         ]);
 
         if ($request->thumbnail_img != '') {
@@ -308,11 +316,11 @@ class ProductController extends Controller
             $refundable = 0;
         }
 
-        if ($request->show_qty) {
-            $show_qty = 1;
-        } else {
-            $show_qty = 0;
-        }
+        // if ($request->show_qty) {
+        //     $show_qty = 1;
+        // } else {
+        //     $show_qty = 0;
+        // }
 
         if ($request->today_deal) {
             $today_deal = 1;
@@ -326,12 +334,6 @@ class ProductController extends Controller
             $meta_title = str_replace(array('_', ' ',), '-', strtolower($request->input('product_name')));
         }
 
-        // if ($request->slug != '') {
-        //     $slug = str_replace(array('_', ' ',), '-', strtolower($request->input('slug')));
-        // } else {
-        //     $slug = str_replace(array('_', ' ',), '-', strtolower($request->input('product_name')));
-        // }
-
         if ($request->color) {
             $colors = implode(',', $request->input('color'));
         } else {
@@ -342,12 +344,12 @@ class ProductController extends Controller
             'thumbnail_img' => $image,
             'gallery_img' => implode(',', $gallery),
             'product_name' => $request->input('product_name'),
-            'category' => $request->input('category'),
+            'category' => $request->input('category')['id'],
             'brand' => $request->input('brand'),
             'unit' => $request->input('unit'),
             'min_qty' => $request->input('min_qty'),
-            'tags' => $request->input('tags'),
-            'barcode' => $request->input('barcode'),
+            'tags' => implode(',', $request->input('tags')),
+            // 'barcode' => $request->input('barcode'),
             'refundable' => $refundable,
             'colors' => $colors,
             'unit_price' => $request->input('unit_price'),
@@ -362,35 +364,50 @@ class ProductController extends Controller
             'meta_desc' => $request->input('meta_desc'),
             'slug' => $request->input('slug'),
             'status' => $request->input('product_status'),
-            'show_quantity' => $show_qty,
+            // 'show_quantity' => $show_qty,
             'today_deal' => $today_deal,
             'shipping_charges' => $request->input('shipping_charges'),
             'shipping_days' => $request->input('shipping_days')
         ]);
 
+        if (!empty($request->input('attributes'))) {
 
-        if (!empty($request->input('attribute'))) {
+            $arrAttributes = $request->input('attributes');
 
-            $attribute_id = $request->input('attribute');
-            if ($request->attr_id) {
-                $attr_id = $request->input('attr_id');
-                DB::table('attributes_values')->whereIn('id', $attr_id)->delete();
-            }
-            for ($i = 0; $i < count($attribute_id); $i++) {
-                $datasave = [
-                    'attribute_id' => $attribute_id[$i],
-                    'attrvalues' => implode(',', $request->input('attrvalue' . $i + 1)),
+            DB::table('attributes_values')->where('product_id', '=', $id)->delete();
+            $datasave = [];
+            for ($i = 0; $i < count($arrAttributes); $i++) {
+                $datasave[] = [
+                    'attribute_id' => $arrAttributes[$i]['id'],
+                    'attrvalues' => implode(',', \Arr::pluck($arrAttributes[$i]['value'], 'id') ),
                     'product_id' => $id
                 ];
-                Attribute_value::insert($datasave);
             }
+            Attribute_value::insert($datasave);
         } else {
-            if ($request->attr_id) {
-                $attr_id = $request->input('attr_id');
-                DB::table('attributes_values')->whereIn('id', $attr_id)->delete();
-            }
+            DB::table('attributes_values')->where('product_id','=', $id)->delete();
         }
+
         return to_route('admin.'.$this->routeResourceName.'.index')->with('success', 'Product Updated Successfuly!.');
+    }
+
+    public function deleteImage($id, $image)
+    {
+        $product = Product::findOrFail($id);
+        $gallery = array_filter(explode(',', $product->gallery_img));
+
+        if (file_exists(public_path('products/' . $image))) {
+            unlink(public_path('products/') . $image);
+        }
+
+        if (($key = array_search($image, $gallery)) !== false) {
+            unset($gallery[$key]);
+        }
+        
+        $product->gallery_img = implode(',', $gallery);
+        $product->save();
+
+        return back()->with('success', 'Image deleted successfully.');
     }
 
     /**

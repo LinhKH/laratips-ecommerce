@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, router } from "@inertiajs/vue3";
 import BackendLayout from "@/admin/Layouts/BackendLayout.vue";
 import BreadCrumb from "../../Components/BreadCrumb.vue";
 import VueMultiselect from "vue-multiselect";
@@ -45,6 +45,7 @@ const props = defineProps({
     },
     breadcrumb: Object,
     attribute: Object,
+    attrvalues: Object,
 });
 
 const form = useForm({
@@ -52,17 +53,42 @@ const form = useForm({
     category: props.item.category ?? "",
     brand: props.item.brand ?? "",
     unit: props.item.unit ?? "",
+    quantity: props.item.quantity ?? "",
     unit_price: props.item.unit_price ?? "",
     shipping_charges: props.item.shipping_charges ?? "free",
-    tags: props.item.tags ?? [],
-    refundable: props.item.refundable ?? "",
-    thumbnail_img: props.item.thumbnail_img ?? "",
-    gallery: props.item.gallery ?? [],
-    old_img: props.item.flash_image ?? "",
-    datetimes: props.item.flash_date_range ?? "",
-    flash_status: props.item.status ?? 1,
-    products: props.flash_products ?? [],
+    tags: props.item?.tags?.split(',') ?? [],
+    refundable: props.item.refundable == 1 ? true : false,
+    shipping_days: props.item.shipping_days ?? "",
+    thumbnail_img: null,
+    gallery: props.item.gallery_img?.split(',') ?? [],
+    old_img: props.item.thumbnail_img ?? "",
+    datefilter: props.item.datefilter ?? "",
+    product_status: props.item.product_status ?? 1,
+    today_deal: props.item.today_deal == 1 ? true : false,
+    attributes: props.item.attributes ?? [],
+    description: props.item.description ?? "",
+    meta_desc: props.item.meta_desc ?? "",
+    meta_title: props.item.meta_title ?? "",
+    discount: props.item.discount ?? "",
+    discount_type: props.item.discount_type ?? "",
 });
+
+const addAttribute = () => {
+    form.attributes.push({});
+};
+
+let arrAttrvalues = [...props.attrvalues];
+
+
+const setAttr = (index, item) => {
+    form.attributes[index].value = "";
+    arrAttrvalues = props.attrvalues.filter(value => value.attribute == item);
+    
+};
+
+const removeAttribute = (index) => {
+    form.attributes.splice(index,1);
+};
 
 const productImages = ref([])
 const dialogVisible = ref(false)
@@ -70,7 +96,6 @@ const dialogImageUrl = ref('')
 const handleFileChange = (file) => {
     productImages.value.push(file)
 }
-console.log(productImages.value)
 
 const handleRemove = (file) => {
     console.log(file)
@@ -122,13 +147,24 @@ for (let item of props.category) {
     }
 }
 
+const deleteImage = async (product_id,pimage, index) => {
+    try {
+        await router.delete(`/admin/products/${product_id}/image/${pimage}`, {
+            onSuccess: (page) => {
+                form.gallery.splice(index, 1);
+            }
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 const submit = () => {
 
     for (const image of productImages.value) {
         form.gallery.push(image.raw);
     }
 
-    console.log(form)
     props.edit
         ? form.put(
             route(`admin.${props.routeResourceName}.update`, {
@@ -298,19 +334,40 @@ const submit = () => {
                                                 </el-dialog>
                                             </div>
                                         </div>
+                                        <div class="row mt-2" v-if="props.edit">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-9">
+                                                <ul class="el-upload-list el-upload-list--picture-card">
+                                                    <li class="el-upload-list__item is-success" v-for="(pimage,index) in form.gallery" :key="pimage" style="width: auto;">
+                                                        <img class="h-146 rounded" :src="`${baseUrl}/products/${pimage}`" :alt="pimage" style="width: 146px;">
+                                                        <span
+                                                            class="absolute top-2 right-0 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full">
+                                                            <button @click.prevent="deleteImage(props.item.id,pimage,index)"
+                                                                class="text-white text-xs font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">x</button>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Thumbnail Image</span><br />
+                                                <span>Thumbnail Image</span><small class="text-danger">*</small><br />
                                                 <small>Image must be square in size (e.g. 800x800)</small>
                                             </div>
                                             <div class="col-md-7">
-                                                <input type="file" class="custom-file-input" @input="form.thumbnail_img = $event.target.files[0]" @change="previewImage" name="thumbnail_img"/>
+                                                <input type="hidden" class="custom-file-input" name="old_img" :value="form.thumbnail_img" />
+                                                <input type="file" class="custom-file-input" :class="{'border border-danger' : $page.props.errors.thumbnail_img}" @input="form.thumbnail_img = $event.target.files[0]" @change="previewImage" name="thumbnail_img"/>
                                                 <label class="custom-file-label">Choose file</label>
+                                                <div v-show="$page.props.errors.thumbnail_img">
+                                                    <p class="text-sm text-red-600">
+                                                        {{ $page.props.errors.thumbnail_img }}
+                                                    </p>
+                                                </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <img id="image" :src="url"
+                                                <img id="image" :src="photo_or_blank_image"
                                                     alt="" width="100px">
                                             </div>
                                         </div>
@@ -328,7 +385,7 @@ const submit = () => {
                                                 <span>Colors</span>
                                             </div>
                                             <div class="col-md-9">
-                                                <VueMultiselect :class="{'border border-danger' : $page.props.errors.color}"
+                                                <VueMultiselect
                                                     v-model="form.color"
                                                     :options="colors"
                                                     :multiple="true"
@@ -337,11 +394,6 @@ const submit = () => {
                                                     label="color_name"
                                                     track-by="id"
                                                 />
-                                                <div v-show="$page.props.errors.color">
-                                                    <p class="text-sm text-red-600">
-                                                        {{ $page.props.errors.color }}
-                                                    </p>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -350,21 +402,32 @@ const submit = () => {
                                             <thead>
                                                 <th>Attribute</th>
                                                 <th>Attribute value</th>
-                                                <th><a href="javascript:;" class="btn btn-info">+</a></th>
+                                                <th><a href="javascript:;" @click="addAttribute" class="btn btn-info">+</a></th>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr v-for="(attr, index) in form.attributes" :key="index">
                                                     <td>
-                                                        <select class="form-control attribute-select">
-                                                            <option value="">Select an Attribute</option>
+                                                        <select class="form-control attribute-select" :class="{'border border-danger' : $page.props.errors[`attributes.${index}.id`]}" v-model="attr.id" @change="setAttr(index, attr.id)">
+                                                            <option v-for="(item,key) in attribute" :key="item.id" :value="item.id">{{ item.title }}</option>
                                                         </select>
+                                                        <div v-if="`$page.props.errors.attributes.${index}.id`">
+                                                            <p class="text-sm text-red-600">
+                                                               {{ $page.props.errors[`attributes.${index}.id`] }}
+                                                            </p>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <select class="form-control attrvalue-select select2">
-
-                                                        </select>
+                                                        <VueMultiselect
+                                                            v-model="attr.value"
+                                                            :options="arrAttrvalues"
+                                                            :multiple="true"
+                                                            :close-on-select="true"
+                                                            placeholder="Select Value"
+                                                            label="value"
+                                                            track-by="id"
+                                                        />
                                                     </td>
-                                                    <td><a href="javascript:;" class="btn btn-danger deleteRow">-</a></td>
+                                                    <td><a href="javascript:;" class="btn btn-danger" @click="removeAttribute(index)">-</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
