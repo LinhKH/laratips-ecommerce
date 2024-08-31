@@ -142,7 +142,7 @@ if (!function_exists('get_product_price')) {
                 }
             }
         } elseif ($product->date_range != '' && $product->discount != '') {
-            $date = explode('-', $product->date_range);
+            $date = explode(' - ', $product->date_range);
             $currentDate = date('Y-m-d');
             $currentDate = date('Y-m-d', strtotime($currentDate));
             if ($product->date_range != '') {
@@ -158,7 +158,7 @@ if (!function_exists('get_product_price')) {
                     $price->discount = $product->discount;
                 } elseif ($product->discount_type == 'percent') {
                     $tax_total = $product->taxable_price * $product->discount / 100;
-                    $price->new_price = (int)$product->taxable_price - (int)$product->discount;
+                    $price->new_price = (int)$product->taxable_price - (int)$tax_total;
                     $price->discount = $product->discount . '%';
                 }
             }

@@ -321,7 +321,7 @@ let data = useForm({
                                     id="headingOne"
                                 >
                                     <button
-                                        class="accordion-button"
+                                        class="accordion-button collapsed"
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne"
@@ -333,8 +333,9 @@ let data = useForm({
                                 </h2>
                                 <div
                                     id="collapseOne"
-                                    class="accordion-collapse collapse show"
+                                    class="accordion-collapse collapse"
                                     aria-labelledby="headingOne"
+                                    aria-expanded="false"
                                     data-bs-parent="#accordionExample"
                                 >
                                     <div class="accordion-body">

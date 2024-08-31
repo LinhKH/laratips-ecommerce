@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, router } from "@inertiajs/vue3";
 import BackendLayout from "@/admin/Layouts/BackendLayout.vue";
 import BreadCrumb from "../../Components/BreadCrumb.vue";
 import VueMultiselect from "vue-multiselect";
@@ -60,10 +60,10 @@ const photo_or_blank_image = computed(() => {
 
 const submit = () => {
     props.edit
-        ? form.put(
+        ? router.post(
             route(`admin.${props.routeResourceName}.update`, {
                 id: props.item.id,
-            }), {
+            }),{...form, _method:"PUT"}, {
                 onSuccess: page => {
                     Swal.fire({
                         toast: true,

@@ -60,6 +60,8 @@ const { filters, isLoading, isFilled } = useFilters({
                                     <th>S No</th>
                                     <th>Images</th>
                                     <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Discount</th>
                                     <th>Today Deal</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -74,6 +76,12 @@ const { filters, isLoading, isFilled } = useFilters({
                                     </td>
                                     <td>
                                         {{ row.product_name }}
+                                    </td>
+                                    <td>
+                                        {{ row.category.category_name }}
+                                    </td>
+                                    <td>
+                                        {{ row.discount ?? 0 }}{{ row.discount_type == 'percent' ? '%' : 'vnd' }}
                                     </td>
                                     <td>
                                         <span v-if="row.today_deal == '1'" class="badge badge-success">Active</span>

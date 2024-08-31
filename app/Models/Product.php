@@ -51,4 +51,9 @@ class Product extends Model
             ->generateSlugsFrom('product_name')
             ->saveSlugsTo('slug');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category','id');
+    }
 }

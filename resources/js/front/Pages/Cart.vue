@@ -23,7 +23,7 @@ const {
 
 
 const total = computed(() => {
-     return usePage().props.products.reduce(function (acc, obj) { return acc + obj.taxable_price * obj.qty; }, 0) + parseInt(charges.value);
+     return usePage().props.products.reduce(function (acc, obj) { return acc + obj.taxable_price * obj.qty + ( obj.shipping_charges != 'free' ? parseInt(charges.value) : 0 ) }, 0);
 })
 
 const products = computed(() => usePage().props.products)
@@ -100,11 +100,6 @@ function handleRemoveCart(cart_id) {
                                 <tbody>
                                     <tr v-for="product in products" :key="product.id">
                                         <td class="d-flex flex-row">
-                                            <input type="hidden" name="product_id[]" value="product.id" />
-                                            <input type="hidden" name="product_attr[{{$product->id}}]"
-                                                value="product.attrvalues" />
-                                            <input type="hidden" name="product_color[{{$product->id}}]"
-                                                value={product.color} />
                                             <img class="pic-1" :src="`${baseUrl}/products/${product.thumbnail_img}`
                                                 " :alt="product.product_name" width="100px" />
                                             <div class="ml-2">
@@ -130,14 +125,13 @@ function handleRemoveCart(cart_id) {
                                                 </span>
     
                                                 <span v-else>
-                                                    Delivery Charges : {{ generalSettings.currency }} {{ charges }}
+                                                    Delivery Charges : {{ charges }} {{ generalSettings.currency }}
                                                 </span>
     
                                             </div>
                                         </td>
                                         <td :style="{'min-width':'100px'}">
-                                            {{ generalSettings.currency }}
-                                            {{ product.taxable_price }}
+                                            {{ product.taxable_price }} {{ generalSettings.currency }}
                                         </td>
                                         <td>
                                             <input :style="{'min-width': '70px'}" type="number" class="form-control" :name="`qty[${product.id}]`" min="1"
@@ -148,7 +142,6 @@ function handleRemoveCart(cart_id) {
                                             <input type="number" class="product-shipping" :defaultValue="charges" hidden />
                                         </td>
                                         <td>
-                                            {{ generalSettings.currency }}
                                             <span class="product-total" v-if="product.shipping_charges == 'free'">
                                                 {{ parseInt(
                                                     product.taxable_price *
@@ -162,6 +155,7 @@ function handleRemoveCart(cart_id) {
                                                 ) +
                                                     parseInt(charges) }}
                                             </span>
+                                            {{ generalSettings.currency }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-danger" @click="handleRemoveCart(product.id)">

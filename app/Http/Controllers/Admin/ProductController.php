@@ -14,6 +14,7 @@ use App\Models\Attribute;
 use App\Models\Color;
 use App\Models\Attribute_value;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
@@ -28,7 +29,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Product::latest()
+        $data = Product::with('category')->latest()
         ->when($request->name, fn(Builder $builder, $name) => $builder->where('product_name', 'like', "%{$name}%"))
         ->when($request->brand, fn(Builder $builder, $brand) => $builder->where('brand', '=', $brand))
         ->when(
@@ -91,7 +92,7 @@ class ProductController extends Controller
      */
     public function store(Request $request) 
     {
-        
+
         $request->validate([
             'product_name' => 'required',
             'category' => 'required',
@@ -110,7 +111,7 @@ class ProductController extends Controller
             'attributes.*.id.distinct' => 'Thuộc tính không được trùng nhau',
         ]);
 
-        // dd($request->all());
+        
 
         if ($request->thumbnail_img) {
             $image = $request->thumbnail_img->getClientOriginalName();
@@ -119,12 +120,12 @@ class ProductController extends Controller
             $image = '';
         }
 
-        $gallary = [];
+        $gallery = [];
         if ($request->hasfile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 $name = time() . rand(1, 100) . '.' . $file->extension();
                 $file->move(public_path('products'), $name);
-                $gallary[] = $name;
+                $gallery[] = $name;
             }
         }
         if ($request->refundable) {
@@ -144,7 +145,7 @@ class ProductController extends Controller
 
         $products = new Product();
         $products->thumbnail_img = $image;
-        $products->gallery_img = implode(',', $gallary);
+        $products->gallery_img = implode(',', $gallery);
         $products->product_name = $request->input('product_name');
         $products->category = $request->input('category')['id'];
         $products->brand = $request->input('brand');
@@ -157,9 +158,14 @@ class ProductController extends Controller
         if ($request->color) {
             $products->colors = implode(',', $request->input('color'));
         }
+        $startDatetimes = date('m/d/Y', strtotime($request->datetimes[0]));
+        $endDatetimes = date('m/d/Y', strtotime($request->datetimes[1]));
+        $flash_date_range = $startDatetimes . ' - ' . $endDatetimes;
+
         $products->unit_price = $request->input('unit_price');
+        $products->taxable_price = $request->input('unit_price');
         $products->quantity = $request->input('quantity');
-        $products->date_range = $request->input('datefilter');
+        $products->date_range = $flash_date_range;
         $products->discount = $request->input('discount');
         $products->discount_type = $request->input('discount_type');
         $products->description = htmlspecialchars($request->input('description'));
@@ -223,6 +229,10 @@ class ProductController extends Controller
         $products['attributes'] = [];
         $products['category'] = Category::where('id', $products['category'])->get()->toArray();
 
+        if ($products['colors']) {
+            $products['color'] = Color::whereIn('id', explode(',', $products['colors']))->get()->toArray();
+        }
+
         if (!empty($attribute_values)) {
             foreach ($attribute_values as $attribute_value) {
                 // dd(Attrvalue::whereIn('id', explode(",", $attribute_value->attrvalues))->get()->toArray());
@@ -256,9 +266,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) :\Illuminate\Http\RedirectResponse
+    public function update(Request $request, $id)
     {
-        // dd($request->input());
+        // dd($request->all());
+
         $request->validate([
             'product_name' => 'required',
             'category' => 'required',
@@ -267,7 +278,6 @@ class ProductController extends Controller
             'quantity' => 'required',
             'shipping_charges' => 'required',
             'brand'=>'required',
-            'thumbnail_img' => 'image|mimes:jpeg,png,jpg|max:2048',
             'attributes.*.id' => 'required|distinct'
         ],[
             'attributes.*.id.distinct' => 'Thuộc tính không được trùng nhau',
@@ -290,37 +300,22 @@ class ProductController extends Controller
             $image = $request->old_img;
         }
 
-        $gallery = array_filter(explode(',', $request->old_gallery));
-        if (!empty($request->old)) {
-            for ($j = 0; $j < count($gallery); $j++) {
-                if (!in_array($j + 1, $request->old)) {
-                    $img = $gallery[$j];
-                    if (file_exists(public_path('products/' . $img))) {
-                        unlink(public_path('products/') . $img);
-                    }
-                    unset($gallery[$j]);
-                }
-            }
-        }
-        if ($request->hasfile('gallery1')) {
-            foreach ($request->file('gallery1') as $file) {
+        $gallery = [];
+        if ($request->hasfile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
                 $name = time() . rand(1, 100) . '.' . $file->extension();
                 $file->move(public_path('products'), $name);
                 $gallery[] = $name;
             }
         }
-
+        
+        $gallery = Arr::collapse([$gallery,$request->old_gallery]);
+        
         if ($request->refundable) {
             $refundable = 1;
         } else {
             $refundable = 0;
         }
-
-        // if ($request->show_qty) {
-        //     $show_qty = 1;
-        // } else {
-        //     $show_qty = 0;
-        // }
 
         if ($request->today_deal) {
             $today_deal = 1;
@@ -335,34 +330,40 @@ class ProductController extends Controller
         }
 
         if ($request->color) {
-            $colors = implode(',', $request->input('color'));
+            $arrColors = [];
+            foreach ($request->color as $key => $color) {
+                $arrColors[] = $color['id'];
+            }
+
+            $colors = implode(',', $arrColors);
         } else {
             $colors = '';
         }
+
+        $startDatetimes = date('m/d/Y', strtotime($request->datetimes[0]));
+        $endDatetimes = date('m/d/Y', strtotime($request->datetimes[1]));
+        $flash_date_range = $startDatetimes . ' - ' . $endDatetimes;
 
         $products = Product::where(['id' => $id])->update([
             'thumbnail_img' => $image,
             'gallery_img' => implode(',', $gallery),
             'product_name' => $request->input('product_name'),
-            'category' => $request->input('category')['id'],
+            'category' => $request->input('category')[0]['id'],
             'brand' => $request->input('brand'),
             'unit' => $request->input('unit'),
             'min_qty' => $request->input('min_qty'),
             'tags' => implode(',', $request->input('tags')),
-            // 'barcode' => $request->input('barcode'),
             'refundable' => $refundable,
             'colors' => $colors,
             'unit_price' => $request->input('unit_price'),
-            'tax' => $request->input('tax'),
-            'taxable_price' => $request->input('taxable_price'),
+            'taxable_price' => $request->input('unit_price'),
             'quantity' => $request->input('quantity'),
-            'date_range' => $request->input('datefilter'),
+            'date_range' => $flash_date_range,
             'discount' => $request->input('discount'),
             'discount_type' => $request->input('discount_type'),
-            'description' => htmlspecialchars($request->input('description')),
+            'description' => $request->input('description'),
             'meta_title' => $meta_title,
             'meta_desc' => $request->input('meta_desc'),
-            'slug' => $request->input('slug'),
             'status' => $request->input('product_status'),
             // 'show_quantity' => $show_qty,
             'today_deal' => $today_deal,

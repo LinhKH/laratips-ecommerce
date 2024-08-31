@@ -9,6 +9,8 @@ import Vue3TagsInput from 'vue3-tags-input';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
+import EditorGroup from "@/admin/Components/EditorGroup.vue";
+
 import { Plus } from '@element-plus/icons-vue';
 
 const props = defineProps({
@@ -51,6 +53,7 @@ const props = defineProps({
 const form = useForm({
     product_name: props.item.product_name ?? "",
     category: props.item.category ?? "",
+    color: props.item.color ?? "",
     brand: props.item.brand ?? "",
     unit: props.item.unit ?? "",
     quantity: props.item.quantity ?? "",
@@ -60,9 +63,10 @@ const form = useForm({
     refundable: props.item.refundable == 1 ? true : false,
     shipping_days: props.item.shipping_days ?? "",
     thumbnail_img: null,
-    gallery: props.item.gallery_img?.split(',') ?? [],
+    gallery: [],
+    old_gallery: props.item.gallery_img?.split(',') ?? [],
     old_img: props.item.thumbnail_img ?? "",
-    datefilter: props.item.datefilter ?? "",
+    datetimes: props.item.date_range ?? "",
     product_status: props.item.product_status ?? 1,
     today_deal: props.item.today_deal == 1 ? true : false,
     attributes: props.item.attributes ?? [],
@@ -83,7 +87,6 @@ let arrAttrvalues = [...props.attrvalues];
 const setAttr = (index, item) => {
     form.attributes[index].value = "";
     arrAttrvalues = props.attrvalues.filter(value => value.attribute == item);
-    
 };
 
 const removeAttribute = (index) => {
@@ -111,12 +114,11 @@ const previewImage = (e) => {
     url.value = URL.createObjectURL(file);
 }
 
-// onMounted(() => {
-//     const startDate = new Date(props.item.flash_date_range?.split("-")[0]);
-//     const endDate = new Date(props.item.flash_date_range?.split("-")[1]);
-//     form.datetimes = [startDate, endDate];
-// })
-
+onMounted(() => {
+    const startDate = new Date(props.item.date_range?.split("-")[0]);
+    const endDate = new Date(props.item.date_range?.split("-")[1]);
+    form.datetimes = [startDate, endDate];
+})
 const handleChangeTag = (tags) => {
     form.tags = tags;
 }
@@ -151,7 +153,7 @@ const deleteImage = async (product_id,pimage, index) => {
     try {
         await router.delete(`/admin/products/${product_id}/image/${pimage}`, {
             onSuccess: (page) => {
-                form.gallery.splice(index, 1);
+                form.old_gallery.splice(index, 1);
             }
         })
     } catch (err) {
@@ -165,24 +167,24 @@ const submit = () => {
         form.gallery.push(image.raw);
     }
 
-    props.edit
-        ? form.put(
-            route(`admin.${props.routeResourceName}.update`, {
+    if (props.edit) {
+        router.post(route(`admin.${props.routeResourceName}.update`, {
                 id: props.item.id,
-            }), {
-                onSuccess: page => {
-                    Swal.fire({
-                        toast: true,
-                        icon: 'success',
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        title: page.props.flash.success
-                    })
-                },
+            }), {...form, _method: "PUT"}, {
+            onSuccess: (page) => {
+                dialogVisible.value = false;
+                Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    title: page.props.flash.success
+                });
             }
-        )
-        : form.post(route(`admin.${props.routeResourceName}.store`), {
+        })
+    } else {
+        form.post(route(`admin.${props.routeResourceName}.store`), {
             onSuccess: page => {
                     Swal.fire({
                         toast: true,
@@ -194,6 +196,7 @@ const submit = () => {
                     })
                 },
         });
+    }
 };
 
 </script>
@@ -209,7 +212,7 @@ const submit = () => {
         </BreadCrumb>
         <section class="content card">
             <div class="container-fluid card-body">
-                <form class="form-horizontal" @submit.prevent="submit" method="POST" enctype="multipart/form-data">
+                <form class="form-horizontal" @submit.prevent="submit" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card">
@@ -287,7 +290,7 @@ const submit = () => {
                                             </div>
                                             <div class="col-md-9">
                                                 <vue3-tags-input :tags="form.tags" :class="{'border border-danger' : $page.props.errors.tags}"
-                                                        placeholder="Type and hit enter to add a tag"
+                                                        placeholder="Nhập và nhấn enter để thêm 1 thẻ mới"
                                                         @on-tags-changed="handleChangeTag"/>
                                                 <div v-show="$page.props.errors.tags">
                                                     <p class="text-sm text-red-600">
@@ -325,8 +328,8 @@ const submit = () => {
                                                 <small>Images must be square in size (e.g. 800x800)</small>
                                             </div>
                                             <div class="col-md-9">
-                                                <el-upload v-model:file-list="productImages" list-type="picture-card" multiple action="#" :auto-upload="false"
-                                                    :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-change="handleFileChange">
+                                                <el-upload v-model:file-list="productImages" list-type="picture-card" multiple :auto-upload="false"
+                                                    :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-change.prevent="handleFileChange">
                                                     <el-icon><Plus /></el-icon>
                                                 </el-upload>
                                                 <el-dialog v-model="dialogVisible">
@@ -338,7 +341,7 @@ const submit = () => {
                                             <div class="col-md-3"></div>
                                             <div class="col-md-9">
                                                 <ul class="el-upload-list el-upload-list--picture-card">
-                                                    <li class="el-upload-list__item is-success" v-for="(pimage,index) in form.gallery" :key="pimage" style="width: auto;">
+                                                    <li class="el-upload-list__item is-success" v-for="(pimage,index) in form.old_gallery" :key="pimage" style="width: auto;">
                                                         <img class="h-146 rounded" :src="`${baseUrl}/products/${pimage}`" :alt="pimage" style="width: 146px;">
                                                         <span
                                                             class="absolute top-2 right-0 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full">
@@ -360,7 +363,7 @@ const submit = () => {
                                                 <input type="hidden" class="custom-file-input" name="old_img" :value="form.thumbnail_img" />
                                                 <input type="file" class="custom-file-input" :class="{'border border-danger' : $page.props.errors.thumbnail_img}" @input="form.thumbnail_img = $event.target.files[0]" @change="previewImage" name="thumbnail_img"/>
                                                 <label class="custom-file-label">Choose file</label>
-                                                <div v-show="$page.props.errors.thumbnail_img">
+                                                <div v-if="$page.props.errors.thumbnail_img">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.thumbnail_img }}
                                                     </p>
@@ -477,7 +480,7 @@ const submit = () => {
                                                 <span>Discount Date Range</span>
                                             </div>
                                             <div class="col-md-9">
-                                                <VueDatePicker v-model="form.datefilter" range :multi-calendars="{ solo: true }" :enable-time-picker="false" />
+                                                <VueDatePicker v-model="form.datetimes" range :multi-calendars="{ solo: true }" :enable-time-picker="false" />
                                             </div>
                                         </div>
                                     </div>
@@ -516,7 +519,7 @@ const submit = () => {
                                                 <span>Description</span>
                                             </div>
                                             <div class="col-md-9">
-                                                <textarea v-model="form.description" id="summernote" class="form-control" cols="30" rows="4"></textarea>
+                                                <EditorGroup label="Description" v-model="form.description" :error-message="form.errors.description" />
                                             </div>
                                         </div>
                                     </div>

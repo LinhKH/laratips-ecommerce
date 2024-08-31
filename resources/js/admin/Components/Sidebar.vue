@@ -1,9 +1,29 @@
 <script setup>
 import { usePage, Link, useForm, router } from "@inertiajs/vue3";
+import { ref, computed, onMounted } from 'vue';
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 const { generalSettings, sitePages, all_category, auth } = usePage().props;
 
+let menuOpen = ref(false);
+
+const handleClick = () => {
+    menuOpen.value = !menuOpen.value
+};
+
+let activeClass = ref(menuOpen.value || (route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*')
+    || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') || route().current('admin.flash-deals.*')));
+
+const classObject = computed(() => ({
+    'menu-is-opening': activeClass.value,
+    'menu-open': menuOpen.value
+}));
+
+onMounted(() => {
+    if (activeClass.value) {
+        menuOpen.value = true;
+    }
+});
 
 </script>
 
@@ -11,96 +31,84 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="javascript:void(0)" class="brand-link">
-            
-            <img v-if="generalSettings.site_logo"class="bg-white p-2" width="100%" :src="`${baseUrl}/site/${generalSettings.site_logo}`"
-                :alt="generalSettings.site_name">
-            
+
+            <img v-if="generalSettings.site_logo" class="bg-white p-2" width="100%"
+                :src="`${baseUrl}/site/${generalSettings.site_logo}`" :alt="generalSettings.site_name">
+
             <span v-else class="brand-text font-weight-light">{{ generalSettings.site_name }}</span>
-            
+
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <Link :href="route('admin.dashboard')"
+                        <Link preserve-scroll :href="route('admin.dashboard')"
                             class="nav-link {{ Request::path() == 'admin/dashboard' ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Dashboard
-                            </p>
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
                         </Link>
                     </li>
-                    <li
-                        class="nav-item has-treeview {{ Request::path() == 'admin/products' || Request::path() == 'admin/category' || Request::path() == 'admin/sub-category' || Request::path() == 'admin/brand' || Request::path() == 'admin/colors' || Request::path() == 'admin/attribute' || Request::path() == 'admin/attribute-values' || Request::path() == 'admin/tax' ? 'menu-open' : '' }}"
-                        :class="{'menu-open': route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*') || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') || route().current('admin.flash-deals.*') }">
-                        <a href="javascript:void(0)" class="nav-link">
+                    <li class="nav-item has-treeview" :class="classObject">
+                        <a @click="handleClick" href="javascript:;" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <Link :href="route('admin.products.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.products.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>All Products</p>
+                                <Link preserve-scroll :href="route('admin.products.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.products.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.products.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>All Products</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link :href="route('admin.category.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.category.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Category</p>
+                                <Link preserve-scroll :href="route('admin.category.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.category.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.category.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Category</p>
                                 </Link>
                             </li>
 
                             <li class="nav-item">
-                                <Link :href="route('admin.brand.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.brand.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Brand</p>
+                                <Link preserve-scroll :href="route('admin.brand.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.brand.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.brand.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Brand</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link :href="route('admin.colors.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.colors.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Colors</p>
+                                <Link preserve-scroll :href="route('admin.colors.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.colors.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.colors.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Colors</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link :href="route('admin.attribute.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.attribute.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Attribute Sets</p>
+                                <Link preserve-scroll :href="route('admin.attribute.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.attribute.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.attribute.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Attribute Sets</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link :href="route('admin.attribute-values.index')"
-                                    class="nav-link" :class="{'active bg-primary' : route().current('admin.attribute-values.*')}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Attribute Values</p>
+                                <Link preserve-scroll :href="route('admin.attribute-values.index')" class="nav-link"
+                                    :class="{ 'active bg-primary': route().current('admin.attribute-values.*') }">
+                                <i class="nav-icon" :class="[ route().current('admin.attribute-values.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Attribute Values</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
-                                <Link :href="route('admin.flash-deals.index')"
+                                <Link preserve-scroll :href="route('admin.flash-deals.index')"
                                     :class="['nav-link', route().current('admin.flash-deals.*') ? 'active bg-primary' : '']">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Flash Deals</p>
+                                <i class="nav-icon" :class="[ route().current('admin.flash-deals.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                <p>Flash Deals</p>
                                 </Link>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('admin/tax') }}"
-                                    class="nav-link {{ Request::path() == 'admin/tax' ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-wallet"></i>
-                                    <p>
-                                        Tax
-                                    </p>
-                                </a>
                             </li>
                         </ul>
                     </li>
@@ -144,11 +152,12 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <Link :href="route('admin.users.index')" class="nav-link" :class="{'active' : route().current('admin.users.*')}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>
-                                Users
-                            </p>
+                        <Link :href="route('admin.users.index')" class="nav-link"
+                            :class="{ 'active': route().current('admin.users.*') }">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Users
+                        </p>
                         </Link>
                     </li>
                 </ul>
