@@ -4,13 +4,15 @@ import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import BackendLayout from '@/admin/Layouts/BackendLayout.vue';
 import BreadCrumb from '../../Components/BreadCrumb.vue';
 import Paginate from '@/admin/Components/Paginate.vue';
+
 import Filters from './Filters.vue';
 import useDeleteItem from "@/admin/Composables/useDeleteItem.js";
 import useFilters from "@/admin/Composables/useFilters.js";
 import Actions from '@/admin/Components/Table/Actions.vue';
-const baseUrl = import.meta.env.VITE_APP_URL;
 
 import Modal from "@/admin/Components/Modal.vue";
+
+const baseUrl = import.meta.env.VITE_APP_URL;
 
 const props = defineProps({
     data: {
@@ -19,7 +21,6 @@ const props = defineProps({
     },
     title: String,
     breadcrumb: Object,
-    brands: Object,
     filters: {
         type: Object,
         default: () => ({}),
@@ -45,71 +46,67 @@ const { filters, isLoading, isFilled } = useFilters({
     <Head :title="title" />
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
-            <template #add_btn>
-                <Link :href="route('admin.products.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
-            </template>
+            
         </BreadCrumb>
         <section class="content">
             <div class="container-fluid">
-                <Filters v-model="filters" :show="isFilled" :brands="brands" />
+                <Filters v-model="filters" :show="isFilled" />
                 <div class="card">
                     <div class="card-body table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S No</th>
-                                    <th>Images</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Discount</th>
-                                    <th>Today Deal</th>
-                                    <th>Status</th>
+                                    <th>ORDER No</th>
+                                    <th>Product Details</th>
+                                    <th>Total Amount</th>
+                                    <th>Customer Details</th>
+                                    <th>Order Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-if="data.data.length > 0" v-for="row in data.data" :key="row.id">
-                                    <td>{{ row.id }}</td>
+                                <tr v-for="row in data.data" :key="row.id">
                                     <td>
-                                        <img v-if="row.thumbnail_img" :src="`${baseUrl}/products/${row.thumbnail_img}`" width="80px" />
-                                        <img v-else :src="`${baseUrl}/products/default.png`" width="80px" />
+                                        ODR00{{ row.id }}
+                                        <template v-if="row.delivery.includes(0)">
+                                            <br><span class="text-danger">(Pending)</span>
+                                        </template>
                                     </td>
                                     <td>
-                                        {{ row.product_name }}
+                                        <template v-if="row.p_id">
+                                            <li v-for="item in row.p_id.split('|||')">PDR00{{ item }}</li>
+                                        </template>
                                     </td>
                                     <td>
-                                        {{ row.category.category_name }}
+                                        {{ row.amount }}
                                     </td>
                                     <td>
-                                        {{ row.discount ?? 0 }} {{ row.discount_type == 'percent' ? '%' : 'vnd' }}
+                                        <ul>
+                                            <li><b>Name: </b> {{ row.name }}</li>          
+                                            <li><b>Address: </b> {{ row.address }}</li>
+                                        </ul>
                                     </td>
                                     <td>
-                                        <span v-if="row.today_deal == '1'" class="badge badge-success">Active</span>
-                                        <span v-else class="badge badge-danger">Inactive</span>
+                                        {{ row.formatted_created }}
                                     </td>
                                     <td>
-                                        <span v-if="row.status == '1'" class="badge badge-success">Published</span>
-                                        <span v-else class="badge badge-danger">Draft</span>
+                                        <!-- <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"
+                                            @deleteClicked="showDeleteModal(row)" /> -->
+
+                                        <Link :href="route('admin.view_order', row.id)" class="btn btn-success btn-sm">View</Link>
                                     </td>
-                                    <td>
-                                        <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"
-                                            @deleteClicked="showDeleteModal(row)" />
-                                    </td>
-                                </tr>
-                                <tr v-else>
-                                    <td colspan="5" class="text-center">No data ...</td>
                                 </tr>
                             </tbody>
                         </table>
     
-                        <Paginate v-if="data.from != data.last_page && data.total > 0" :pagination="data"></Paginate>
+                        <Paginate v-if="data.from != data.last_page" :pagination="data"></Paginate>
                     </div>
                 </div>
             </div>
         </section>
     </BackendLayout>
     <Modal :show="deleteModel" @close="closeModal" @handle-delete-item="handleDeleteItem" :item-to-delete="itemToDelete"
-    :is-deleting="isDeleting" needed-delete="Product" field-name="product_name"> </Modal>
+    :is-deleting="isDeleting" needed-delete="Order" field-name="id"> </Modal>
 </template>
 
 <style scoped>

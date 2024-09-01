@@ -121,13 +121,13 @@ onMounted(() => {
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('admin/orders') }}"
-                            class="nav-link {{ Request::path() == 'admin/orders' ? 'active' : '' }}">
+                        <Link :href="route('admin.orders.index')"
+                            :class="['nav-link', (route().current('admin.orders.*') || route().current('admin.view_order') || route().current('admin.order_delivered')) ? 'active bg-primary' : '']">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>
                                 Orders
                             </p>
-                        </a>
+                        </Link>
                     </li>
                     <li class="nav-item has-treeview" :class="classObjectReport">
                         <a @click="menuOpenReport = !menuOpenReport" href="javascript:;" class="nav-link">
