@@ -5,23 +5,31 @@ import { ref, computed, onMounted } from 'vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
 const { generalSettings, sitePages, all_category, auth } = usePage().props;
 
-let menuOpen = ref(false);
+let menuOpenPro = ref(false);
+let menuOpenReport = ref(false);
 
-const handleClick = () => {
-    menuOpen.value = !menuOpen.value
-};
-
-let activeClass = ref(menuOpen.value || (route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*')
+let activeClassProduct = ref(menuOpenPro.value || (route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*')
     || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') || route().current('admin.flash-deals.*')));
 
-const classObject = computed(() => ({
-    'menu-is-opening': activeClass.value,
-    'menu-open': menuOpen.value
+let activeClassReport = ref( menuOpenReport.value || ( route().current('admin.product_sale.*') || route().current('admin.product_stock.*') ) );
+
+const classObjectReport = computed(() => ({
+    'menu-is-opening': activeClassReport.value,
+    'menu-open': menuOpenReport.value
+}));
+
+const classObjectProduct = computed(() => ({
+    'menu-is-opening': activeClassProduct.value,
+    'menu-open': menuOpenPro.value
 }));
 
 onMounted(() => {
-    if (activeClass.value) {
-        menuOpen.value = true;
+    if (activeClassProduct.value) {
+        menuOpenPro.value = true;
+    }
+
+    if (activeClassReport.value) {
+        menuOpenReport.value = true;
     }
 });
 
@@ -54,8 +62,8 @@ onMounted(() => {
                         </p>
                         </Link>
                     </li>
-                    <li class="nav-item has-treeview" :class="classObject">
-                        <a @click="handleClick" href="javascript:;" class="nav-link">
+                    <li class="nav-item has-treeview" :class="classObjectProduct">
+                        <a @click="menuOpenPro = !menuOpenPro" href="javascript:;" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Products <i class="fas fa-angle-left right"></i></p>
                         </a>
@@ -121,33 +129,25 @@ onMounted(() => {
                             </p>
                         </a>
                     </li>
-                    <li
-                        class="nav-item has-treeview {{ Request::path() == 'admin/countries' || Request::path() == 'admin/states' || Request::path() == 'admin/cities' ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)" class="nav-link">
-                            <i class="nav-icon fas fa-shipping-fast"></i>
-                            <p>Shipping <i class="fas fa-angle-left right"></i></p>
+                    <li class="nav-item has-treeview" :class="classObjectReport">
+                        <a @click="menuOpenReport = !menuOpenReport" href="javascript:;" class="nav-link">
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Reports <i :class="['fas rightCustom', !menuOpenReport ? 'fa-angle-left' : 'fa-angle-down']"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('admin/countries') }}"
-                                    class="nav-link {{ Request::path() == 'admin/countries' ? 'active bg-primary' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Available Countries</p>
-                                </a>
+                                <Link :href="route('admin.product_sale.index')"
+                                    :class="['nav-link', route().current('admin.product_sale.*') ? 'active bg-primary' : '']">
+                                    <i class="nav-icon" :class="[ route().current('admin.product_sale.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                    <p>Products Sold</p>
+                                </Link>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/states') }}"
-                                    class="nav-link {{ Request::path() == 'admin/states' ? 'active bg-primary' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Available States</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('admin/cities') }}"
-                                    class="nav-link {{ Request::path() == 'admin/cities' ? 'active bg-primary' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>Available Cities</p>
-                                </a>
+                                <Link :href="route('admin.product_stock.index')"
+                                    :class="['nav-link', route().current('admin.product_stock.*') ? 'active bg-primary' : '']">
+                                    <i class="nav-icon" :class="[ route().current('admin.product_stock.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                    <p>Products Stock</p>
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -168,5 +168,11 @@ onMounted(() => {
     </aside>
 
 </template>
-
-<style scoped></style>
+<style scoped>
+.nav-sidebar .nav-link>.rightCustom,
+.nav-sidebar .nav-link>p>.rightCustom {
+    position: absolute;
+    right: 1rem;
+    top: .7rem;
+}
+</style>

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\AttrvaluesController;
 use App\Http\Controllers\Admin\FlashdealController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Front\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,8 +67,8 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::post('users/block', [UserController::class, 'changeStatus'])->name('users.block');
     // Route::post('page_showIn_header', [PagesController::class, 'show_in_header']);
     // Route::post('page_showIn_footer', [PagesController::class, 'show_in_footer']);
-    // Route::get('product-sale', [ReportController::class, 'product_sale']);
-    // Route::get('product-stock', [ReportController::class, 'product_stock']);
+    Route::get('product-sale', [ReportController::class, 'product_sale'])->name('product_sale.index');
+    Route::get('product-stock', [ReportController::class, 'product_stock'])->name('product_stock.index');
     // Route::resource('payment-method', PaymentmethodController::class);
     // Route::post('payment-method/status', [PaymentmethodController::class, 'changeStatus']);
     Route::resource('flash-deals', FlashdealController::class);

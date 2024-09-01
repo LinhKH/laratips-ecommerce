@@ -49,12 +49,12 @@ const handleBlock = (item => {
                         <thead>
                             <tr>
                                 <th>S No</th>
-                                <th>Tên</th>
-                                <th>Thư Điện Thử</th>
-                                <th>Số ĐT</th>
-                                <th>Quận</th>
-                                <th>Thành Phố</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Quốc Gia</th>
+                                <th>Thành Phố</th>
+                                <th>Quận</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -64,9 +64,9 @@ const handleBlock = (item => {
                                 <td>{{ row.name }}</td>
                                 <td>{{ row.email }}</td>
                                 <td>{{ row.phone }}</td>
-                                <td>{{ row.city_name }}</td>
-                                <td>{{ row.state_name }}</td>
                                 <td>{{ row.country_name }}</td>
+                                <td>{{ row.state_name }}</td>
+                                <td>{{ row.city_name }}</td>
                                 <td>
                                     <button :disabled="isLoading" v-if="row.status == '1'" class="btn btn-warning btn-sm" @click="handleBlock(row)">Block</button>
                                     <button :disabled="isLoading" v-else class="btn btn-success btn-sm" @click="handleBlock(row)">Unblock</button>
@@ -76,12 +76,12 @@ const handleBlock = (item => {
                         <tfoot>
                             <tr>
                                 <th>S No</th>
-                                <th>Tên</th>
-                                <th>Thư Điện Thử</th>
-                                <th>Số ĐT</th>
-                                <th>Quận</th>
-                                <th>Thành Phố</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Quốc Gia</th>
+                                <th>Thành Phố</th>
+                                <th>Quận</th>
                                 <th>Chức năng</th>
                             </tr>
                         </tfoot>
