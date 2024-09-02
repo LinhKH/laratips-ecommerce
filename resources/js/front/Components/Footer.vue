@@ -95,7 +95,7 @@ const { generalSettings, sitePages, all_category } = usePage().props;
                         <input type="hidden" class="demo" :value="baseUrl"></input>
                         <span>
                             <strong>
-                                {{ generalSettings.copyright }} by
+                                Copyright {{ new Date().getFullYear() }} by
                                 <a target="_blank" href="https://news-portal.shop/">
                                     Linh Dev
                                 </a>

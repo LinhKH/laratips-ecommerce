@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/vue3";
 import Preloader from "./Preloader.vue";
 import Attribute from "./Attribute.vue";
 import { ref } from "vue";
@@ -65,18 +65,22 @@ const handleSubmit = (e) => {
             urlParams +
             "&" +
             new URLSearchParams(data).toString();
+
+            // router.get(`${baseUrl}/pay-with-paypal/${data.amount}?${urlParams}&amount=${data.amount}&pay_method=${data.pay_method}`);
     } else if (data.pay_method == "cod") {
         const urlParams = new URLSearchParams(
             window.location.href.split("?")[1]
         ).toString();
-        window.location.href =
-            baseUrl +
-            "/pay-with-cod/" +
-            data.amount +
-            "?" +
-            urlParams +
-            "&" +
-            new URLSearchParams(data).toString();
+        // window.location.href =
+        //     baseUrl +
+        //     "/pay-with-cod/" +
+        //     data.amount +
+        //     "?" +
+        //     urlParams +
+        //     "&" +
+        //     new URLSearchParams(data).toString();
+
+            router.get(`${baseUrl}/pay-with-cod/${data.amount}?${urlParams}&amount=${data.amount}&pay_method=${data.pay_method}`);
     }
 };
 

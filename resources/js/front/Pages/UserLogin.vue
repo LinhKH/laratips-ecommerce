@@ -7,8 +7,8 @@ const baseUrl = import.meta.env.VITE_APP_URL;
 const { flash } = usePage().props;
 
 const data = useForm({
-    username: "",
-    password: "",
+    username: "mr.linh1090@gmail.com",
+    password: "123456",
 });
 
 function handleSubmit(e) {

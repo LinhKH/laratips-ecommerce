@@ -41,8 +41,8 @@ defineProps({
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="{{ url('admin/orders') }}" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <Link :href="route('admin.orders.index')" class="small-box-footer">More info <i
+                                    class="fas fa-arrow-circle-right"></i></Link>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -87,8 +87,8 @@ defineProps({
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="{{ url('admin/product-sale') }}" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <Link :href="route('admin.product_sale.index')" class="small-box-footer">More info <i
+                                    class="fas fa-arrow-circle-right"></i></Link>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -104,8 +104,8 @@ defineProps({
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="{{ url('admin/product-stock') }}" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <Link :href="route('admin.product_stock.index')" class="small-box-footer">More info <i
+                                    class="fas fa-arrow-circle-right"></i></Link>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -120,7 +120,7 @@ defineProps({
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="{{ url('admin/product-sale') }}" class="small-box-footer">More info <i
+                            <a href="javascript:;" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>

@@ -48,7 +48,7 @@ class PaymentController extends Controller
         Session::put('order', $request->input());
         Session::put('amount', $amt);
 
-        $store = $this->yb_store_ordering(['id' => 'cod'.rand(1,100000), 'payment_type' => 'cod']);
+        $store = $this->yb_store_ordering(['id' => 'cod'.rand(100000,999999), 'payment_type' => 'cod']);
         if ($store == '1') {
             return redirect('checkout/payment/success')->with('payment_success', 'COD payment successful');
         }
@@ -99,7 +99,7 @@ class PaymentController extends Controller
             ->where('product_user', $user_id)
                 ->get();
         }
-        // return $user_products;
+
         $product_count = 0;
         $product_qty = 0;
         if (Session::has('checkout')) {
@@ -120,13 +120,17 @@ class PaymentController extends Controller
         $order->amount = Session::get('amount');
         $order->save();
 
+        $buy_not_from_cart = Session::get('checkout'); // have 'checkout' then buy not from cart, else buy from cart
+
+        $attributeArray = array_map('strtolower', Attribute::pluck('title')->toArray());
+
         foreach ($user_products as $product) {
             $attrvalues = '';
             $color = '';
-            if ($request) {
+            if ($request && !empty($buy_not_from_cart)) {
                 $attr_array = [];
                 foreach ($request as $key => $value) {
-                    if ($key != 'product_id' && $key != 'color' && $key != 'location' && $key != 'pay_method' && $key != 'amount') {
+                    if (in_array($key, $attributeArray)) {
                         $attr_key = Attribute::where('title', ucfirst($key))->pluck('id')->first();
                         array_push($attr_array, "{$attr_key}:{$value}");
                     } elseif ($key == 'color') {
