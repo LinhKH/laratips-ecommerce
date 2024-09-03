@@ -1,8 +1,11 @@
 
 <script setup>
 import { usePage } from '@inertiajs/vue3';
+import ProductGrid from './ProductGrid.vue';
 
 const { related } = usePage().props;
+
+
 </script>
 
 <template>
@@ -15,13 +18,11 @@ const { related } = usePage().props;
             </div>
         </div>
         <div className="row">
-            <div className='col-12'>
-                <template v-for="value in related.data" :key="`${value.id}`">
-                    <div class="col-lg-3 col-md-4 col-sm-6" >
-                        <ProductGrid :product="value" />
-                    </div>
-                </template>
-            </div>
+            <template v-for="value in related" :key="`${value.id}`">
+                <div class="col-lg-3 col-md-4 col-sm-6" >
+                    <ProductGrid :product="value" />
+                </div>
+            </template>
         </div>
     </section>
 </template>

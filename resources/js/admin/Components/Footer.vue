@@ -10,7 +10,7 @@ const { generalSettings, sitePages, all_category } = usePage().props;
 <template>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-        <strong>Copyright {{ new Date().getFullYear() }} by <a href="https://news-portal.shop/">Linh Dev</a>.</strong>
+        <strong>Copyright {{ new Date().getFullYear() }} by <a href="https://news-portal.shop/" target="_blank">Linh Dev</a>.</strong>
         All rights reserved
     </footer>
     <!-- Control Sidebar -->

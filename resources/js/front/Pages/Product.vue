@@ -102,7 +102,6 @@ const handleBuyNow = (e) => {
             icon: "warning",
         });
     } else {
-        // console.log(data);return false;
         data.transform((data) => ({
             ...data,
             ... objAttrValue
@@ -112,16 +111,7 @@ const handleBuyNow = (e) => {
 
 let objAttrValue = {};
 const handleRadio = (e) => {
-
     objAttrValue[e.target.name] = e.target.value;
-
-    // data.transform((data) => ({
-    //     ...data,
-    //     [e.target.name]: e.target.value,
-    // }))
-
-
-    console.log(objAttrValue);
 }
 
 watchEffect(() => {
@@ -190,21 +180,20 @@ watchEffect(() => {
                                 <div v-if="product.discount != '0'" class="product-price">
                                     <span class="special-price">
                                         {{ generalSettings.currency }}
-                                        {{ product.taxable_price -
-                                            product.discount }}
+                                        {{  $filters.formatNumber(product.taxable_price - product.discount) }}
                                     </span>
                                     <span class="old-price">
                                         {{ generalSettings.currency }}
-                                        {{ product.taxable_price }}
+                                        {{  $filters.formatNumber(product.taxable_price) }}
                                     </span>
                                     <span class="discount-price">
-                                        {{ product.discount_percent }} off
+                                        {{ $filters.formatNumber( product.discount_percent )}} off
                                     </span>
                                 </div>
                                 <div v-else class="product-price">
                                     <span class="special-price">
                                         {{ generalSettings.currency }}
-                                        {{ product.taxable_price }}
+                                        {{ $filters.formatNumber(product.taxable_price) }}
                                     </span>
                                 </div>
                                 <ProductRating :rating_col="product.rating_col" :rating_sum="product.rating_sum" />

@@ -4,6 +4,8 @@ import ProductRating from './ProductRating.vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
 const { rating } = usePage().props;
 
+const {  generalSettings } = usePage().props;
+
 </script>
 
 <template>
@@ -22,7 +24,7 @@ const { rating } = usePage().props;
                     </Link>
                 </h4>
                 <ProductRating :rating_col="value.rating_col" :rating_sum="value.rating_sum" />
-                <div class="price">${{ value.unit_price }}</div>
+                <div class="price">{{ $filters.formatNumber(value.unit_price) }} {{ generalSettings.currency }}</div>
             </div>
         </div>
     </div>

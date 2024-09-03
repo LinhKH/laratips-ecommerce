@@ -95,7 +95,7 @@ const handleShowDetails = (id) => {
                                         </ul>
                                     </td>
                                     <td>
-                                        {{ new Date(order.created_at).toLocaleDateString() }}
+                                        {{ $filters.formatDate(order.created_at) }}
                                     </td>
                                     <td>
                                         <button

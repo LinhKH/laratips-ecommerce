@@ -48,20 +48,20 @@ const products = flash_products.filter((product) => {
                 <template v-if="flash_product.discount != '0'">
                     <div>
                         <span class="old-price">
-                            {{ generalSettings.currency }}
-                            {{ flash_product.taxable_price }}
+                            
+                            {{ $filters.formatNumber(flash_product.taxable_price) }} {{ generalSettings.currency }}
                         </span>
                         <span class="price">
-                            {{ generalSettings.currency }}
-                            {{ flash_product.taxable_price -
-                                flash_product.discount }}
+                            
+                            {{ $filters.formatNumber(flash_product.taxable_price -
+                                flash_product.discount) }} {{ generalSettings.currency }}
                         </span>
                     </div>
                 </template>
                 <template v-else>
                     <span class="price">
-                        {{ generalSettings.currency }}
-                        {{ flash_product.taxable_price }}
+                        
+                        {{ $filters.formatNumber(flash_product.taxable_price) }} {{ generalSettings.currency }}
                     </span>
                 </template>
             </div>

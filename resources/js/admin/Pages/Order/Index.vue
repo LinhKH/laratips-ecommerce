@@ -14,6 +14,8 @@ import Modal from "@/admin/Components/Modal.vue";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
+const { generalSettings } = usePage().props;
+
 const props = defineProps({
     data: {
         type: Object,
@@ -78,7 +80,7 @@ const { filters, isLoading, isFilled } = useFilters({
                                         </template>
                                     </td>
                                     <td>
-                                        {{ row.amount }}
+                                        {{ $filters.formatNumber(row.amount) }} {{ generalSettings.currency }}
                                     </td>
                                     <td>
                                         <ul>

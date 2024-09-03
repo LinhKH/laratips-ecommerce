@@ -131,7 +131,7 @@ function handleRemoveCart(cart_id) {
                                             </div>
                                         </td>
                                         <td :style="{'min-width':'100px'}">
-                                            {{ product.taxable_price }} {{ generalSettings.currency }}
+                                            {{ $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                         </td>
                                         <td>
                                             <input :style="{'min-width': '70px'}" type="number" class="form-control" :name="`qty[${product.id}]`" min="1"
@@ -143,17 +143,10 @@ function handleRemoveCart(cart_id) {
                                         </td>
                                         <td>
                                             <span class="product-total" v-if="product.shipping_charges == 'free'">
-                                                {{ parseInt(
-                                                    product.taxable_price *
-                                                    product.qty
-                                                ) }}
+                                                {{ $filters.formatNumber(parseInt(product.taxable_price * product.qty)) }}
                                             </span>
                                             <span v-else>
-                                                {{ parseInt(
-                                                    product.taxable_price *
-                                                    product.qty
-                                                ) +
-                                                    parseInt(charges) }}
+                                                {{ $filters.formatNumber(parseInt(product.taxable_price * product.qty) + parseInt(charges)) }}
                                             </span>
                                             {{ generalSettings.currency }}
                                         </td>
@@ -168,9 +161,9 @@ function handleRemoveCart(cart_id) {
                                         <td colSpan="3" align="right">
                                             <b>Total Amount</b>
                                         </td>
-                                        <td colspan="2">
+                                        <td colspan="2"> 
+                                            <span>{{ $filters.formatNumber(total) }}</span>
                                             {{ generalSettings.currency }}
-                                            <span>{{ total }}</span>
                                         </td>
                                     </tr>
                                 </tbody>

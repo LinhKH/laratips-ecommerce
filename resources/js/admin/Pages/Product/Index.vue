@@ -81,7 +81,7 @@ const { filters, isLoading, isFilled } = useFilters({
                                         {{ row.category.category_name }}
                                     </td>
                                     <td>
-                                        {{ row.discount ?? 0 }} {{ row.discount_type == 'percent' ? '%' : 'vnd' }}
+                                        {{ $filters.formatNumber(row.discount) ?? 0 }} {{ row.discount_type == 'percent' ? '%' : 'vnd' }}
                                     </td>
                                     <td>
                                         <span v-if="row.today_deal == '1'" class="badge badge-success">Active</span>

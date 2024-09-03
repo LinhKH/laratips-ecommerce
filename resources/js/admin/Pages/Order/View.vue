@@ -62,10 +62,24 @@ const { filters, isLoading, isFilled } = useFilters({
     routeResourceName: props.routeResourceName,
 });
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day , month , year].join('-');
+}
+
 const calculateDate = (date, days) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + parseInt(days));
-    return newDate.toDateString();
+    return formatDate(newDate);
 };
 
 const deliverConfirm = (product_qty, product_id, order_id) => {
@@ -123,7 +137,7 @@ const deliverConfirm = (product_qty, product_id, order_id) => {
                                 <li><span><b>Qty : </b>{{row.product_qty}}</span></li>
                             </td>
                             <td>
-                                <b>Sub Total : {{row.product_amount}} {{ generalSettings.currency }}</b> 
+                                <b>Sub Total : {{ $filters.formatNumber(row.product_amount) }} {{ generalSettings.currency }}</b> 
                             </td>
                             <td>
                                 <b>Delivery Expected On : </b>
@@ -139,7 +153,7 @@ const deliverConfirm = (product_qty, product_id, order_id) => {
                         </tr>
                         <tr>
                             <td colspan="3" align="right"><b>Total Amount ({{ generalSettings.currency }})</b></td>
-                            <td>{{order.amount}} {{ generalSettings.currency }}</td>
+                            <td>{{ $filters.formatNumber(order.amount) }} {{ generalSettings.currency }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -83,7 +83,7 @@ function handleRemoveFromWishlist(product_id) {
                 :alt="`${product.product_name}`" />
             </Link>
             <span v-if="product.discount != '0'" class="product-discount-label">
-                {{ product.discount_percent }} off
+                {{ typeof(product.discount_percent) !== 'number' ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
             </span>
             <!-- <span class="product-sale-label">sale</span> -->
             <Link class="quick-view" :href="`${baseUrl}/product/${product.slug}`">
@@ -102,17 +102,14 @@ function handleRemoveFromWishlist(product_id) {
             <ProductRating :rating_col="product.rating_col" :rating_sum="product.rating_sum" />
 
             <span v-if="product.discount != '0'" class="old-price">
-                {{ generalSettings.currency }}
-                {{ product.taxable_price }}
+                {{ $filters.formatNumber(product.taxable_price) }}  {{ generalSettings.currency }}
             </span>
             <span v-if="product.discount != '0'" class="price">
-                {{ generalSettings.currency }}
-                {{ product.taxable_price - product.discount }}
+                {{ $filters.formatNumber(product.taxable_price - product.discount) }} {{ generalSettings.currency }}
             </span>
 
             <span v-else class="price">
-                {{ generalSettings.currency }}
-                {{ product.taxable_price }}
+                {{ $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
             </span>
             <ul className="product-links">
                 <li>

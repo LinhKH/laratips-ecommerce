@@ -16,11 +16,24 @@ const props = defineProps({
     }
 });
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day , month , year].join('-');
+}
 
 const calculateDate = (date, days) => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + parseInt(days));
-    return newDate.toDateString();
+    return formatDate(newDate);
 };
 </script>
 
@@ -43,8 +56,8 @@ const calculateDate = (date, days) => {
                 </li>
                 <Attribute :product="value" :is-order="true"/>
                 <li>
-                    <b>Amount : </b>{{ generalSettings.currency }}
-                    {{ value.product_amount }}
+                    <b>Amount : </b>
+                    {{ $filters.formatNumber(value.product_amount) }} {{ generalSettings.currency }}
                 </li>
                 <template v-if="value.product_delivery == '0'">
                     <li><b>Delivery :</b> Pending </li>
@@ -84,8 +97,7 @@ const calculateDate = (date, days) => {
         <tr>
             <td>Total Amount</td>
             <th>
-                {{ generalSettings.currency }}
-                {{ order_detail.order.amount }}
+                {{ $filters.formatNumber(order_detail.order.amount) }} {{ generalSettings.currency }}
             </th>
         </tr>
     </table>

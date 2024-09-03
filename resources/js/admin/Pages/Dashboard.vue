@@ -98,7 +98,7 @@ defineProps({
                         <!-- small box -->
                         <div class="small-box bg-blue">
                             <div class="inner">
-                                <h3>{{ data.total_stock }}</h3>
+                                <h3>{{ $filters.formatNumber(data.total_stock) }}</h3>
                                 <p>Product Stock</p>
                             </div>
                             <div class="icon">
@@ -113,7 +113,7 @@ defineProps({
                         <!-- small box -->
                         <div class="small-box bg-gradient-indigo">
                             <div class="inner">
-                                <h3>{{generalSettings.currency}}{{ data.total_sold }}</h3>
+                                <h3>{{ $filters.formatNumber(data.total_sold) }} {{generalSettings.currency}}</h3>
 
                                 <p>Total Amount Sold</p>
                             </div>
