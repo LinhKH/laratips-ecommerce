@@ -11,6 +11,7 @@ use App\Models\Attrvalue;
 use App\Models\Attribute;
 use App\Models\Product;
 use App\Models\OrderProducts;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Yajra\DataTables\DataTables;
 
 class OrderController extends Controller
@@ -23,14 +24,23 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Order::select(['orders.*', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created'),'users.name','users.email','users.phone','users.address','users.city','users.state','products.product_name','products.unit_price','products.thumbnail_img','products.shipping_days'
+        $data = Order::select(['orders.*', 'payments.id as payment_id', 'payments.pay_method', 'payments.pay_status', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created'),'users.name','users.email','users.phone','users.address','users.city','users.state','products.product_name','products.unit_price','products.thumbnail_img','products.shipping_days'
                     ,\DB::raw("GROUP_CONCAT(products.id SEPARATOR '|||') as p_id"),\DB::raw("GROUP_CONCAT(order_products.product_delivery SEPARATOR ',') as delivery")])
             ->leftjoin('order_products','order_products.order_id','=','orders.id')
             ->leftjoin('products','products.id','=','order_products.product_id')
             ->leftjoin('users','orders.user','=','users.user_id')
+            ->leftjoin('payments','orders.pay_id','=','payments.id')
+            ->when(
+                $request->pay_status !== null,
+                fn (Builder $builder) => $builder->when(
+                    $request->pay_status,
+                    fn (Builder $builder) => $builder->where('pay_status', '=', 1),
+                    fn (Builder $builder) => $builder->where('pay_status', '=', 0)
+                )
+            )
             ->groupBy('orders.id')
             ->orderBy('id','desc')
-            ->paginate(8);
+            ->paginate(8)->withQueryString();
         return inertia()->render('Order/Index', [
             'data' => $data,
             'title' => 'Orders Management',

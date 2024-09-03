@@ -1,5 +1,6 @@
 <template>
     <div class="flex items-center space-x-2">
+        <slot></slot>
         <button v-if="showEdit">
             <Link :href="editLink">
             <Edit />

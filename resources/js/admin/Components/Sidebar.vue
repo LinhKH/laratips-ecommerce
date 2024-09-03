@@ -152,6 +152,15 @@ onMounted(() => {
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <Link :href="route('admin.reviews.index')" class="nav-link"
+                            :class="['nav-link', route().current('admin.reviews.*') ? 'active bg-primary' : '']">
+                            <i class="nav-icon fas fa-star"></i>
+                            <p>
+                                Reviews
+                            </p>
+                        </Link>
+                    </li>
+                    <li class="nav-item">
                         <Link :href="route('admin.users.index')" class="nav-link"
                             :class="{ 'active': route().current('admin.users.*') }">
                         <i class="nav-icon fas fa-users"></i>

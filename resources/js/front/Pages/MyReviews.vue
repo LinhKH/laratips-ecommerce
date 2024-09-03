@@ -49,7 +49,7 @@ const { reviews } = usePage().props;
                                 </div>
 
                                 <div v-if="row.approved == '0'" class="alert alert-danger p-2 py-0 m-0 d-inline-block">
-                                    Under Approval Process
+                                    Đang phê duyệt
                                 </div>
 
                             </div>

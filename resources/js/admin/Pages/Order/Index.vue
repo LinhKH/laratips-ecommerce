@@ -61,6 +61,8 @@ const { filters, isLoading, isFilled } = useFilters({
                                     <th>ORDER No</th>
                                     <th>Product Details</th>
                                     <th>Total Amount</th>
+                                    <th>Payment Method</th>
+                                    <th>Payment Status</th>
                                     <th>Customer Details</th>
                                     <th>Order Date</th>
                                     <th>Action</th>
@@ -81,6 +83,12 @@ const { filters, isLoading, isFilled } = useFilters({
                                     </td>
                                     <td>
                                         {{ $filters.formatNumber(row.amount) }} {{ generalSettings.currency }}
+                                    </td>
+                                    <td>{{ row.pay_method }}</td>
+                                    <td>
+                                        <span v-if="row.pay_status == 1" class="badge badge-primary">Đã thanh toán</span>
+                                        <span v-else class="badge badge-danger">Chưa thanh toán</span>
+
                                     </td>
                                     <td>
                                         <ul>

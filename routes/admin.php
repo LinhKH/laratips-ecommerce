@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\AttrvaluesController;
 use App\Http\Controllers\Admin\FlashdealController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Front\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,12 +76,12 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::resource('flash-deals', FlashdealController::class);
     Route::post('get-flash', [FlashdealController::class, 'get_flash'])->name('get_flash');
     Route::post('get-flash-edit', [FlashdealController::class, 'get_flash_edit'])->name('get_flash_edit');
-    // Route::get('reviews/{id}/edit', [ReviewController::class, 'edit']);
-    // Route::put('reviews/{id}', [ReviewController::class, 'update']);
-    // Route::post('view_review', [ReviewController::class, 'show']);
-    // Route::post('approve_review', [ReviewController::class, 'approveReview']);
-    // Route::post('delete_review', [ReviewController::class, 'destroy']);
-    // Route::any('reviews', [ReviewController::class, 'index']);
+    Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::post('view_review', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::post('approve_review', [ReviewController::class, 'approveReview'])->name('reviews.approve');
+    Route::post('delete_review', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::any('reviews', [ReviewController::class, 'index'])->name('reviews.index');
 
 });
 

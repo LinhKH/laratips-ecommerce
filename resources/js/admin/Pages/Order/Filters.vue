@@ -57,7 +57,14 @@ watch(
                 </div>
                 <div class="col-md-3">
                     <div class="form-group" >
-                        
+                        <label>Status</label>
+                        <section class="form-group" >
+                            <select v-model="filters.pay_status" class="form-control">
+                                <option value="">Select pay status</option>
+                                <option value="1">Đã thanh toán</option>
+                                <option value="0">Chưa thanh toán</option>
+                            </select>
+                        </section>
                     </div>
                 </div>
             </div>

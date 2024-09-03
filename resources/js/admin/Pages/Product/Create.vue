@@ -554,26 +554,7 @@ const submit = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Status</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <span>Status</span>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <select class="form-control" v-model="form.product_status" style="width: 100%;">
-                                                    <option value="1" selected>Published</option>
-                                                    <option value="0">Draft</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="col-md-4">
                             <div class="card">
@@ -633,6 +614,26 @@ const submit = () => {
                                                             {{ $page.props.errors.shipping_days }}
                                                         </p>
                                                     </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Status</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <span>Status</span>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <select class="form-control" v-model="form.product_status" style="width: 100%;">
+                                                    <option value="1" selected>Published</option>
+                                                    <option value="0">Draft</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
