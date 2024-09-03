@@ -524,6 +524,7 @@ class UserController extends Controller
             $attrvalues = Attrvalue::select(['attrvalues.*', 'attributes.title'])
                 ->leftjoin('attributes', 'attributes.id', '=', 'attrvalues.attribute')
                 ->get();
+            $attributeArray = array_map('strtolower', Attribute::pluck('title')->toArray());
 
             if ($request->product_id && $request->product_id != '') {
                 $products = Product::where('id', $request->product_id)->get();
@@ -532,6 +533,14 @@ class UserController extends Controller
                     if ($request->color && $request->color != '') {
                         $product->color_code = Color::where('id', $request->color)->pluck('color_code')->first();
                     }
+                    $attr_array = [];
+                    foreach ($request->toArray() as $key => $value) {
+                        if (in_array($key, $attributeArray)) {
+                            $attr_key = Attribute::where('title', ucfirst($key))->pluck('id')->first();
+                            array_push($attr_array, "{$attr_key}:{$value}");
+                        }
+                    }
+                    $product->attrvalues = implode(',', $attr_array);
                 }
                 Session::put('checkout', 'checkout');
                 Session::put('order', $request->input());
@@ -541,7 +550,6 @@ class UserController extends Controller
                     ->leftjoin('colors', 'colors.id', '=', 'cart.color')
                     ->where('product_user', $user_id)->get();
             }
-
 
             $colors = Color::select(['colors.*'])->get();
 
