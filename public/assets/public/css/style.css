@@ -534,7 +534,7 @@ button:focus{ outline: none; }
 .product-grid .product-discount-label,
 .product-grid .product-sale-label{
     color: #fff;
-    background: #388E3C;
+    background: var(--main-color);
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
