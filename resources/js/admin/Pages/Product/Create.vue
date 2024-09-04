@@ -370,7 +370,9 @@ const submit = () => {
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <img id="image" :src="photo_or_blank_image"
+                                                <img v-if="form.thumbnail_img && url" id="image" :src="url"
+                                                    alt="" width="100px">
+                                                <img v-else id="image" :src="photo_or_blank_image"
                                                     alt="" width="100px">
                                             </div>
                                         </div>

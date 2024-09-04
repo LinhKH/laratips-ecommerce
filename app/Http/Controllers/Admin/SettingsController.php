@@ -9,20 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class SettingsController extends Controller
 {
-    //
+    private string $routeResourceName = 'social_settings';
     public function general_settings(Request $request){
         if($request->input()){
             $request->validate([
-                'site_logo'=>'image|mimes:jpg,jpeg,png,svg',
+                // 'site_logo'=>'image|mimes:jpg,jpeg,png,svg',
                 'site_name'=>'required',
                 'site_title'=>'required',
                 'theme_color'=>'required',
-                'site_copyright'=>'required',
+                'copyright'=>'required',
                 'currency'=>'required',
                 'description'=>'required',
             ]);
 
-            if($request->logo != ''){
+            if($request->site_logo != ''){
                 $path = public_path().'/site/';
 
                 //code for remove old file
@@ -34,8 +34,8 @@ class SettingsController extends Controller
                 }
 
                 //upload new file
-                $file = $request->logo;
-                $filename = $request->logo->getClientOriginalName();
+                $file = $request->site_logo;
+                $filename = $request->site_logo->getClientOriginalName();
                 $file->move($path, $filename);
             }else{
                 $filename = $request->old_logo;
@@ -53,22 +53,28 @@ class SettingsController extends Controller
                 $address = $request->address;
             }
 
+            // dd($request->toArray());
+
             $update = DB::table('general_settings')->update([
                 'site_logo'=>$filename,
                 'site_name'=>$request->site_name,
                 'site_title'=>$request->site_title,
                 'theme_color'=>$request->theme_color,
-                'copyright'=>$request->site_copyright,
+                'copyright'=>$request->copyright,
                 'currency'=>$request->currency,
                 'description'=>$request->description,
                 'phone'=>$phone,
                 'email'=>$email,
                 'address'=>$address,
             ]);
-            return $update;
+            return to_route('admin.general_settings.index')->with('success', 'General Setting Updated Successfuly!.');
         }else{
-            $settings = DB::table('general_settings')->get();
-            return view('admin.settings.general',['data'=>$settings]);
+            $settings = DB::table('general_settings')->first();
+            return inertia()->render('General/Create', [
+                'data' => $settings,
+                'title' => 'General Setting Management',
+                'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            ]);
         }
     }
 
@@ -120,11 +126,20 @@ class SettingsController extends Controller
                 'instagram'=>$request->instagram,
                 'twitter'=>$request->twitter,
                 'facebook'=>$request->facebook,
+                'tiktok'=>$request->tiktok,
+                'zalo'=>$request->zalo,
             ]);
-            return $update;
+            return to_route('admin.social_settings.index')->with('success', 'Social Updated Successfuly!.');
         }else{
-            $social = DB::table('social_links')->get();
-            return view('admin.settings.social',['social'=>$social]);
+            $social = DB::table('social_links')->first();
+
+            return inertia()->render('Social/Create', [
+                'data' => $social,
+                'title' => 'Social Management',
+                'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+                'filters' => (object) $request->all(),
+                'routeResourceName' => $this->routeResourceName,
+            ]);
         }
     }
 

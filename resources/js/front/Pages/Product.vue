@@ -179,12 +179,10 @@ watchEffect(() => {
                                 </p>
                                 <div v-if="product.discount != '0'" class="product-price">
                                     <span class="special-price">
-                                        {{ generalSettings.currency }}
-                                        {{  $filters.formatNumber(product.taxable_price - product.discount) }}
+                                        {{  $filters.formatNumber(product.taxable_price - product.discount) }} {{ generalSettings.currency }}
                                     </span>
                                     <span class="old-price">
-                                        {{ generalSettings.currency }}
-                                        {{  $filters.formatNumber(product.taxable_price) }}
+                                        {{  $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                     </span>
                                     <span class="discount-price">
                                         {{ $filters.formatNumber( product.discount_percent )}} off
@@ -192,8 +190,7 @@ watchEffect(() => {
                                 </div>
                                 <div v-else class="product-price">
                                     <span class="special-price">
-                                        {{ generalSettings.currency }}
-                                        {{ $filters.formatNumber(product.taxable_price) }}
+                                        {{ $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                     </span>
                                 </div>
                                 <ProductRating :rating_col="product.rating_col" :rating_sum="product.rating_sum" />

@@ -1,9 +1,10 @@
 <script setup>
 import { usePage, Link } from "@inertiajs/vue3";
+import Social from "./Social.vue";
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
-const { generalSettings, sitePages, all_category } = usePage().props;
+const { generalSettings, socialLinks, sitePages, all_category } = usePage().props;
 
 
 </script>
@@ -104,8 +105,20 @@ const { generalSettings, sitePages, all_category } = usePage().props;
                             All rights reserved
                         </span>
                     </div>
+                    <div class="col-md-6 col-12">
+                        <Social />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+.footer-bottom {
+    width: 100%;
+    position:fixed;
+    bottom: 0;
+    background-color: #f8f8f8;
+}
+</style>

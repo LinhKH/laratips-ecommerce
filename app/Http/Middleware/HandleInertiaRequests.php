@@ -67,6 +67,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'all_category' => $allCategories,
             'generalSettings' => DB::table('general_settings')->first(),
+            'socialLinks' => DB::table('social_links')->first(),
             'sitePages' => DB::table('pages')->where('status', '1')->get(),
             'user' => $user,
             'userSession' => $userSession,

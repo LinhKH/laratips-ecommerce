@@ -241,7 +241,7 @@ button:focus{ outline: none; }
 
 .navbar-brand .nav-link{
     color: #fff;
-    background: #048567;
+    /* background: #048567; */
     padding: 10px 10px;
     font-size: 18px;
     font-weight: 500;
@@ -598,7 +598,7 @@ button:focus{ outline: none; }
     font-size: 12px;
 }
 .rating li{
-    color: #059473 !important;
+    color: #FCA10B !important;
     font-size: 12px;
 }
 .product-grid .rating li.disable{ color: #999; }

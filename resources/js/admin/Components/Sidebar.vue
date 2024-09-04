@@ -7,11 +7,14 @@ const { generalSettings, sitePages, all_category, auth } = usePage().props;
 
 let menuOpenPro = ref(false);
 let menuOpenReport = ref(false);
+let menuOpenSetting = ref(false);
 
 let activeClassProduct = ref(menuOpenPro.value || (route().current('admin.products.*') || route().current('admin.category.*') || route().current('admin.colors.*') || route().current('admin.brand.*')
     || route().current('admin.attribute.*') || route().current('admin.attribute-values.*') || route().current('admin.flash-deals.*')));
 
 let activeClassReport = ref( menuOpenReport.value || ( route().current('admin.product_sale.*') || route().current('admin.product_stock.*') ) );
+
+let activeClassSetting = ref( menuOpenSetting.value || ( route().current('admin.general_settings.*') || route().current('admin.social_settings.*') || route().current('admin.profile_settings.*') ) );
 
 const classObjectReport = computed(() => ({
     'menu-is-opening': activeClassReport.value,
@@ -22,6 +25,10 @@ const classObjectProduct = computed(() => ({
     'menu-is-opening': activeClassProduct.value,
     'menu-open': menuOpenPro.value
 }));
+const classObjecSetting = computed(() => ({
+    'menu-is-opening': activeClassSetting.value,
+    'menu-open': menuOpenSetting.value
+}));
 
 onMounted(() => {
     if (activeClassProduct.value) {
@@ -30,6 +37,9 @@ onMounted(() => {
 
     if (activeClassReport.value) {
         menuOpenReport.value = true;
+    }
+    if (activeClassSetting.value) {
+        menuOpenSetting.value = true;
     }
 });
 
@@ -168,6 +178,35 @@ onMounted(() => {
                             Users
                         </p>
                         </Link>
+                    </li>
+                    <li class="nav-item has-treeview" :class="classObjecSetting">
+                        <a @click="menuOpenSetting = !menuOpenSetting" href="javascript:void(0)" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Settings <i class="fas fa-angle-left right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <Link :href="route('admin.general_settings.index')"
+                                    class="nav-link" :class="{ 'active bg-primary': route().current('admin.general_settings.*') }">
+                                    <i class="nav-icon" :class="[ route().current('admin.general_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                    <p>General Settings</p>
+                                </Link>
+                            </li>
+                            <li class="nav-item">
+                                <Link :href="route('admin.profile_settings.index')"
+                                    class="nav-link" :class="{ 'active bg-primary': route().current('admin.profile_settings.*') }">
+                                    <i class="nav-icon" :class="[ route().current('admin.profile_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                    <p>Profile Settings</p>
+                                </Link>
+                            </li>
+                            <li class="nav-item">
+                                <Link :href="route('admin.social_settings.index')"
+                                    class="nav-link" :class="{ 'active bg-primary': route().current('admin.social_settings.*') }">
+                                    <i class="nav-icon" :class="[ route().current('admin.social_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
+                                    <p>Social Links Settings</p>
+                                </Link>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </nav>

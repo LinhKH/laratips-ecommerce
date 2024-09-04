@@ -77,13 +77,13 @@ const {
                     </div>
                 </div>
                 <div class="container-xl container-fluid">
-                    <div class="row my-2">
+                    <div class="row my-2 align-items-center">
                         <div class="col-lg-3 col-md-4 col-sm-12 align-self-center">
                             <div class="logo">
                                 <Link href="/">
                                     <img
                                         :src="`${baseUrl}/site/${generalSettings.site_logo}`"
-                                        :alt="generalSettings.site_logo"
+                                        :alt="generalSettings.site_logo" style="width: 40%;"
                                     />
                                 </Link>
                             </div>

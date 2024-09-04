@@ -43,10 +43,10 @@ Route::middleware(['auth','admin'])->group(function () {
     // Route::get('/', [AdminController::class, 'index']);
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('logout', [AdminController::class, 'logout']);
-    Route::any('general-settings', [SettingsController::class, 'general_settings']);
-    Route::any('profile-settings', [SettingsController::class, 'profile_settings'])->name('profile_settings');
+    Route::any('general-settings', [SettingsController::class, 'general_settings'])->name('general_settings.index');
+    Route::any('profile-settings', [SettingsController::class, 'profile_settings'])->name('profile_settings.index');
     Route::post('profile-settings/change-password', [SettingsController::class, 'change_password'])->name('profile_settings.change_password');
-    Route::any('social-settings', [SettingsController::class, 'social_settings'])->name('social_settings');
+    Route::any('social-settings', [SettingsController::class, 'social_settings'])->name('social_settings.index');
     // Route::resource('banner', BannerController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('category', CategoryController::class);
