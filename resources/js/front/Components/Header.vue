@@ -44,6 +44,20 @@ const {
             pickBy(data)
         ).get(baseUrl + "/search");
     };
+
+    onMounted(() => {
+        if ($('.wsus__main_menu').offset() != undefined) {
+            var navoff = $('.wsus__main_menu').offset().top;
+            $(window).scroll(function () {
+                var scrolling = $(this).scrollTop();
+                if (scrolling > navoff) {
+                    $('.wsus__main_menu').addClass('menu_fix');
+                } else {
+                    $('.wsus__main_menu').removeClass('menu_fix');
+                }
+            });
+        }
+    })
     
 </script>
 
@@ -216,7 +230,7 @@ const {
                     </div>
                 </div>
             </header>
-            <nav class="navbar navbar-expand-lg">
+            <nav class="navbar navbar-expand-lg wsus__main_menu">
                 <div class="container-xl container-fluid">
                     <div class="navbar-brand" href="#">
                         <div class="nav-item dropdown">
@@ -306,5 +320,38 @@ const {
     .welcome-message {
         display: none;
     }
+}
+
+.navbar-collapse{
+    background: var(--main-color);
+}
+
+.menu_fix {
+  position: fixed;
+  width: 100%;
+  left: 0px;
+  top: 0;
+  z-index: 999;
+  animation: menu_animate 1s;
+  /* background: #0b2c3d; */
+  height: 50px;
+}
+
+@keyframes menu_animate {
+  from {
+    transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    -o-transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0%);
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    -o-transform: translateY(0%);
+  }
 }
 </style>
