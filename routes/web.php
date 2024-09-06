@@ -13,6 +13,10 @@ Route::get('/signup', [UserController::class, 'create'])->name('signup');
 Route::post('/signup', [UserController::class, 'store'])->name('signup.store');
 Route::get('/user_login', [UserController::class, 'login'])->name('user_login');
 Route::post('/user_login', [UserController::class, 'login'])->name('user_login.store');
+
+Route::get('google/login', [UserController::class, 'provider'])->name('google.login');
+Route::get('google/callback', [UserController::class, 'handleProviderCallback'])->name('google.callback');
+
 Route::get('/logout', [UserController::class, 'logout'])->name('user_logout');
 Route::get('forgot-password', [UserController::class, 'forgotPassword_show'])->name('user_forgot_password');
 Route::post('forgot-password', [UserController::class, 'forgotPassword_submit'])->name('user_forgot_password.store');

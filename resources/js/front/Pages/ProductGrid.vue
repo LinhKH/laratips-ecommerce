@@ -16,10 +16,10 @@ const props = defineProps({
 const auth = computed(() => usePage().props.auth.user)
 
 const checkWishList = (product_id) => {
-    let wishlist_items = auth.value.wishlist;
-    let wishlist = wishlist_items.split(',');
+    let wishlist_items = auth.value?.wishlist;
+    let wishlist = wishlist_items?.split(',');
 
-    return wishlist.includes(product_id.toString()) ? true : false;
+    return wishlist?.includes(product_id.toString()) ? true : false;
 }
 
 const productName =
@@ -83,7 +83,7 @@ function handleRemoveFromWishlist(product_id) {
                 :alt="`${product.product_name}`" />
             </Link>
             <span v-if="product.discount != '0'" class="product-discount-label">
-                {{ typeof(product.discount_percent) !== 'number' ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
+                {{ product.discount_percent?.indexOf('%') !== -1 ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
             </span>
             <!-- <span class="product-sale-label">sale</span> -->
             <Link class="quick-view" :href="`${baseUrl}/product/${product.slug}`">

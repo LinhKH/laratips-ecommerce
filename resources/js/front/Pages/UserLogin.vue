@@ -75,12 +75,17 @@ function handleSubmit(e) {
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row justify-content-between mb-2">
                                 <input type="submit" :disabled="data.processing" name="save"
                                     class="btn btn-primary login-btn" value="Login" required />
                                 <Link :href="`${baseUrl}/forgot-password`" class="forgot-password align-self-center">
                                 forgot password
                                 </Link>
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-center align-items-center">
+                                <span>---OR---</span>
+                                <a :href="route('google.login')" class="btn btn-sm btn-primary">Google Login</a>
                             </div>
 
                             <div v-if="$page.props.flash.error" class="alert alert-danger mt-2" role="alert">

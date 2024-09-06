@@ -2,7 +2,7 @@
 import { Head, Link, router, useForm, usePage } from "@inertiajs/vue3";
 import Preloader from "./Preloader.vue";
 import Attribute from "./Attribute.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 let activeStep = ref(1);
@@ -135,7 +135,7 @@ const handleSubmit = (e) => {
                         <tr>
                             <th>Address :</th>
                             <td>
-                                {{ user.address }} - {{ user.pin_code }},
+                                {{ user.address }} - 
                                 {{ user.city_name }}, {{ user.state_name }},
                                 {{ user.country_name }}
                             </td>
@@ -178,25 +178,20 @@ const handleSubmit = (e) => {
                                 </div>
                             </td>
                             <td>
-                                {{ generalSettings.currency }}
-                                {{ product.taxable_price }}
+                                {{ $filters.formatNumber( product.taxable_price) }} {{ generalSettings.currency }}
                             </td>
                             <td>
                                 {{ product.qty }}
                             </td>
                             <td>
-                                {{ generalSettings.currency }}
                                 <span class="product-total">
-                                    {{ product.shipping_charges == 'free'
-                                        ? parseInt(
-                                            product.taxable_price
-                                        ) * product.qty
-                                        : parseInt(
-                                            product.taxable_price
-                                        ) *
-                                        product.qty +
-                                        parseInt(charges) }}
+                                    {{ 
+                                        product.shipping_charges == 'free' 
+                                        ? $filters.formatNumber( parseInt(product.taxable_price) * product.qty )
+                                        : $filters.formatNumber( parseInt(product.taxable_price) * product.qty + parseInt(charges) )
+                                    }}
                                 </span>
+                                {{ generalSettings.currency }}
                             </td>
                         </tr>
 
@@ -205,8 +200,8 @@ const handleSubmit = (e) => {
                                 <b>Total Amount</b>
                             </td>
                             <td class="">
+                                <span>{{ $filters.formatNumber( calculateTotal() ) }}</span>
                                 {{ generalSettings.currency }}
-                                <span>{{ calculateTotal() }}</span>
                             </td>
                         </tr>
                     </tbody>

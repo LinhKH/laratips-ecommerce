@@ -24,6 +24,7 @@ use App\Models\State;
 use App\Models\Country;
 use App\Models\Review;
 use App\Models\OrderProducts;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Exception;
 use Yajra\DataTables\DataTables;
@@ -32,8 +33,9 @@ use Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -55,6 +57,36 @@ class UserController extends Controller
             'title' => 'Users Management', 
             'breadcrumb' => ['Dashboard'=>'admin.dashboard']
         ]);
+    }
+
+    public function provider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+        } catch (\Throwable $th) {
+            return redirect('/user_login');
+        }
+
+        $user = User::updateOrCreate([
+            'email' => $user->email,
+        ], [
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
+        request()->session()->put('user', '1');
+        request()->session()->put('user_name', $user->name);
+        request()->session()->put('user_id', $user->user_id);
+        Session::flash('success', 'Logged in Successfully.');
+
+        Auth::login($user);
+
+        return redirect('/');
+
     }
 
     /**

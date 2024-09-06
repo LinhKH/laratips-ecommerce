@@ -185,7 +185,7 @@ watchEffect(() => {
                                         {{  $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                     </span>
                                     <span class="discount-price">
-                                        {{ $filters.formatNumber( product.discount_percent )}} off
+                                        {{ product.discount_percent?.indexOf('%') !== -1 ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
                                     </span>
                                 </div>
                                 <div v-else class="product-price">

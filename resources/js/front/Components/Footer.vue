@@ -10,7 +10,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
 </script>
 <template>
     <div class="footer-widget">
-        <div class="container-xl container-fluid">
+        <div class="container-xl container-fluid" style="margin-bottom: 25px;">
             <div class="row">
                 <div class="col-lg-3 col-md-6 mb-5">
                     <div class="site-info-widget">
