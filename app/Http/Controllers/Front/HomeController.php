@@ -167,6 +167,8 @@ class HomeController extends Controller
         $product->discount = $price->old_price - $price->new_price;
         $product->discount_percent = $price->discount;
 
+        // dd($product->toArray());
+
         $cat_detail = Category::select('*')->where('categories.id', $product->category)->first();
         $breadcrumb_ids = get_category_breadcrumb($cat_detail->id);
         $breadcrumb = Category::select(['id', 'category_name', 'category_slug'])->whereIn('id', $breadcrumb_ids)->orderBy('id', 'ASC')->get();
@@ -187,6 +189,12 @@ class HomeController extends Controller
             ->orderBy('products.id', 'DESC')
             ->limit(10)
             ->get();
+
+            foreach ($related as $product) {
+                $price = get_product_price($product->id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
+            }
 
         $colors = Color::select(['colors.*'])->get();
         $attrvalues = Attrvalue::select(['attrvalues.*'])->get();

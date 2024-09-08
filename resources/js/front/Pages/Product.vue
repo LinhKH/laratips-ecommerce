@@ -171,8 +171,8 @@ watchEffect(() => {
                                         </template>
                                     </ol>
                                 </nav>
-                                <span class="brand-name">
-                                    Brand: {{ product.brand_name }}
+                                <span >
+                                    <strong>Brand :</strong> {{ product.brand_name }}
                                 </span>
                                 <p class="product-name">
                                     {{ product.product_name }}
@@ -185,7 +185,7 @@ watchEffect(() => {
                                         {{  $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                     </span>
                                     <span class="discount-price">
-                                        {{ product.discount_percent?.indexOf('%') !== -1 ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
+                                        {{ typeof( product.discount_percent ) == 'number' ? $filters.formatNumber(product.discount_percent) : product.discount_percent }} off
                                     </span>
                                 </div>
                                 <div v-else class="product-price">

@@ -83,7 +83,7 @@ function handleRemoveFromWishlist(product_id) {
                 :alt="`${product.product_name}`" />
             </Link>
             <span v-if="product.discount != '0'" class="product-discount-label">
-                {{ product.discount_percent?.indexOf('%') !== -1 ? product.discount_percent : $filters.formatNumber(product.discount_percent) }} off
+                {{ typeof( product.discount_percent ) == 'number' ? $filters.formatNumber(product.discount_percent) : product.discount_percent }} off
             </span>
             <!-- <span class="product-sale-label">sale</span> -->
             <Link class="quick-view" :href="`${baseUrl}/product/${product.slug}`">
