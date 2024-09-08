@@ -17,9 +17,9 @@ const data = useForm({
     email: address.email || '',
     img: '',
     phone: address.phone || '',
-    country: address.country != null ? address.country : '',
-    state: address.state != null ? address.state : '',
-    city: address.city != null ? address.city : '',
+    country: address.country.id != null ? address.country.id : '',
+    state: address.state.id != null ? address.state.id : '',
+    city: address.city.id != null ? address.city.id : '',
     address: address.address || '',
     _method: 'PUT',
 })
