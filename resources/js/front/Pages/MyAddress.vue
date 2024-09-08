@@ -34,8 +34,11 @@ const deleteAddress = (id) => {
                 </div>
             </div>
             <div class="container-xl container-fluid">
+                <div>
+                    <Link :href="route('address.create')" class="btn btn-primary mb-3">Add New Address</Link>
+                </div>
                 <div class="row">
-                    <div class="col-xl-3" v-for="(address, index) in addresses">
+                    <div class="col-xl-3 mt-3" v-for="(address, index) in addresses">
                         <div class="wsus__dash_add_single">
                             <h4>Billing Address {{ index + 1 }}</h4>
                             <ul>

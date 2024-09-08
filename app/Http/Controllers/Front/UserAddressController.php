@@ -34,7 +34,17 @@ class UserAddressController extends Controller
      */
     public function create()
     {
-        return view('frontend.dashboard.address.create');
+        if (session()->has('user_name')) {
+            $user_id = session()->get('user_id');
+            $user = Users::where(['user_id' => $user_id])->first();
+            $country = Country::select(['countries.*'])->get();
+            $state = State::select(['states.*'])->where('status', 1)->get();
+            $city = City::select(['cities.*'])->where('status', 1)->get();
+            $address = null;
+            return Inertia::render('EditAddress', ['user' => $user, 'city' => $city, 'state' => $state, 'country' => $country, 'address' => $address]);
+        } else {
+            return Inertia::render('UserLogin');
+        }
     }
 
     /**
@@ -65,7 +75,7 @@ class UserAddressController extends Controller
             $address->address = $request->address;
             $address->save();
     
-            return redirect()->back()->with('success', 'Address Created Successfuly!.');
+            return to_route('address.index')->with('success', 'Address Created Successfuly!.');
         } else {
             return Inertia::render('UserLogin');
         }

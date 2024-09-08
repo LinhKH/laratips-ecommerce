@@ -135,22 +135,22 @@ const handleSubmit = (e) => {
     <form @submit.prevent="handleSubmit" method="POST">
         <ul class="d-flex justify-content-around">
             <li>
-                <a type="button" class="btn btn-primary" @click="handleStep(1)"
+                <button type="button" class="btn btn-primary" @click="handleStep(1)"
                     :disabled="activeStep == 1 ? false : true">
                     Step 1
-                </a>
+                </button>
             </li>
             <li>
-                <a type="button" class="btn btn-primary" @click="handleStep(2)"
+                <button type="button" class="btn btn-primary" @click="handleStep(2)"
                     :disabled="activeStep == 2 ? false : true">
                     Step 2
-                </a>
+                </button>
             </li>
             <li>
-                <a type="button" class="btn btn-primary" @click="handleStep(3)"
+                <button type="button" class="btn btn-primary" @click="handleStep(3)"
                     :disabled="activeStep == 3 ? false : true">
                     Step 3
-                </a>
+                </button>
             </li>
         </ul>
         <div class="multi-content">

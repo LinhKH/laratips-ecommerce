@@ -21,7 +21,7 @@ for (let i = 0; i < 5; i++) {
         star += '<li class="far fa-star disable"></li>';
     }
 }
-star = star + " (" + props.rating_col + " reviews)";
+star = star + " (" + (props.rating_col ?? 0) + " reviews)";
 </script>
 <template>
     <ul class="rating" v-html="star"></ul>

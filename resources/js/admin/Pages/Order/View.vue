@@ -122,12 +122,12 @@ const deliverConfirm = (product_qty, product_id, order_id) => {
                     <div class="col-md-6 text-md-right">
                     <address>
                         <strong>Nhận hàng bởi:</strong><br>
-                            <b>Name:</b> {{order.order_address.name}}<br>
-                            <b>Email: </b> {{order.order_address.email}}<br>
-                            <b>Phone:</b> {{order.order_address.phone}}<br>
-                            <b>Address:</b> {{order.order_address.address}},
-                                {{order.order_address.city.city_name}}, {{order.order_address.state.state_name}},
-                                {{order.order_address.country.country_name}}
+                            <b>Name:</b> {{order.order_address?.name}}<br>
+                            <b>Email: </b> {{order.order_address?.email}}<br>
+                            <b>Phone:</b> {{order.order_address?.phone}}<br>
+                            <b>Address:</b> {{order.order_address?.address}},
+                                {{order.order_address?.city.city_name}}, {{order.order_address?.state.state_name}},
+                                {{order.order_address?.country.country_name}}
                     </address>
                     </div>
                 </div>

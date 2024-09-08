@@ -340,9 +340,12 @@ class ProductController extends Controller
             $colors = '';
         }
 
-        $startDatetimes = date('m/d/Y', strtotime($request->datetimes[0]));
-        $endDatetimes = date('m/d/Y', strtotime($request->datetimes[1]));
-        $flash_date_range = $startDatetimes . ' - ' . $endDatetimes;
+        $flash_date_range = null;
+        if ($request->datetimes) {
+            $startDatetimes = date('m/d/Y', strtotime($request->datetimes[0]));
+            $endDatetimes = date('m/d/Y', strtotime($request->datetimes[1]));
+            $flash_date_range = $startDatetimes . ' - ' . $endDatetimes;
+        }
 
         $products = Product::where(['id' => $id])->update([
             'thumbnail_img' => $image,

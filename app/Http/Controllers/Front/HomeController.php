@@ -21,6 +21,7 @@ use App\Models\OrderProducts;
 use App\Models\Page;
 use Illuminate\Pagination\Paginator;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Query\JoinClause;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -105,11 +106,62 @@ class HomeController extends Controller
             }
         }
 
-        $orderProducts = OrderProducts::select(['order_products.product_id', 'products.product_name', 'products.slug', 'products.thumbnail_img', 'products.unit_price', 'products.discount', DB::raw('SUM(order_products.product_qty) AS total_qty'), DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
-            ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
-            ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
-            ->groupBy('order_products.product_id', 'products.product_name', 'products.thumbnail_img', 'products.unit_price')
-            ->orderBy('total_qty', 'desc')->limit(5)->get();
+        // $orderProducts = OrderProducts::select(['order_products.product_id', 'products.product_name', 'products.slug', 'products.thumbnail_img', 'products.unit_price', 'products.discount', 
+        //             DB::raw('SUM(order_products.product_qty) AS total_qty'), DB::raw('COUNT(reviews.product) as rating_col'), DB::raw('SUM(reviews.rating) as rating_sum')])
+        //     ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
+        //     ->leftjoin('reviews', 'reviews.product', '=', 'products.id')
+        //     ->groupBy('order_products.product_id', 'products.product_name', 'products.thumbnail_img', 'products.unit_price')
+        //     ->orderBy('total_qty', 'desc')->limit(5)->get();
+
+
+        $products = DB::table('products')
+        ->select('id', 'product_name', 'slug', 'thumbnail_img', 'unit_price', 'discount')
+        ->groupBy('id');
+
+        $reviews = DB::table('reviews')
+        ->select('product', DB::raw('COUNT(product) rating_col'), DB::raw('sum( rating ) rating_sum'))
+        ->groupBy('product');
+
+        $orderProducts = DB::table('order_products')
+        ->select(
+            'order_products.product_id',
+            'products.product_name',
+            'products.slug',
+            'products.thumbnail_img',
+            'products.unit_price',
+            'products.discount',
+            DB::raw('sum(order_products.product_qty) AS total_qty'),
+            'reviews.rating_col',
+            'reviews.rating_sum'
+        )
+
+        ->leftJoinSub($products, 'products', function (JoinClause $join) {
+            $join->on('order_products.product_id', '=', 'products.id');
+        })
+            ->leftJoinSub($reviews, 'reviews', function (JoinClause $join) {
+                $join->on('order_products.product_id', '=', 'reviews.product');
+            })
+            ->groupBy('order_products.product_id')->orderBy('total_qty', 'DESC')->limit(5)
+            ->get();
+
+        // dd($orderProducts->toRawSql());
+
+        // $orderProducts = DB::raw(
+        //     "
+        //         SELECT t1.product_id, t2.product_name, t2.slug, t2.thumbnail_img, t2.unit_price, t2.discount, sum(t1.product_qty) AS total_qty
+        //         , t3.rating_col AS rating_col
+        //         , t3.rating_sum AS rating_sum
+
+        //         FROM order_products t1 
+
+        //         LEFT JOIN ( Select id,product_name,slug,thumbnail_img,unit_price,discount from products  group by id ) t2 ON t1.product_id = t2.id
+
+        //         LEFT JOIN ( Select product, COUNT(product) rating_col,  sum( rating ) rating_sum from reviews  group BY product ) t3 ON t1.product_id = t3.product
+                            
+        //         GROUP BY t1.product_id
+        //         ORDER BY total_qty DESC
+        //     "
+        // );
 
         if ($orderProducts) {
             foreach ($orderProducts as $product) {

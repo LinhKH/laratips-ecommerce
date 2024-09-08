@@ -4,7 +4,7 @@ import { computed, onMounted } from 'vue';
 import FrontLayout from '../Layouts/FrontLayout.vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
 
-const {
+const  {
     address,
     user,
     city,
@@ -13,62 +13,81 @@ const {
 } = usePage().props;
 
 const data = useForm({
-    name: address.name || '',
-    email: address.email || '',
-    img: '',
-    phone: address.phone || '',
-    country: address.country.id != null ? address.country.id : '',
-    state: address.state.id != null ? address.state.id : '',
-    city: address.city.id != null ? address.city.id : '',
-    address: address.address || '',
-    _method: 'PUT',
+    name: address?.name || '',
+    email: address?.email || '',
+    phone: address?.phone || '',
+    country: address?.country.id != null ? address?.country.id : '',
+    state: address?.state.id != null ? address?.state.id : '',
+    city: address?.city.id != null ? address?.city.id : '',
+    address: address?.address || '',
+    
 })
 
 function handleSubmit(e) {
-    data.post(route('address.update', address.id), {
-        preserveScroll: true,
-        preserveState: false,
-        onSuccess: () => data.reset(),
-    });
+
+    if(address) {
+        data.transform((data) => ({
+            ...data,
+            _method: 'PUT',
+        })).post(route('address.update', address.id), {
+            preserveScroll: true,
+            preserveState: false,
+            onSuccess: () => data.reset(),
+        });
+    } else {
+        data.post(route('address.store'), {
+            preserveScroll: true,
+            preserveState: false,
+            onSuccess: () => data.reset(),
+        });
+    }
+    
 }
+
+const titleHead = computed(() => {
+    return address? 'Edit Address' : 'Add Address';
+});
 
 </script>
 <template>
     <FrontLayout>
-        <Head title="Edit Address"></Head>
+        <Head :title="titleHead"></Head>
         <div id="site-content">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>Edit Address</h2>
+                    <h2>{{ titleHead }}</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
                             <li class="breadcrumb-item">
                                 <Link :href="`${baseUrl}`">Home</Link>
                             </li>
-                            <li class="breadcrumb-item active">Edit Address</li>
+                            <li class="breadcrumb-item active">{{ titleHead }}</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <div class="container-xl container-fluid">
-                <form class="row" @submit.prevent="handleSubmit" method="post">
+                <form class="row" @submit.prevent="handleSubmit">
                     <div class="row">
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Họ và tên : </label>
                             <input type="text" class="form-control" name="name" v-model="data.name" />
-                            <div v-if="data.errors.name" class="alert alert-danger mt-2" role="alert">{{
-                                data.errors.name }}
+                            <div v-if="$page.props.errors.name" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.name }}
                             </div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Email : </label>
                             <input type="text" class="form-control" name="name" v-model="data.email" />
+                            <div v-if="$page.props.errors.email" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.email }}
+                            </div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Số điện thoại : </label>
                             <input type="text" class="form-control" name="phone" v-model="data.phone" />
-                            <div v-if="data.errors.phone" class="alert alert-danger mt-2" role="alert">{{
-                                data.errors.phone }}
+                            <div v-if="$page.props.errors.phone" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.phone }}
                             </div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
@@ -79,8 +98,8 @@ function handleSubmit(e) {
                                     {{ country.country_name }}
                                 </option>
                             </select>
-                            <div v-if="data.errors.country" class="alert alert-danger mt-2" role="alert">
-                                {{ data.errors.country }}</div>
+                            <div v-if="$page.props.errors.country" class="alert alert-danger mt-2" role="alert">
+                                {{ $page.props.errors.country }}</div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Tỉnh/Thành phố : </label>
@@ -92,8 +111,8 @@ function handleSubmit(e) {
                                     </option>
                                 </template>
                             </select>
-                            <div v-if="data.errors.state" class="alert alert-danger mt-2" role="alert">{{
-                                data.errors.state }}
+                            <div v-if="$page.props.errors.state" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.state }}
                             </div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
@@ -106,15 +125,15 @@ function handleSubmit(e) {
                                     </option>
                                 </template>
                             </select>
-                            <div v-if="data.errors.city" class="alert alert-danger mt-2" role="alert">{{
-                                data.errors.city }}
+                            <div v-if="$page.props.errors.city" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.city }}
                             </div>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Địa chỉ chi tiết :</label>
                             <input type="text" class="form-control" name="address" v-model="data.address" />
-                            <div v-if="data.errors.address" class="alert alert-danger mt-2" role="alert">
-                                {{ data.errors.address }}</div>
+                            <div v-if="$page.props.errors.address" class="alert alert-danger mt-2" role="alert">
+                                {{ $page.props.errors.address }}</div>
                         </div>
                     </div>
                     <button type="submit" :disabled="data.processing" class="btn btn-primary mb-2">
