@@ -97,7 +97,7 @@ const {
                                 <Link href="/">
                                     <img
                                         :src="`${baseUrl}/site/${generalSettings.site_logo}`"
-                                        :alt="generalSettings.site_logo" style="width: 40%;"
+                                        :alt="generalSettings.site_logo"
                                     />
                                 </Link>
                             </div>
@@ -164,6 +164,12 @@ const {
                                                 :href="route('my_profile')"
                                             >
                                                 My Profile
+                                            </Link>
+                                            <Link
+                                                class="dropdown-item"
+                                                :href="route('address.index')"
+                                            >
+                                                My Address
                                             </Link>
                                             <Link
                                                 class="dropdown-item"

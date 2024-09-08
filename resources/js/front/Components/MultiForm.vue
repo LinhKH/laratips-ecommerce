@@ -2,23 +2,65 @@
 import { Head, Link, router, useForm, usePage } from "@inertiajs/vue3";
 import Preloader from "./Preloader.vue";
 import Attribute from "./Attribute.vue";
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 let activeStep = ref(1);
+const isAdding = ref(false);
 
 const handleStep = (step) => {
+    if (!data.address) {
+        Swal.fire({
+            title: "Vui lòng chọn địa chỉ giao hàng. Nếu chưa có xin hãy tạo địa chị mới",
+            icon: "warning",
+        });
+        return false;
+    }
     activeStep.value = step;
 };
+
+const add_address = reactive({
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    state: '',
+    city: '',
+    address: '',
+});
+
+const handleAddAddress = () => {
+    router.post(route('address.store'), {...add_address, __method:'post'}, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            add_address.name = "";
+            add_address.email = "";
+            add_address.phone = "";
+            add_address.country = "";
+            add_address.state = "";
+            add_address.city = "";
+            add_address.address = "";
+            isAdding.value = false;
+        }
+    });
+}
 
 const {
     generalSettings,
     user,
+    country,
+    state,
+    city,
     products,
     payment_method,
     cities,
     razorkey,
 } = usePage().props;
+
+const addresses = computed(() => {
+    return usePage().props.addresses
+})
 
 const charges = user.city != null ? cities.filter((city) => city.id == user.city)[0].cost_city : null;
 
@@ -32,6 +74,7 @@ const calculateTotal = () => {
 
 const data = useForm({
     pay_method: "",
+    address: "",
     amount: calculateTotal(),
 });
 
@@ -80,7 +123,7 @@ const handleSubmit = (e) => {
         //     "&" +
         //     new URLSearchParams(data).toString();
 
-            router.get(`${baseUrl}/pay-with-cod/${data.amount}?${urlParams}&amount=${data.amount}&pay_method=${data.pay_method}`);
+            router.get(`${baseUrl}/pay-with-cod/${data.amount}?${urlParams}&amount=${data.amount}&pay_method=${data.pay_method}&address=${data.address}`);
     }
 };
 
@@ -92,56 +135,133 @@ const handleSubmit = (e) => {
     <form @submit.prevent="handleSubmit" method="POST">
         <ul class="d-flex justify-content-around">
             <li>
-                <button type="button" class="btn btn-primary" @click="handleStep(1)"
+                <a type="button" class="btn btn-primary" @click="handleStep(1)"
                     :disabled="activeStep == 1 ? false : true">
                     Step 1
-                </button>
+                </a>
             </li>
             <li>
-                <button type="button" class="btn btn-primary" @click="handleStep(2)"
+                <a type="button" class="btn btn-primary" @click="handleStep(2)"
                     :disabled="activeStep == 2 ? false : true">
                     Step 2
-                </button>
+                </a>
             </li>
             <li>
-                <button type="button" class="btn btn-primary" @click="handleStep(3)"
+                <a type="button" class="btn btn-primary" @click="handleStep(3)"
                     :disabled="activeStep == 3 ? false : true">
                     Step 3
-                </button>
+                </a>
             </li>
         </ul>
         <div class="multi-content">
             <div v-if="activeStep == 1" id="Step1" class="row py-3">
+                <div>
+                    Delivery Details
+                </div>
+                <div class="col-xl-3" v-for="(address, index) in addresses">
+                    <div class="wsus__dash_add_single">
+                        <h4>Billing Address {{ index + 1 }}</h4>
+                        <ul>
+                            <li><strong>Name :</strong> {{address.name}}</li>
+                            <li><strong>Phone :</strong> {{address.phone}}</li>
+                            <li><strong>Email :</strong> {{address.email}}</li>
+                            <li><strong>Country :</strong> {{address.country.country_name}}</li>
+                            <li><strong>State :</strong> {{address.state.state_name}}</li>
+                            <li><strong>City :</strong> {{address.city.city_name}}</li>
+                            <li><strong>Address Detail :</strong> {{address.address}}</li>
+                        </ul>
+                       
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios" :id="`exampleRadios${index}`" v-model="data.address" :value="address.id" >
+                        <label class="form-check-label" :for="`exampleRadios${index}`">
+                            Choose
+                        </label>
+                    </div>
+
+                </div>
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Delivery Details</th>
                             <th>
-                                <Link :href="route('my_profile')" class="btn btn-primary">
-                                Change
-                                </Link>
+                                <a href="javacrtip:;" @click="isAdding = !isAdding" class="btn btn-primary">
+                                    Add Address
+                                </a>
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th>Name :</th>
-                            <td>{{ user.name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Phone Number :</th>
-                            <td>{{ user.phone }}</td>
-                        </tr>
-                        <tr>
-                            <th>Address :</th>
-                            <td>
-                                {{ user.address }} - 
-                                {{ user.city_name }}, {{ user.state_name }},
-                                {{ user.country_name }}
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
+                <div class="container-xl container-fluid" v-if="isAdding">
+                    <div class="row">
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Họ và tên : </label>
+                            <input type="text" class="form-control" name="name" v-model="add_address.name" />
+                            <div v-if="$page.props.errors.name" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.name }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Email : </label>
+                            <input type="text" class="form-control" name="name" v-model="add_address.email" />
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Số điện thoại : </label>
+                            <input type="text" class="form-control" name="phone" v-model="add_address.phone" />
+                            <div v-if="$page.props.errors.phone" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.phone }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Quốc gia : </label>
+                            <select class="form-control select-country" name="country" v-model="add_address.country">
+                                <option value="">Select Country</option>
+                                <option v-for="country in country" :key="country.id" :value="country.id">
+                                    {{ country.country_name }}
+                                </option>
+                            </select>
+                            <div v-if="$page.props.errors.country" class="alert alert-danger mt-2" role="alert">
+                                {{ $page.props.errors.country }}</div>
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Tỉnh/Thành phố : </label>
+                            <select class="form-control" name="state" id="state" v-model="add_address.state">
+                                <option value="">First Select Country</option>
+                                <template v-for="state in state" :key="state.id">
+                                    <option v-if="state.country == add_address.country" :value="state.id">
+                                        {{ state.state_name }}
+                                    </option>
+                                </template>
+                            </select>
+                            <div v-if="$page.props.errors.state" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.state }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Quận/Huyện : </label>
+                            <select class="form-control" name="city" id="city" v-model="add_address.city">
+                                <option value="">First Select State</option>
+                                <template v-for="city in city" key="city.id">
+                                    <option v-if="city.state == add_address.state" :value="city.id">
+                                        {{ city.city_name }}
+                                    </option>
+                                </template>
+                            </select>
+                            <div v-if="$page.props.errors.city" class="alert alert-danger mt-2" role="alert">{{
+                                $page.props.errors.city }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 col-xl-6 col-md-6">
+                            <label class="col-lg-3 col-sm-5 col-form-label">Địa chỉ chi tiết :</label>
+                            <input type="text" class="form-control" name="address" v-model="add_address.address" />
+                            <div v-if="$page.props.errors.address" class="alert alert-danger mt-2" role="alert">
+                                {{ $page.props.errors.address }}</div>
+                        </div>
+                    </div>
+                    <a @click.prevent="handleAddAddress" href="javascript:;" class="btn btn-primary mb-2">
+                        Create a new address 
+                    </a>
+                </div>
             </div>
             <div v-if="activeStep == 2" id="Step1" class="py-3">
                 <table class="table table-bordered">

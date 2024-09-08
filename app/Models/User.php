@@ -14,6 +14,8 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
 
+    public $with = ['country','state','city'];
+
     protected $primaryKey = 'user_id';
     
     /**
@@ -50,5 +52,15 @@ class User extends Authenticatable
     public function products()
     {
         return $this->hasMany(Product::class, 'creator_id');
+    }
+
+    public function country() {
+        return $this->belongsTo(Country::class, 'country');
+    }
+    public function state() {
+        return $this->belongsTo(State::class, 'state');
+    }
+    public function city() {
+        return $this->belongsTo(City::class, 'city');
     }
 }

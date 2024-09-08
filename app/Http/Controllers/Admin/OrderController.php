@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Order::select(['orders.*', 'payments.id as payment_id', 'payments.pay_method', 'payments.pay_status', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created'),'users.name','users.email','users.phone','users.address','users.city','users.state','products.product_name','products.unit_price','products.thumbnail_img','products.shipping_days'
+        $data = Order::with('order_address')->select(['orders.*', 'payments.id as payment_id', 'payments.pay_method', 'payments.pay_status', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created'),'users.name','users.email','users.phone','users.address','users.city','users.state','products.product_name','products.unit_price','products.thumbnail_img','products.shipping_days'
                     ,\DB::raw("GROUP_CONCAT(products.id SEPARATOR '|||') as p_id"),\DB::raw("GROUP_CONCAT(order_products.product_delivery SEPARATOR ',') as delivery")])
             ->leftjoin('order_products','order_products.order_id','=','orders.id')
             ->leftjoin('products','products.id','=','order_products.product_id')
@@ -141,7 +141,7 @@ class OrderController extends Controller
                     ->get();
         $color = Color::select(['colors.*'])->get();
 
-        $order = Order::select([ 'orders.*', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created')])->find($request->id);
+        $order = Order::with(['user','order_address'])->select([ 'orders.*', DB::raw('DATE_FORMAT(orders.created_at, "%d-%m-%Y") as formatted_created')])->find($request->id);
 
         return inertia()->render('Order/View', [
             'products' => $products,

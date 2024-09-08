@@ -107,56 +107,88 @@ const deliverConfirm = (product_qty, product_id, order_id) => {
         </BreadCrumb>
         <section class="content">
             <div class="container-fluid">
-                <table class="table table-bordered">
-                    <tbody class="cart-data">
-                        <tr class="active">
-                            <th colspan="4">
-                                <h5><b>ORDER No. : ODR00{{ order.id }} </b></h5>
-                            </th>
-                            <th width="250px"><b>Order Placed : {{ order.formatted_created }}</b></th>
-                            <th>Action</th>
-                        </tr>
-                        <tr v-for="row in products" :key="row.id">
-                            <td>
-                                <img class="img-thumbnail" :src="`${baseUrl}/products/${row.thumbnail_img}`" alt=""
-                                    width="100px">
-                            </td>
-                            <td colspan="2">
-                                <li><span><b>Product Code :</b> PDR00{{ row.id }}</span></li>
-                                <li><span><b>Product Name :</b> {{ row.product_name.substring(0,30) + '...' }}</span></li>
-                                <li>
-                                    <template v-if="row.product_color != ''" v-for="color in colors">
-                                        <template v-if="color.id == row.product_color">
-                                            <span><b>Color : </b> {{color.color_name}}</span>
+                <div class="row">
+                    <div class="col-md-6">
+                    <address>
+                        <strong>Đặt hàng bởi:</strong><br>
+                        <b>Name:</b> {{order.user.name}}<br>
+                        <b>Email: </b> {{order.user.email}}<br>
+                        <b>Phone:</b> {{order.user.phone}}<br>
+                        <b>Address:</b> {{order.user.address}},
+                            {{order.user.city.city_name}}, {{order.user.state.state_name}},
+                            {{order.user.country.country_name}}
+                    </address>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                    <address>
+                        <strong>Nhận hàng bởi:</strong><br>
+                            <b>Name:</b> {{order.order_address.name}}<br>
+                            <b>Email: </b> {{order.order_address.email}}<br>
+                            <b>Phone:</b> {{order.order_address.phone}}<br>
+                            <b>Address:</b> {{order.order_address.address}},
+                                {{order.order_address.city.city_name}}, {{order.order_address.state.state_name}},
+                                {{order.order_address.country.country_name}}
+                    </address>
+                    </div>
+                </div>
+                <div>
+                    <h5><b>ORDER No. : ODR00{{ order.id }} </b></h5>
+                    <b>Order Placed : {{ order.formatted_created }}</b>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product Image</th>
+                                <th style="min-width: 305px !important;">Product Details</th>
+                                <th>Sub Total</th>
+                                <th>Dự kiến giao hàng</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr v-for="row in products" :key="row.id">
+                                <td>
+                                    <img class="img-thumbnail" :src="`${baseUrl}/products/${row.thumbnail_img}`" alt=""
+                                        width="100px">
+                                </td>
+                                <td>
+                                    <li><span><b>Product Code :</b> PDR00{{ row.id }}</span></li>
+                                    <li><span><b>Product Name :</b> {{ row.product_name.substring(0,30) + '...' }}</span></li>
+                                    <li>
+                                        <template v-if="row.product_color != ''" v-for="color in colors">
+                                            <template v-if="color.id == row.product_color">
+                                                <span><b>Color : </b> {{color.color_name}}</span>
+                                            </template>
                                         </template>
-                                    </template>
-                                </li>
-
-                                <Attribute :product="row" :is-order="true"/>
-
-                                <li><span><b>Qty : </b>{{row.product_qty}}</span></li>
-                            </td>
-                            <td>
-                                <b>Sub Total : {{ $filters.formatNumber(row.product_amount) }} {{ generalSettings.currency }}</b> 
-                            </td>
-                            <td>
-                                <b>Delivery Expected On : </b>
-                                {{calculateDate(
-                                    order.created_at,
-                                    row.shipping_days
-                                )}}
-                            </td>
-                            <td>
-                                <span v-if="row.product_delivery == 1">Delivered</span>
-                                <button v-else class="btn btn-info btn-sm deliverConfirm" @click="deliverConfirm(row.product_qty,row.product_id, order.id)">Deliver</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" align="right"><b>Total Amount ({{ generalSettings.currency }})</b></td>
-                            <td>{{ $filters.formatNumber(order.amount) }} {{ generalSettings.currency }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                                    </li>
+    
+                                    <Attribute :product="row" :is-order="true"/>
+    
+                                    <li><span><b>Qty : </b>{{row.product_qty}}</span></li>
+                                </td>
+                                <td>
+                                    <b>Sub Total : {{ $filters.formatNumber(row.product_amount) }} {{ generalSettings.currency }}</b> 
+                                </td>
+                                <td>
+                                    {{calculateDate(
+                                        order.created_at,
+                                        row.shipping_days
+                                    )}}
+                                </td>
+                                <td>
+                                    <span v-if="row.product_delivery == 1">Delivered</span>
+                                    <button v-else class="btn btn-info btn-sm deliverConfirm" @click="deliverConfirm(row.product_qty,row.product_id, order.id)">Deliver</button>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="float-end">
+                    <b>Total Amount ({{ generalSettings.currency }}) : {{ $filters.formatNumber(order.amount) }} {{ generalSettings.currency }}</b>
+                </div>
             </div>
         </section>
     </BackendLayout>

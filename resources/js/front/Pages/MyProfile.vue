@@ -23,6 +23,7 @@ const photo_or_blank_image = computed(() => {
 
 const data = useForm({
     name: user.name || '',
+    email: user.email || '',
     img: '',
     phone: user.phone || '',
     country: user.country != null ? user.country : '',
@@ -84,6 +85,13 @@ function handleSubmit(e) {
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
+                                <label class="col-lg-3 col-sm-5 col-form-label">Email : </label>
+                                <div class="col-lg-5 col-sm-7">
+                                    <input type="text" class="form-control" name="name" v-model="data.email"
+                                        disabled />
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
                                 <label htmlFor="staticphone" class="col-lg-3 col-sm-5 col-form-label">Phone No :
                                 </label>
                                 <div class="col-lg-5 col-sm-7">
@@ -142,7 +150,7 @@ function handleSubmit(e) {
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                <label htmlFor="staticphone" class="col-lg-3 col-sm-5 col-form-label">Address :</label>
+                                <label htmlFor="staticphone" class="col-lg-3 col-sm-5 col-form-label">Address Detail :</label>
                                 <div class="col-lg-5 col-sm-7">
                                     <input type="text" class="form-control" name="address" v-model="data.address" />
                                     <div v-if="data.errors.address" class="alert alert-danger mt-2" role="alert">

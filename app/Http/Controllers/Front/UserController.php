@@ -25,6 +25,7 @@ use App\Models\Country;
 use App\Models\Review;
 use App\Models\OrderProducts;
 use App\Models\User;
+use App\Models\UserAddress;
 use Illuminate\Support\Facades\Session;
 use Exception;
 use Yajra\DataTables\DataTables;
@@ -552,6 +553,10 @@ class UserController extends Controller
                 ->leftJoin('cities', 'cities.id', '=', 'users.city')
                 ->where(['user_id' => $user_id])->first();
             // return $user;
+            $country = Country::select(['countries.*'])->get();
+            $state = State::select(['states.*'])->where('status', 1)->get();
+            $city = City::select(['cities.*'])->where('status', 1)->get();
+            $addresses = UserAddress::with(['country','state','city'])->where('user_id', $user_id)->get();
             $attributes = Attribute::select('*')->get();
             $attrvalues = Attrvalue::select(['attrvalues.*', 'attributes.title'])
                 ->leftjoin('attributes', 'attributes.id', '=', 'attrvalues.attribute')
@@ -594,7 +599,7 @@ class UserController extends Controller
             $cities = City::select(['cities.*'])->get();
 
             $razorkey = env('RAZOR_KEY');
-            return Inertia::render('CheckOut', ['user' => $user, 'products' => $products, 'attributes' => $attributes, 'attrvalues' => $attrvalues, 'colors' => $colors, 'payment_method' => $payment_method, 'countries' => $countries, 'states' => $states, 'cities' => $cities, 'razorkey' => $razorkey]);
+            return Inertia::render('CheckOut', ['user' => $user,'addresses' => $addresses, 'country' => $country, 'state' => $state, 'city' => $city , 'products' => $products, 'attributes' => $attributes, 'attrvalues' => $attrvalues, 'colors' => $colors, 'payment_method' => $payment_method, 'countries' => $countries, 'states' => $states, 'cities' => $cities, 'razorkey' => $razorkey]);
             // return view('public.checkout',['user'=>$user,'products'=>$products,'attributes'=>$attributes,'attrvalues'=>$attrvalues,'colors'=>$colors,'payment_method'=>$payment_method,'country'=>$country,'state'=>$state,'city'=>$city]);
         } else {
             return Inertia::render('UserLogin');

@@ -114,6 +114,7 @@ class PaymentController extends Controller
 
         $order = new Order();
         $order->user = $user_id;
+        $order->order_address = $request['address'];
         $order->products = $product_count;
         $order->qty = $product_qty;
         $order->pay_id = $payment->id;
