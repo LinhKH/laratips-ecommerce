@@ -90,8 +90,8 @@ const handleFilter = () => {
                             <input
                                 type="number"
                                 name="min_price"
-                                min="0"
-                                max="1000000"
+                                min="50000"
+                                max="100000000"
                                 class="price-range-field"
                                 v-model="filters.min_price"
                             />
@@ -101,8 +101,8 @@ const handleFilter = () => {
                             <input
                                 type="number"
                                 name="max_price"
-                                min="0"
-                                max="1000000"
+                                min="50000"
+                                max="100000000"
                                 class="price-range-field"
                                 v-model="filters.max_price"
                             />

@@ -29,8 +29,8 @@ const change = ref(false);
 let data = useForm({
     sort: "latest",
     brand: [],
-    min_price: filters.min_price || "0",
-    max_price: filters.max_price || "100000",
+    min_price: filters.min_price || "50000",
+    max_price: filters.max_price || "100000000",
     keyword: new URL(window.location.href).searchParams.get("keyword")
         ? new URL(window.location.href).searchParams.get("keyword")
         : "",
