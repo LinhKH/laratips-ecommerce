@@ -315,6 +315,15 @@ const {
                                     </Link>
                                 </li>
                             </template>
+                            <li class="nav-item">
+                                <Link
+                                    class="nav-a active"
+                                    aria-current="page"
+                                    :href="`${baseUrl}/contact_us`"
+                                >
+                                    Contact Us
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>

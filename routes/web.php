@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ReviewController;
@@ -14,6 +15,9 @@ Route::get('/signup', [UserController::class, 'create'])->name('signup');
 Route::post('/signup', [UserController::class, 'store'])->name('signup.store');
 Route::get('/user_login', [UserController::class, 'login'])->name('user_login');
 Route::post('/user_login', [UserController::class, 'login'])->name('user_login.store');
+
+Route::get('/contact_us', [ContactController::class, 'index'])->name('contact_us.index');
+Route::post('/contact_us', [ContactController::class, 'store'])->name('contact_us.store');
 
 /** User Address Route */
 Route::resource('address', UserAddressController::class);
