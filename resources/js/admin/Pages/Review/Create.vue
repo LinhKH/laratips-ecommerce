@@ -64,6 +64,9 @@ const submit = () => {
     <Head :title="title" />
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
+            <template #add_btn>
+                <Link :href="route('admin.reviews.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+            </template>
         </BreadCrumb>
         <section class="content card">
             <div class="container-fluid card-body">

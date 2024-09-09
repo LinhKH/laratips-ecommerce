@@ -450,11 +450,11 @@ class UserController extends Controller
                 ->whereIn('cart.product_id', $cart)->get();
             // }
 
-            // foreach($products as $product){
-            //     $price = get_product_price($product->id);      
-            //     $product->discount = $price->old_price - $price->new_price;    
-            //     $product->discount_percent = $price->discount; 
-            // } 
+            foreach($products as $product){
+                $price = get_product_price($product->id);      
+                $product->discount = $price->old_price - $price->new_price;    
+                $product->discount_percent = $price->discount; 
+            } 
             return Inertia::render('Cart', ['attrvalues' => $attrvalues, 'attributes' => $attributes, 'products' => $products, 'color' => $color, 'cart' => $cart, 'city' => $cities, 'token' => $token]);
             // return view('public.cart',['attrvalues'=>$attrvalues,'attributes'=>$attributes,'products'=>$products,'color'=>$color]);
         } else {
@@ -582,10 +582,18 @@ class UserController extends Controller
                 Session::put('checkout', 'checkout');
                 Session::put('order', $request->input());
             } else {
+                Session::forget('order');
+                Session::forget('checkout');
                 $products =  Cart::select(['cart.*', 'cart.id as cart_id', 'products.*', 'colors.color_code'])
                     ->leftjoin('products', 'products.id', '=', 'cart.product_id')
                     ->leftjoin('colors', 'colors.id', '=', 'cart.color')
                     ->where('product_user', $user_id)->get();
+            }
+            
+            foreach ($products as $product) {
+                $price = get_product_price($product->id);
+                $product->discount = $price->old_price - $price->new_price;
+                $product->discount_percent = $price->discount;
             }
 
             $colors = Color::select(['colors.*'])->get();

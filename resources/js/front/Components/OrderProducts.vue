@@ -77,7 +77,7 @@ const calculateDate = (date, days) => {
                             order_detail.order.updated_at
                         ).toLocaleDateString()}}
                     </li>
-                    <li v-if="!reviews.includes(value.id)">
+                    <li v-if="!reviews.includes(value.product_id)">
                         <Link
                             :href="route('review.create', value.product_id)"
                             className="btn btn-primary btn-sm"

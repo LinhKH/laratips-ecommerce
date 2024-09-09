@@ -51,7 +51,7 @@ const show_shipping_charges = (shipping, user_city) => {
             if (city[0].cost_city == "0") {
                 charges.value = "free"
             } else {
-                charges.value = generalSettings.currency + city[0].cost_city
+                charges.value = city[0].cost_city + generalSettings.currency
             }
         }
     } else {
@@ -96,17 +96,17 @@ const handleSubmit = (e) => {
 };
 
 const handleBuyNow = (e) => {
-    if (userCity.value == null) {
-        Swal.fire({
-            title: "Select Location First",
-            icon: "warning",
-        });
-    } else {
+    // if (userCity.value == null) {
+    //     Swal.fire({
+    //         title: "Select Location First",
+    //         icon: "warning",
+    //     });
+    // } else {
         data.transform((data) => ({
             ...data,
             ... objAttrValue
         })).get(route('checkout'));
-    }
+    // }
 };
 
 let objAttrValue = {};
@@ -240,7 +240,7 @@ watchEffect(() => {
                                     </select>
                                 </div>
                                 <div v-if="charges != null" class="shipping-charges mb-2">
-                                    Shipping Charges : {{ charges }}
+                                    <b>Phí vận chuyển :</b> <span class="text-uppercase">{{ charges }}</span>
                                 </div>
                                 <div class="product-btn">
                                     <template v-if="userSession != null">

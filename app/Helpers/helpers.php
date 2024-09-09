@@ -112,7 +112,7 @@ if (!function_exists('get_product_price')) {
             ->leftJoin('flash_deals', 'flash_products.deals_id', '=', 'flash_deals.id')
             ->orderBy('flash_products.product_discount', 'DESC')
             ->where('products.id', $id)->first();
-        if ($product->taxable_price != NULL && $product->taxable_price != '') {
+        if ( isset( $product->taxable_price) && $product->taxable_price != NULL && $product->taxable_price != '') {
             $price->new_price = $product->taxable_price;
             $price->old_price = $product->taxable_price;
         } else {
@@ -121,7 +121,7 @@ if (!function_exists('get_product_price')) {
         }
         $price->discount = '';
         // dd($product->toArray());
-        if ($product->flash_date_range != '' && $product->deal_status == '1') {
+        if (isset( $product->flash_date_range) && $product->flash_date_range != '' && $product->deal_status == '1') {
             $datetimes = explode('-', $product->flash_date_range);
             $currentDatetimes = date('Y-m-d');
             if ($product->flash_date_range != '') {
@@ -163,7 +163,7 @@ if (!function_exists('get_product_price')) {
                     }
                 }
             }
-        } elseif ($product->date_range != '' && $product->discount != '') {
+        } elseif ( isset( $product->date_range) && $product->date_range != '' && $product->discount != '') {
             $date = explode(' - ', $product->date_range);
             $currentDate = date('Y-m-d');
             $currentDate = date('Y-m-d', strtotime($currentDate));

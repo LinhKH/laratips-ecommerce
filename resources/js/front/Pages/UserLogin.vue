@@ -84,8 +84,8 @@ function handleSubmit(e) {
                             </div>
 
                             <div class="d-flex flex-row justify-content-center align-items-center">
-                                <span>---OR---</span>
-                                <a :href="route('google.login')" class="btn btn-sm btn-primary">Google Login</a>
+                                <span>OR---</span>
+                                <a :href="route('google.login')" class="btn btn-sm btn-primary"><img :src="`${baseUrl}/site/google_logo.svg`" alt="HTML tutorial" style="width:30px;height:30px;"> Google Login</a>
                             </div>
 
                             <div v-if="$page.props.flash.error" class="alert alert-danger mt-2" role="alert">

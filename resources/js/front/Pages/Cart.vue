@@ -23,7 +23,7 @@ const {
 
 
 const total = computed(() => {
-     return usePage().props.products.reduce(function (acc, obj) { return acc + obj.taxable_price * obj.qty + ( obj.shipping_charges != 'free' ? parseInt(charges.value) : 0 ) }, 0);
+     return usePage().props.products.reduce(function (acc, obj) { return acc + (obj.taxable_price - obj.discount) * obj.qty + ( obj.shipping_charges != 'free' ? parseInt(charges.value) : 0 ) }, 0);
 })
 
 const products = computed(() => usePage().props.products)
@@ -131,7 +131,7 @@ function handleRemoveCart(cart_id) {
                                             </div>
                                         </td>
                                         <td :style="{'min-width':'100px'}">
-                                            {{ $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
+                                            {{ $filters.formatNumber(product.taxable_price - product.discount) }} {{ generalSettings.currency }}
                                         </td>
                                         <td>
                                             <input :style="{'min-width': '70px'}" type="number" class="form-control" :name="`qty[${product.id}]`" min="1"
@@ -143,10 +143,10 @@ function handleRemoveCart(cart_id) {
                                         </td>
                                         <td>
                                             <span class="product-total" v-if="product.shipping_charges == 'free'">
-                                                {{ $filters.formatNumber(parseInt(product.taxable_price * product.qty)) }}
+                                                {{ $filters.formatNumber(parseInt((product.taxable_price - product.discount) * product.qty)) }}
                                             </span>
                                             <span v-else>
-                                                {{ $filters.formatNumber(parseInt(product.taxable_price * product.qty) + parseInt(charges)) }}
+                                                {{ $filters.formatNumber(parseInt((product.taxable_price - product.discount) * product.qty) + parseInt(charges)) }}
                                             </span>
                                             {{ generalSettings.currency }}
                                         </td>

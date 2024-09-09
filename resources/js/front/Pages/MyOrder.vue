@@ -89,7 +89,7 @@ const handleShowDetails = (id) => {
                                     </td>
                                     <td>
                                         <ul>
-                                            <li v-for="names in order.names.split('|||')" :key="names" class="mb-2">
+                                            <li v-for="names in order.names?.split('|||')" :key="names" class="mb-2">
                                                 {{ names }}
                                             </li>
                                         </ul>

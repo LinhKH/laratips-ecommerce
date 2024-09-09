@@ -67,7 +67,7 @@ const charges = user.city != null ? cities.filter((city) => city.id == user.city
 const calculateTotal = () => {
     let t = 0;
     products.map((item) =>
-        item.shipping_charges != "free" ? (t += parseInt(item.taxable_price) * item.qty + parseInt(charges)) : (t += parseInt(item.taxable_price) * item.qty)
+        item.shipping_charges != "free" ? (t += parseInt(item.taxable_price - item.discount) * item.qty + parseInt(charges)) : (t += parseInt(item.taxable_price - item.discount) * item.qty)
     );
     return t;
 };
@@ -298,7 +298,7 @@ const handleSubmit = (e) => {
                                 </div>
                             </td>
                             <td>
-                                {{ $filters.formatNumber( product.taxable_price) }} {{ generalSettings.currency }}
+                                {{ $filters.formatNumber( product.taxable_price - product.discount) }} {{ generalSettings.currency }}
                             </td>
                             <td>
                                 {{ product.qty }}
@@ -307,8 +307,8 @@ const handleSubmit = (e) => {
                                 <span class="product-total">
                                     {{ 
                                         product.shipping_charges == 'free' 
-                                        ? $filters.formatNumber( parseInt(product.taxable_price) * product.qty )
-                                        : $filters.formatNumber( parseInt(product.taxable_price) * product.qty + parseInt(charges) )
+                                        ? $filters.formatNumber( parseInt(product.taxable_price - product.discount) * product.qty )
+                                        : $filters.formatNumber( parseInt(product.taxable_price - product.discount) * product.qty + parseInt(charges) )
                                     }}
                                 </span>
                                 {{ generalSettings.currency }}

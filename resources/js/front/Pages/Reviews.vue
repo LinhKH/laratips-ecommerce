@@ -1,6 +1,7 @@
 <script setup>
 import { usePage, Link, useForm, Head } from '@inertiajs/vue3';
 import FrontLayout from '../Layouts/FrontLayout.vue';
+import Preloader from '../Components/Preloader.vue';
 const baseUrl = import.meta.env.VITE_APP_URL;
 
 const { product, generalSettings, user } = usePage().props;
@@ -90,7 +91,7 @@ function handleSubmit(e) {
                                                     v-model="data.star"
                                                 />
                                                 <label
-                                                    class="star" :for="index + 1"
+                                                    class="star" :class="{'active' : index + 1 <= data.star}" :for="index + 1"
                                                 ></label>
                                             </li>
                                             
@@ -118,8 +119,7 @@ function handleSubmit(e) {
                             <div class="text-left px-3">
                                 <h6>{{ product.product_name }}</h6>
                                 <span>
-                                    {{ generalSettings.currency }}
-                                    {{ product.taxable_price }}
+                                    {{ $filters.formatNumber(product.taxable_price) }} {{ generalSettings.currency }}
                                 </span>
                             </div>
                         </div>
@@ -131,5 +131,9 @@ function handleSubmit(e) {
 </template>
 
 <style scoped>
-
+input.star ~ label.active:before {
+    content: '\f005';
+    color: var(--main-color) !important;
+    transition: all .25s;
+}
 </style>
