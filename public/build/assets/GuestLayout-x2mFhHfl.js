@@ -1,0 +1,1 @@
+import{y as s,z as t,A as o,O as a}from"./vue.m-ZJAUakur.js";const r={class:"min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100"},c={class:"w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"},d={__name:"GuestLayout",setup(n){return(e,l)=>(s(),t("div",r,[o("div",c,[a(e.$slots,"default")])]))}};export{d as _};
