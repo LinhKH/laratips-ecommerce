@@ -115,8 +115,8 @@ const deliverConfirm = (product_qty, product_id, order_id) => {
                         <b>Email: </b> {{order.user.email}}<br>
                         <b>Phone:</b> {{order.user.phone}}<br>
                         <b>Address:</b> {{order.user.address}},
-                            {{order.user.city.city_name}}, {{order.user.state.state_name}},
-                            {{order.user.country.country_name}}
+                            {{order.user?.city?.city_name}}, {{order.user?.state?.state_name}},
+                            {{order.user?.country?.country_name}}
                     </address>
                     </div>
                     <div class="col-md-6 text-md-right">
