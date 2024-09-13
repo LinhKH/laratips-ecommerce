@@ -70,13 +70,13 @@ function handleRemoveCart(cart_id) {
 
         <div id="banner" class="d-flex flex-row justify-content-center">
             <div class="align-self-center">
-                <h2>My Cart</h2>
+                <h2>Giỏ hàng</h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center p-0">
                         <li class="breadcrumb-item">
-                            <Link :href="`${baseUrl}`">Home</Link>
+                            <Link :href="`${baseUrl}`">Trang chủ</Link>
                         </li>
-                        <li class="breadcrumb-item active">My Cart</li>
+                        <li class="breadcrumb-item active">Giỏ hàng</li>
                     </ol>
                 </nav>
             </div>
@@ -90,11 +90,11 @@ function handleRemoveCart(cart_id) {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Qty</th>
-                                        <th>Total</th>
-                                        <th>Remove</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng</th>
+                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,7 +105,7 @@ function handleRemoveCart(cart_id) {
                                             <div class="ml-2">
                                                 {{ product.product_name }}
                                                 <span v-if="product.color_code" class="d-flex">
-                                                    <b>Color : </b>
+                                                    <b>Màu sắc : </b>
                                                     <label class="border" :style="{
                                                         backgroundColor: product.color_code,
                                                         marginLeft: '10px',
@@ -121,11 +121,11 @@ function handleRemoveCart(cart_id) {
                                                 </ul>
     
                                                 <span v-if="product.shipping_charges == 'free'">
-                                                    Free Delivery
+                                                    Miễn phí vận chuyển
                                                 </span>
     
                                                 <span v-else>
-                                                    Delivery Charges : {{ charges }} {{ generalSettings.currency }}
+                                                    Phí vận chuyển : {{ charges }} {{ generalSettings.currency }}
                                                 </span>
     
                                             </div>
@@ -159,7 +159,7 @@ function handleRemoveCart(cart_id) {
                                     </tr>
                                     <tr>
                                         <td colSpan="3" align="right">
-                                            <b>Total Amount</b>
+                                            <b>Tổng cộng</b>
                                         </td>
                                         <td colspan="2"> 
                                             <span>{{ $filters.formatNumber(total) }}</span>
@@ -171,10 +171,10 @@ function handleRemoveCart(cart_id) {
                             
                         </div>
                         <Link class="btn btn-primary" href="/">
-                        Continue Shopping
+                        Tiếp tục mua sắm
                         </Link>
                         <Link class="btn btn-primary float-right" href="/checkout">
-                        Proceed to Checkout
+                        Tiến hành đặt hàng
                         </Link>
                     </form>
 

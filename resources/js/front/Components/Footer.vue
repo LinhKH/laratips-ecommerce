@@ -125,7 +125,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                         <span>
                             <strong>
                                 Copyright {{ new Date().getFullYear() }} by
-                                <a target="_blank" href="https://news-portal.shop/">
+                                <a target="_blank" href="javascript:;">
                                     Linh Dev
                                 </a>
                                 .

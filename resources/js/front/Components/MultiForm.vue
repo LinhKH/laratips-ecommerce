@@ -137,45 +137,45 @@ const handleSubmit = (e) => {
             <li>
                 <button type="button" class="btn btn-primary" @click="handleStep(1)"
                     :disabled="activeStep == 1 ? false : true">
-                    Step 1
+                    Bước 1
                 </button>
             </li>
             <li>
                 <button type="button" class="btn btn-primary" @click="handleStep(2)"
                     :disabled="activeStep == 2 ? false : true">
-                    Step 2
+                    Bước 2
                 </button>
             </li>
             <li>
                 <button type="button" class="btn btn-primary" @click="handleStep(3)"
                     :disabled="activeStep == 3 ? false : true">
-                    Step 3
+                    Bước 3
                 </button>
             </li>
         </ul>
         <div class="multi-content">
             <div v-if="activeStep == 1" id="Step1" class="row py-3">
-                <div>
-                    Delivery Details
-                </div>
+                <h2 class="font-semibold mb-3">
+                    Chọn địa chỉ giao hàng
+                </h2>
                 <div class="col-xl-3" v-for="(address, index) in addresses">
                     <div class="wsus__dash_add_single">
-                        <h4>Billing Address {{ index + 1 }}</h4>
+                        <h4>Địa chỉ giao hàng {{ index + 1 }}</h4>
                         <ul>
-                            <li><strong>Name :</strong> {{address.name}}</li>
-                            <li><strong>Phone :</strong> {{address.phone}}</li>
+                            <li><strong>Tên :</strong> {{address.name}}</li>
+                            <li><strong>SĐT :</strong> {{address.phone}}</li>
                             <li><strong>Email :</strong> {{address.email}}</li>
-                            <li><strong>Country :</strong> {{address.country.country_name}}</li>
-                            <li><strong>State :</strong> {{address.state.state_name}}</li>
-                            <li><strong>City :</strong> {{address.city.city_name}}</li>
-                            <li><strong>Address Detail :</strong> {{address.address}}</li>
+                            <li><strong>Quốc gia :</strong> {{address.country.country_name}}</li>
+                            <li><strong>Tỉnh :</strong> {{address.state.state_name}}</li>
+                            <li><strong>Quận :</strong> {{address.city.city_name}}</li>
+                            <li><strong>Số nhà/tên đường :</strong> {{address.address}}</li>
                         </ul>
                        
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="exampleRadios" :id="`exampleRadios${index}`" v-model="data.address" :value="address.id" >
                         <label class="form-check-label" :for="`exampleRadios${index}`">
-                            Choose
+                            Chọn
                         </label>
                     </div>
 
@@ -186,7 +186,7 @@ const handleSubmit = (e) => {
                         <tr>
                             <th>
                                 <a href="javacrtip:;" @click="isAdding = !isAdding" class="btn btn-primary">
-                                    Add Address
+                                    Thêm địa chỉ
                                 </a>
                             </th>
                         </tr>
@@ -215,7 +215,7 @@ const handleSubmit = (e) => {
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Quốc gia : </label>
                             <select class="form-control select-country" name="country" v-model="add_address.country">
-                                <option value="">Select Country</option>
+                                <option value="">chọn quốc gia</option>
                                 <option v-for="country in country" :key="country.id" :value="country.id">
                                     {{ country.country_name }}
                                 </option>
@@ -226,7 +226,7 @@ const handleSubmit = (e) => {
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Tỉnh/Thành phố : </label>
                             <select class="form-control" name="state" id="state" v-model="add_address.state">
-                                <option value="">First Select Country</option>
+                                <option value="">chọn tỉnh/thành phố</option>
                                 <template v-for="state in state" :key="state.id">
                                     <option v-if="state.country == add_address.country" :value="state.id">
                                         {{ state.state_name }}
@@ -240,7 +240,7 @@ const handleSubmit = (e) => {
                         <div class="form-group mb-3 col-xl-6 col-md-6">
                             <label class="col-lg-3 col-sm-5 col-form-label">Quận/Huyện : </label>
                             <select class="form-control" name="city" id="city" v-model="add_address.city">
-                                <option value="">First Select State</option>
+                                <option value="">chọn quận/huyện</option>
                                 <template v-for="city in city" key="city.id">
                                     <option v-if="city.state == add_address.state" :value="city.id">
                                         {{ city.city_name }}
@@ -259,17 +259,17 @@ const handleSubmit = (e) => {
                         </div>
                     </div>
                     <a @click.prevent="handleAddAddress" href="javascript:;" class="btn btn-primary mb-2">
-                        Create a new address 
+                        Tạo
                     </a>
                 </div>
             </div>
             <div v-if="activeStep == 2" id="Step1" class="py-3">
                 <table class="table table-bordered">
                     <thead>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Qty</th>
-                        <th>Total</th>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
                     </thead>
                     <tbody>
 
@@ -289,10 +289,10 @@ const handleSubmit = (e) => {
                                         <Attribute :product="product" />
                                     </ul>
 
-                                    <span v-if="product.shipping_charges == 'free'">Free Delivery</span>
+                                    <span v-if="product.shipping_charges == 'free'">Miễn phí vận chuyển</span>
 
                                     <span v-else>
-                                        Delivery Charges :{{ generalSettings.currency }}{{ charges }}
+                                        Phí vận chuyển :{{ generalSettings.currency }}{{ charges }}
                                     </span>
 
                                 </div>
@@ -317,7 +317,7 @@ const handleSubmit = (e) => {
 
                         <tr>
                             <td colSpan="3" align="right">
-                                <b>Total Amount</b>
+                                <b>Tổng tiền</b>
                             </td>
                             <td class="">
                                 <span>{{ $filters.formatNumber( calculateTotal() ) }}</span>
@@ -329,19 +329,19 @@ const handleSubmit = (e) => {
             </div>
             <div v-if="activeStep == 3" id="Step1" class="py-3">
                 <div class="card">
-                    <div class="card-header"> Payment </div>
+                    <div class="card-header"> Thanh toán qua </div>
                     <div class="card-body">
                         <ul class="list-group">
 
                             <li v-for="payButton in payment_method" class="list-group-item" :key="payButton.id">
 
                                 <template v-if="payButton.payment_name == 'Paypal' && payButton.payment_status == '1'">
-                                    <input type="radio" name="pay_method" v-model="data.pay_method" value="paypal" required />
-                                    <img :src="`${baseUrl}/images/paypal.png`" alt="" height="20px" />
+                                    <input type="radio" name="pay_method" v-model="data.pay_method" value="paypal" required id="paypal" class="mr-2" />
+                                    <label for="paypal"><img :src="`${baseUrl}/images/paypal.png`" alt="" height="20px" /></label>
                                 </template>
                                 <template v-if="payButton.payment_name == 'COD' && payButton.payment_status == '1'">
-                                    <input type="radio" name="pay_method" v-model="data.pay_method" value="cod" required />
-                                    <img :src="`${baseUrl}/images/cod.png`" alt="" height="20px" />
+                                    <input type="radio" name="pay_method" v-model="data.pay_method" value="cod" required id="cod" class="mr-2"/>
+                                    <label for="cod"><img :src="`${baseUrl}/images/cod.png`" alt="" width="100px" height="50px" /></label>
                                 </template>
                             </li>
 

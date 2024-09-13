@@ -37,7 +37,7 @@ watch(
 <template>
     <div class="card card-default">
         <div class="card-header">
-            <h3 class="card-title">Filters</h3>
+            <h3 class="card-title">Lọc</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" @click="showFilters = !showFilters">
                     <i class="fas fa-minus" :class="{'fa-minus': showFilters, 'fa-plus' : !showFilters}"></i>
@@ -49,16 +49,16 @@ watch(
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group" >
-                        <label>Name</label>
+                        <label>Tên</label>
                         <input v-model="filters.name" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group" >
-                        <label>Brands</label>
+                        <label>Thương hiệu</label>
                         <section class="form-group" >
                             <select v-model="filters.brand" class="form-control">
-                                <option value="">Select brand</option>
+                                <option value="">Chọn thương hiệu</option>
                                 <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.brand_name }}</option>
                             </select>
                         </section>
@@ -66,19 +66,19 @@ watch(
                 </div>
                 <div class="col-md-3">
                     <div class="form-group" >
-                        <label>Today Deals</label>
+                        <label>Ưu đãi hôm nay</label>
                         <section class="form-group" >
                             <select v-model="filters.today_deal" class="form-control">
-                                <option value="">Select today deal</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                                <option value="">Chọn</option>
+                                <option value="1">Kích hoạt</option>
+                                <option value="0">Chưa kích hoạt</option>
                             </select>
                         </section>
                     </div>
                 </div>
             </div>
             <div>
-                <button type="button" class="btn bg-danger" @click="filters = {}" >Clear Filter</button>
+                <button type="button" class="btn bg-danger" @click="filters = {}" >Xóa bộ lọc</button>
             </div>
 
         </div>

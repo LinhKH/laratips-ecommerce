@@ -8,7 +8,7 @@ import { ZiggyVue } from '../../../vendor/tightenco/ziggy/dist/vue.m';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Yahoo Shop';
+const appName = import.meta.env.VITE_APP_NAME || 'Tony Shop';
 
 createInertiaApp({
     title: title => `${title} - ${appName}`,

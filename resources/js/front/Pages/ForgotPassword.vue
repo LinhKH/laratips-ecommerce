@@ -26,13 +26,13 @@ function handleSubmit(e) {
     <div id="site-content" class="py-5">
         <div id="banner" class="d-flex flex-row justify-content-center">
             <div class="align-self-center">
-                <h2>Forgot Password</h2>
+                <h2>Quên mật khẩu</h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center p-0">
                         <li class="breadcrumb-item">
-                            <Link href="/">Home</Link>
+                            <Link href="/">Trang chủ</Link>
                         </li>
-                        <li class="breadcrumb-item active">Forgot Password</li>
+                        <li class="breadcrumb-item active">Quên mật khẩu</li>
                     </ol>
                 </nav>
             </div>
@@ -43,23 +43,23 @@ function handleSubmit(e) {
                     <div class="signup-form">
                         <Preloader v-if="data.processing" />
                         <form class="form-horizontal mb-3" @submit.prevent="handleSubmit" autoComplete="off">
-                            <h4 class="user-heading mb-4">Forgot Password</h4>
+                            <h4 class="user-heading mb-4">Quên mật khẩu</h4>
                             <input type="hidden" class="url" value="/" />
                             <div class="form-group mb-4">
-                                <input type="email" name="email" class="form-control" placeholder="Email Address"
+                                <input type="email" name="email" class="form-control" placeholder="Địa chỉ email"
                                     v-model="data.email" />
                                 <div v-if="data.errors.email" class="alert alert-danger mt-2" role="alert">{{
                                     data.errors.email }}</div>
                             </div>
                             <input type="submit" :disabled="data.processing" name="save" class="btn btn-primary"
-                                value="Send Password Reset Link" required />
+                                value="Gửi link khôi phục mật khẩu" required />
                             <div v-if="$page.props.flash.error" class="alert alert-danger mt-2" role="alert"> {{
                                 $page.props.flash.error }} </div>
                             <div v-if="$page.props.flash.success" class="alert alert-success mt-2" role="alert"> {{
                                 $page.props.flash.success }} </div>
                         </form>
                         <span class="login-link">
-                            <Link :href="route('user_login')">Back to Login</Link>
+                            <Link :href="route('user_login')">Quay lại trang đăng nhập</Link>
                         </span>
                     </div>
                 </div>

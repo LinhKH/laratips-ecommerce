@@ -15,13 +15,13 @@ const products = computed(() => {
         <div id="site-content">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>Wishlist</h2>
+                    <h2>Yêu thích</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
                             <li class="breadcrumb-item">
-                                <Link href="/">Home</Link>
+                                <Link href="/">Trang chủ</Link>
                             </li>
-                            <li class="breadcrumb-item active">Wishlist</li>
+                            <li class="breadcrumb-item active">Yêu thích</li>
                         </ol>
                     </nav>
                 </div>
@@ -35,8 +35,8 @@ const products = computed(() => {
                     </div>
 
                     <div v-else class="col-md-12 text-center">
-                        <h4 class="mb-2">Your Wishlist is Empty</h4>
-                        <Link href="/" class="btn btn-primary">Add Items to Wishlist</Link>
+                        <h4 class="mb-2">Danh sách mong muốn đang trống</h4>
+                        <Link href="/" class="btn btn-primary">Thêm sản phẩm vào danh sách mong muôn</Link>
                     </div>
 
                 </div>

@@ -158,7 +158,7 @@ watchEffect(() => {
                             <div class="product-info">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb justify-content p-0 align-items-center">
-                                        <li class="product-name">Category :</li>
+                                        <li class="product-name">Danh mục :</li>
                                         <template v-if="breadcrumb != null">
                                             <template v-for="value in breadcrumb" :key="value.id">
 
@@ -172,9 +172,9 @@ watchEffect(() => {
                                     </ol>
                                 </nav>
                                 <span >
-                                    <strong>Brand :</strong> {{ product.brand_name }}
+                                    <strong class="product-name">Thương hiệu :</strong> {{ product.brand_name }}
                                 </span>
-                                <p class="product-name">
+                                <p class="product-name mt-2">
                                     {{ product.product_name }}
                                 </p>
                                 <div v-if="product.discount != '0'" class="product-price">
@@ -195,7 +195,7 @@ watchEffect(() => {
                                 </div>
                                 <ProductRating :rating_col="product.rating_col" :rating_sum="product.rating_sum" />
                                 <div class="product-color">
-                                    <label>Color:</label>
+                                    <label>Màu sắc:</label>
                                     <ul class="option-list">
                                         <template v-for="item1 in colors" :key="item1.id">
                                             <li v-if="product.colors?.includes(item1.id)" class="radio-button">
@@ -209,7 +209,7 @@ watchEffect(() => {
                                 </div>
                                 <template v-for="row in attributes" :key="row.id">
                                     <div class="product-attributes">
-                                        <span>{{ row.title }}:</span>
+                                        <span>{{ row.name }}:</span>
                                         <template v-for="item1 in attrvalues" :key="item1.id">
                                             <template v-if="checkValue(row, item1)">
                                                 <input type="hidden" name="product_attrvalues" :value="item1.id" />
@@ -224,21 +224,7 @@ watchEffect(() => {
                                         </template>
                                     </div>
                                 </template>
-                                <div class="product-shipping">
-                                    <span class="shipping-head">
-                                        Delivery:
-                                    </span>
-                                    <select class="form-control shipping" :value="userCity" name="shipping"
-                                        @change="handleCityChange" required>
-                                        <option value="" disabled>
-                                            Select Location
-                                        </option>
-                                        <option v-for="city in cities" :key="city.id" :value="city.id"
-                                            :data-p-ship="product.shipping_charges" :data-shipping="city.cost_city">
-                                            {{ city.city_name }} ({{ city.state_name }})
-                                        </option>
-                                    </select>
-                                </div>
+
                                 <div v-if="charges != null" class="shipping-charges mb-2">
                                     <b>Phí vận chuyển :</b> <span class="text-uppercase">{{ charges }}</span>
                                 </div>
@@ -246,11 +232,11 @@ watchEffect(() => {
                                     <template v-if="userSession != null">
                                         <Link v-if="cart_list?.includes(product.id)" :href="`${baseUrl}/cart`"
                                             class="btn btn-primary">
-                                        Go to cart
+                                        Đi đến giỏ hàng
                                         </Link>
                                         <template v-else>
                                             <input type="submit" class="btn btn-primary mr-2" name="save_cart"
-                                                value="Add to Cart" />
+                                                value="Thêm giỏ hàng" />
                                             <button type="button" @click.prevent="handleBuyNow"
                                                 class="btn btn-primary mr-2">
                                                 Buy Now
@@ -259,10 +245,10 @@ watchEffect(() => {
                                     </template>
                                     <template v-else>
                                         <Link :href="`${baseUrl}/user_login`" class="btn btn-primary me-2">
-                                        Add to cart
+                                        Thêm giỏ hàng
                                         </Link>
                                         <a :href="`${baseUrl}/user_login`" class="btn btn-primary">
-                                            Buy Now
+                                            Mua ngay
                                         </a>
                                     </template>
                                 </div>
@@ -279,7 +265,7 @@ watchEffect(() => {
                                 <h2 class="accordion-header" id="headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Description
+                                        Chi tiết sản phẩm
                                     </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
@@ -293,7 +279,7 @@ watchEffect(() => {
                                 <h2 class="accordion-header" id="headingTwo">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Additional Information
+                                        Thông tin bổ sung
                                     </button>
                                 </h2>
                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -303,7 +289,7 @@ watchEffect(() => {
                                             <tbody>
                                                 <tr v-if="attributes.length > 0" v-for="row in attributes" :key="row.id"
                                                     class="product-attributes">
-                                                    <th>{{ row.title }}</th>
+                                                    <th>{{ row.name }}</th>
                                                     <template v-for="item1 in attrvalues" :key="item1.id">
                                                         <td v-if="checkValue(row, item1)">
                                                             {{ item1.value }}
@@ -313,7 +299,7 @@ watchEffect(() => {
                                                 <tr v-else>
                                                     <td class="col-md-6">
                                                         <span>
-                                                            No Additional Information.
+                                                            Không có thông tin bổ sung.
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -328,7 +314,7 @@ watchEffect(() => {
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseThree">
-                                        Reviews
+                                        Đánh giá
                                     </button>
                                 </h2>
                                 <div id="collapseThree" class="accordion-collapse collapse"
@@ -358,7 +344,7 @@ watchEffect(() => {
                                         </div>
                                         <div v-if="reviews.length == 0" className="col-md-6">
                                             <span>
-                                                No Reviews Available.
+                                                Không có đánh giá cho sản phẩm này.
                                             </span>
                                         </div>
                                     </div>

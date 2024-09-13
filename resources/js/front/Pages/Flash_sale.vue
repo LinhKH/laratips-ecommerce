@@ -54,9 +54,9 @@ const breakpoints = {
             <div class="row">
                 <div class="col-12">
                     <div class="section-heading">
-                        <h2 class="title">Flash Sale</h2>
+                        <h2 class="title">Khuyến mãi</h2>
                         <Link :href="`${baseUrl}/flash-products`" class="btn btn-primary">
-                            Show All
+                            Tất cả
                         </Link>
                     </div>
                 </div>

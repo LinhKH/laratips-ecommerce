@@ -4,9 +4,9 @@
             <ul class="pagination align-items-center float-right">
                 <span style="margin-right: 10px;">
                     Showing
-                    <span>{{ pagination.from }}-{{ pagination.to }}</span>
+                    <b>{{ pagination.from }}-{{ pagination.to }}</b>
                     of
-                    <span>{{ pagination.total }}</span>
+                    <b>{{ pagination.total }}</b> sản phẩm
                 </span>
                 <template v-for="(link, key) in pagination.links" :key="link.label">
                     <li v-if="link.url" class="page-item" :class="{ 'active': link.active }">

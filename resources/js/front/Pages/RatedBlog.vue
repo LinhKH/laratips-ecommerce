@@ -11,7 +11,7 @@ const {  generalSettings } = usePage().props;
 <template>
     <div class="col-md-4 col-sm-6">
         <div class="section-heading">
-            <h2 class="title">Top Rated</h2>
+            <h2 class="title">Top Đánh giá</h2>
         </div>
         <div v-for="(value, index) in rating" class="blog-grid d-flex flex-row" key="index">
             <Link :href="`${baseUrl}/product/${value.slug}`" class="blog-img">

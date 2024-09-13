@@ -19,7 +19,7 @@ function handleSubmit(e) {
         onSuccess: (response) => {
             if (response.props.flash.success) {
                 Swal.fire({
-                    title: "Loggedin Successfully.",
+                    title: "Đăng nhập thành công.",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 1500,
@@ -40,13 +40,13 @@ function handleSubmit(e) {
     <div id="site-content" class="py-5">
         <div id="banner" class="d-flex flex-row justify-content-center">
             <div class="align-self-center">
-                <h2>Login</h2>
+                <h2>Đăng nhập</h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center p-0">
                         <li class="breadcrumb-item">
-                            <Link :href="baseUrl">Home</Link>
+                            <Link :href="baseUrl">Trang chủ</Link>
                         </li>
-                        <li class="breadcrumb-item active">Login</li>
+                        <li class="breadcrumb-item active">Đăng nhập</li>
                     </ol>
                 </nav>
             </div>
@@ -57,7 +57,7 @@ function handleSubmit(e) {
                     <div class="signup-form">
                         <Preloader v-if="data.processing" />
                         <form class="form-horizontal mb-3" @submit.prevent="handleSubmit" autoComplete="off">
-                            <h4 class="user-heading">Login</h4>
+                            <h4 class="user-heading">Đăng nhập</h4>
                             <input type="hidden" class="url" :value="`${baseUrl}`" />
                             <div class="form-group">
                                 <input type="email" name="username" class="form-control" placeholder="Email Address"
@@ -77,14 +77,14 @@ function handleSubmit(e) {
 
                             <div class="d-flex flex-row justify-content-between mb-2">
                                 <input type="submit" :disabled="data.processing" name="save"
-                                    class="btn btn-primary login-btn" value="Login" required />
+                                    class="btn btn-primary login-btn" value="Đăng nhập" required />
                                 <Link :href="`${baseUrl}/forgot-password`" class="forgot-password align-self-center">
-                                forgot password
+                                Quên mật khẩu
                                 </Link>
                             </div>
 
                             <div class="d-flex flex-row justify-content-center align-items-center">
-                                <span>OR---</span>
+                                <span>Hoặc---</span>
                                 <a :href="route('google.login')" class="btn btn-sm btn-primary"><img :src="`${baseUrl}/site/google_logo.svg`" alt="HTML tutorial" style="width:30px;height:30px;"> Google Login</a>
                             </div>
 
@@ -98,7 +98,7 @@ function handleSubmit(e) {
                         </form>
                         <span class="signup-link">
                             <Link :href="`${baseUrl}/signup`">
-                            Create Account
+                            Tạo tài khoản
                             </Link>
                         </span>
                     </div>

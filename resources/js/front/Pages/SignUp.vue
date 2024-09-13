@@ -23,7 +23,7 @@ function handleSubmit(e) {
                 onSuccess: (response) => {
                 if (response.props.flash.success) {
                     Swal.fire({
-                        title: "Register Successfully.",
+                        title: "Đăng ký thành công.",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
@@ -39,7 +39,7 @@ function handleSubmit(e) {
         }
     } else {
         Swal.fire({
-            title: "Enter Correct Confirm Password",
+            title: "Mật khẩu xác nhận không đúng",
             icon: "warning",
         });
     }
@@ -51,13 +51,13 @@ function handleSubmit(e) {
     <div id="site-content" class="py-5">
     <div id="banner" class="d-flex flex-row justify-content-center">
     <div class="align-self-center">
-        <h2>Signup</h2>
+        <h2>Đăng ký</h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center p-0">
                 <li class="breadcrumb-item">
-                    <Link :href="`${baseUrl}`">Home</Link>
+                    <Link :href="`${baseUrl}`">Trang chủ</Link>
                 </li>
-                <li class="breadcrumb-item active">Signup</li>
+                <li class="breadcrumb-item active">Đăng ký</li>
             </ol>
         </nav>
     </div>
@@ -73,7 +73,7 @@ function handleSubmit(e) {
                     method="post"
                     autoComplete="off"
                 >
-                    <h4 class="user-heading">Sign Up</h4>
+                    <h4 class="user-heading">Đăng ký</h4>
                     <input
                         type="hidden"
                         class="url"
@@ -91,7 +91,7 @@ function handleSubmit(e) {
                                     type="text"
                                     name="name"
                                     class="form-control"
-                                    placeholder="Name"
+                                    placeholder="Tên"
                                     v-model="data.name"
                                 />
                                 <div v-if="data.errors.name"
@@ -108,7 +108,7 @@ function handleSubmit(e) {
                                     type="email"
                                     name="email"
                                     class="form-control"
-                                    placeholder="Email"
+                                    placeholder="Thư điện tử"
                                     v-model="data.email"
                                 />
                                 <div v-if="data.errors.email"
@@ -128,7 +128,7 @@ function handleSubmit(e) {
                                     name="phone"
                                     class="form-control"
                                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                    placeholder="Phone"
+                                    placeholder="Số điện thoại"
                                     v-model="data.phone"
                                 />
                                 <div v-if="data.errors.phone"
@@ -148,7 +148,7 @@ function handleSubmit(e) {
                                     name="password"
                                     id="password"
                                     class="form-control"
-                                    placeholder="Password"
+                                    placeholder="Mật khẩu"
                                     v-model="data.password"
                                 />
                                 <div v-if="data.errors.password"
@@ -165,7 +165,7 @@ function handleSubmit(e) {
                                     type="password"
                                     name="con_password"
                                     class="form-control"
-                                    placeholder="Confirm Password"
+                                    placeholder="Xác nhận mật khẩu"
                                     v-model="data.con_password"
                                 />
                                 <div v-if="data.errors.con_password"
@@ -182,7 +182,7 @@ function handleSubmit(e) {
                         :disabled="data.processing"
                         name="save"
                         class="btn btn-primary"
-                        value="Signup"
+                        value="Tạo"
                         required
                     />
                     <div v-if="flash.error"
@@ -200,8 +200,8 @@ function handleSubmit(e) {
                     </div>
                 </form>
                 <span class="login-link">
-                    Already have an account 
-                    <Link href="user_login">Login</Link>
+                    Bạn đã có tài khoản
+                    <Link href="user_login">Đăng nhập</Link>
                 </span>
             </div>
         </div>

@@ -82,7 +82,7 @@ const {
                                     </li>
                                     <li class="float-end">
                                         <span class="welcome-message">
-                                            welcome to our store!
+                                            Chào mừng đến với TonyShop!
                                         </span>
                                     </li>
                                 </ul>
@@ -113,7 +113,7 @@ const {
                                         class="form-control rounded-0"
                                         name="keyword"
                                         v-model="data.keyword"
-                                        placeholder="Search Product Here..."
+                                        placeholder="Tìm kiếm sản phẩm tại đây..."
                                     />
                                     <select
                                         class="form-select search-categories"
@@ -122,7 +122,7 @@ const {
                                         aria-label="Default select example"
                                     >
                                             <option value="all">
-                                                All Categories
+                                                Tất cả danh mục
                                             </option>
                                             <template v-for="item in all_category" key="item.id">
                                                 <option v-if="item.parent_category == '0'" :value="item['category_slug']"  
@@ -163,43 +163,43 @@ const {
                                                 class="dropdown-item"
                                                 :href="route('my_profile')"
                                             >
-                                                My Profile
+                                                Hồ sơ
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 :href="route('address.index')"
                                             >
-                                                My Address
+                                                Địa chỉ
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 :href="route('my_cart')"
                                             >
-                                                My Cart
+                                                Giỏ hàng
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 href="/my_orders"
                                             >
-                                                My Orders
+                                                Đơn hàng
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 :href="route('my_reviews')"
                                             >
-                                                My Reviews
+                                                Đánh giá
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 :href="route('changepassword')"
                                             >
-                                                Change Password
+                                                Thay đổi mật khẩu
                                             </Link>
                                             <Link
                                                 class="dropdown-item"
                                                 :href="route('user_logout')"
                                             >
-                                                Log Out
+                                                Đăng xuất
                                             </Link>
                                         </div>
                                     </div>
@@ -210,7 +210,7 @@ const {
                                         :href="route('user_login')"
                                     >
                                         <i class="far fa-user"></i>{{ " " }}
-                                        My Account
+                                        Tài khoản
                                     </Link>
                                 </li>
                                    
@@ -218,7 +218,7 @@ const {
                                 <li>
                                     <Link :href="route('my_wishlists')">
                                         <i class="far fa-heart"></i>
-                                        Wishlist
+                                        Yêu thích
                                     </Link>
                                     <span class="wishlist-count" v-if="wishlistTotal">
                                         {{ wishlistTotal }}
@@ -227,7 +227,7 @@ const {
                                 <li>
                                     <Link :href="route('my_cart')">
                                         <i class="fas fa-shopping-cart"></i>
-                                        Cart
+                                        Giỏ hàng
                                     </Link>
                                     <span class="cartlist" v-if="cartTotal">{{ cartTotal }}</span>
                                 </li>
@@ -248,7 +248,7 @@ const {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                Shopping By Categories
+                                Danh mục sản phẩm
                             </Link>
                             <ul
                                 class="dropdown-menu"
@@ -289,7 +289,7 @@ const {
                                     aria-current="page"
                                     :href="`${baseUrl}`"
                                 >
-                                    Home
+                                    Trang chủ
                                 </Link>
                             </li>
                             <li class="nav-item">
@@ -298,7 +298,7 @@ const {
                                     aria-current="page"
                                     :href="`${baseUrl}/all-products`"
                                 >
-                                    Shop
+                                    Sản phẩm
                                 </Link>
                             </li>
                             <template v-for="page in sitePages">
@@ -321,7 +321,7 @@ const {
                                     aria-current="page"
                                     :href="`${baseUrl}/contact_us`"
                                 >
-                                    Contact Us
+                                    Liên hệ
                                 </Link>
                             </li>
                         </ul>

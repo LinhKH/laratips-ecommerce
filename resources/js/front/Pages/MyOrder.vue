@@ -50,19 +50,19 @@ const handleShowDetails = (id) => {
 
 <template>
     <Preloader v-if="isLoading" />
-    <Head title="My Orders"></Head>
+    <Head title="Đơn hàng"></Head>
     <FrontLayout>
         <div id="site-content">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>My Orders</h2>
+                    <h2>Đơn hàng của bạn</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
                             <li class="breadcrumb-item">
-                                <Link href="/">Home</Link>
+                                <Link href="/">Trang chủ</Link>
                             </li>
                             <li class="breadcrumb-item active">
-                                My Orders
+                                Đơn hàng của bạn
                             </li>
                         </ol>
                     </nav>
@@ -74,10 +74,10 @@ const handleShowDetails = (id) => {
                     <div :class="[orderDetail ? 'col-md-8' : 'col-md-12']">
                         <table v-if="!my_orders.isEmpty" class="table table-bordered table-striped">
                             <thead>
-                                <th>Order No</th>
-                                <th>Products</th>
-                                <th>Order Placed</th>
-                                <th>View</th>
+                                <th>Số đơn hàng</th>
+                                <th>Sản phẩm</th>
+                                <th>Tạo lúc</th>
+                                <th>Xem</th>
                             </thead>
                             <tbody class="cart-data">
                              
@@ -112,7 +112,7 @@ const handleShowDetails = (id) => {
                             </tbody>
                         </table>
                         <div v-else class="content-box text-center">
-                            <p class="m-0">No Orders Found</p>
+                            <p class="m-0">Hiện tại chưa có đơn hàng nào</p>
                         </div>
                     </div>
                     <div class="col-md-4 show-product-content">

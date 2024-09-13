@@ -207,7 +207,7 @@ const submit = () => {
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.products.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+                <Link :href="route('admin.products.index')" class="align-top btn btn-sm btn-primary">Quay lại</Link>
             </template>
         </BreadCrumb>
         <section class="content card">
@@ -217,13 +217,13 @@ const submit = () => {
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Product Information</h3>
+                                    <h3 class="card-title">Thông tin sản phẩm</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Product Name</span> <small class="text-danger">*</small>
+                                                <span>Tên sản phẩm</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" :class="{'border border-danger' : $page.props.errors.product_name}" class="form-control" v-model="form.product_name"
@@ -239,7 +239,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Category</span> <small class="text-danger">*</small>
+                                                <span>Danh mục</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <VueMultiselect :class="{'border border-danger' : $page.props.errors.category}"
@@ -262,11 +262,11 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Brand</span>
+                                                <span>Thương hiệu</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <select class="form-control" v-model="form.brand">
-                                                    <option value="" selected disabled>Select Brand</option>
+                                                    <option value="" selected disabled>chọn thương hiệu</option>
                                                     <option v-for="item in brand" :key="item.id" :value="item.id">{{ item.brand_name }}</option>
                                                 </select>
                                             </div>
@@ -275,7 +275,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Unit</span>
+                                                <span>Đơn vị</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" v-model="form.unit"
@@ -286,7 +286,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Tags</span> <small class="text-danger">*</small>
+                                                <span>Thẻ tag</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <vue3-tags-input :tags="form.tags" :class="{'border border-danger' : $page.props.errors.tags}"
@@ -303,7 +303,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Refundable</span>
+                                                <span>Cho phép đổi trả</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <div class="checkbox">
@@ -318,14 +318,14 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Product Images</h3>
+                                    <h3 class="card-title">Hình ảnh</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Gallery Images</span><br />
-                                                <small>Images must be square in size (e.g. 800x800)</small>
+                                                <span>Thư viện hình</span><br />
+                                                <small>Hình nên có kích thước (800x800)</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <el-upload v-model:file-list="productImages" list-type="picture-card" multiple :auto-upload="false"
@@ -356,8 +356,8 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Thumbnail Image</span><small class="text-danger">*</small><br />
-                                                <small>Image must be square in size (e.g. 800x800)</small>
+                                                <span>Hình ảnh chính</span><small class="text-danger">*</small><br />
+                                                <small>Hình nên có kích thước (800x800)</small>
                                             </div>
                                             <div class="col-md-7">
                                                 <input type="hidden" class="custom-file-input" name="old_img" :value="form.thumbnail_img" />
@@ -381,13 +381,13 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Product Variation</h3>
+                                    <h3 class="card-title">Các thuộc tính của sản phẩm (VD: Màu sắc, kích thước, chất liệu, bộ nhớ, ....)</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Colors</span>
+                                                <span>Màu sắc</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <VueMultiselect
@@ -405,8 +405,8 @@ const submit = () => {
                                     <div class="form-group">
                                         <table class="table">
                                             <thead>
-                                                <th>Attribute</th>
-                                                <th>Attribute value</th>
+                                                <th>Thuộc tính</th>
+                                                <th>Giá trị của thuộc tính</th>
                                                 <th><a href="javascript:;" @click="addAttribute" class="btn btn-info">+</a></th>
                                             </thead>
                                             <tbody>
@@ -441,17 +441,17 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Product Price</h3>
+                                    <h3 class="card-title">Giá sản phẩm</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Unit Price</span> <small class="text-danger">*</small>
+                                                <span>Giá</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="number" class="form-control unit-price" :class="{'border border-danger' : $page.props.errors.unit_price}" v-model="form.unit_price" min="0"
-                                                    placeholder="Unit Price">
+                                                    placeholder="Giá">
                                                     <div v-show="$page.props.errors.unit_price">
                                                         <p class="text-sm text-red-600">
                                                             {{ $page.props.errors.unit_price }}
@@ -463,11 +463,11 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Quantity</span> <small class="text-danger">*</small>
+                                                <span>Số lượng</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="number" class="form-control" :class="{'border border-danger' : $page.props.errors.quantity}" v-model="form.quantity"
-                                                    placeholder="Quantity">
+                                                    placeholder="Số lượng">
                                                     <div v-show="$page.props.errors.quantity">
                                                         <p class="text-sm text-red-600">
                                                             {{ $page.props.errors.quantity }}
@@ -479,7 +479,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Discount Date Range</span>
+                                                <span>Thời gian giảm giá</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <VueDatePicker v-model="form.datetimes" range :multi-calendars="{ solo: true }" :enable-time-picker="false" />
@@ -491,18 +491,18 @@ const submit = () => {
                                             <div class="col-md-9">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <span>Discount</span>
+                                                        <span>Giảm giá</span>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <input type="number" class="form-control" v-model="form.discount" min="0"
-                                                            placeholder="Discount" value="">
+                                                            placeholder="Giảm giá" value="">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <select class="form-control" v-model="form.discount_type" id="">
-                                                    <option value="flat">Flat</option>
-                                                    <option value="percent">Percent</option>
+                                                    <option value="flat">Cố định</option>
+                                                    <option value="percent">Phần trăm</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -512,16 +512,16 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Product Description</h3>
+                                    <h3 class="card-title">Chi tiết sản phẩm</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Description</span>
+                                                <span>Chi tiết</span>
                                             </div>
                                             <div class="col-md-9">
-                                                <EditorGroup label="Description" v-model="form.description" :error-message="form.errors.description" />
+                                                <EditorGroup label="Chi tiết" v-model="form.description" :error-message="form.errors.description" />
                                             </div>
                                         </div>
                                     </div>
@@ -529,7 +529,7 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">SEO Meta Tags</h3>
+                                    <h3 class="card-title">SEO Meta Tags (Phần dành cho SEO Web, không cần nhập cũng được)</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -561,13 +561,13 @@ const submit = () => {
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Today Deal</h3>
+                                    <h3 class="card-title">Ưu đãi hôm nay</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <span>Status</span>
+                                                <span>Trạng thái</span>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="checkbox">
@@ -581,19 +581,19 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Shipping Configuration</h3>
+                                    <h3 class="card-title">Cấu hình vận chuyển</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <span>Shipping Charges</span> <small class="text-danger">*</small>
+                                                <span>Phí vận chuyển</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-8">
                                                 <select class="form-control" :class="{'border border-danger' : $page.props.errors.shipping_charges}" v-model="form.shipping_charges" id="">
-                                                    <option value="" disabled selected>Select Shipping Charges</option>
-                                                    <option value="free">Free Shipping</option>
-                                                    <option value="area">Area Wise</option>
+                                                    <option value="" disabled selected>chọn phí vận chuyển</option>
+                                                    <option value="free">Miễn phí</option>
+                                                    <option value="area">Theo khu vực</option>
                                                 </select>
                                                 <div v-show="$page.props.errors.shipping_charges">
                                                     <p class="text-sm text-red-600">
@@ -606,7 +606,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <span>Shipping Days</span> <small class="text-danger">*</small>
+                                                <span>Số ngày vận chuyển</span> <small class="text-danger">*</small>
                                             </div>
                                             <div class="col-md-8">
                                                 <input type="number" class="form-control" :class="{'border border-danger' : $page.props.errors.shipping_days}" v-model="form.shipping_days" min="0"
@@ -623,18 +623,18 @@ const submit = () => {
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Status</h3>
+                                    <h3 class="card-title">Trạng thái</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <span>Status</span>
+                                                <span>Trạng thái</span>
                                             </div>
                                             <div class="col-md-9">
                                                 <select class="form-control" v-model="form.product_status" style="width: 100%;">
-                                                    <option value="1" selected>Published</option>
-                                                    <option value="0">Draft</option>
+                                                    <option value="1" selected>Hiển thị</option>
+                                                    <option value="0">Không hiển thị</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -645,7 +645,7 @@ const submit = () => {
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <input type="submit" class="btn btn-primary bg-primary" value="Submit">
+                            <input type="submit" class="btn btn-primary bg-primary" value="Nhấn gửi">
                         </div>
                     </div>
                 </form>
@@ -653,4 +653,9 @@ const submit = () => {
         </section>
     </BackendLayout>
 </template>
+<style scoped>
+    .card-header {
+        background-color: rgb(194, 194, 194) !important;
+    }
+</style>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

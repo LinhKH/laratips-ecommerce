@@ -250,7 +250,7 @@ class HomeController extends Controller
 
         $colors = Color::select(['colors.*'])->get();
         $attrvalues = Attrvalue::select(['attrvalues.*'])->get();
-        $attributes = Attribute_value::select(['attributes_values.*', 'attributes.title'])
+        $attributes = Attribute_value::select(['attributes_values.*', 'attributes.title', 'attributes.name'])
             ->leftjoin('attributes', 'attributes.id', '=', 'attributes_values.attribute_id')
             ->where(['attributes_values.product_id' => $product->id])->groupBy('attributes_values.attrvalues')->get();
 

@@ -68,28 +68,28 @@ onMounted(() => {
                             class="nav-link {{ Request::path() == 'admin/dashboard' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Dashboard
+                            Bảng điều khiển
                         </p>
                         </Link>
                     </li>
                     <li class="nav-item has-treeview" :class="classObjectProduct">
                         <a @click="menuOpenPro = !menuOpenPro" href="javascript:;" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
-                            <p>Products <i class="fas fa-angle-left right"></i></p>
+                            <p>Sản phẩm <i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.products.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.products.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.products.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>All Products</p>
+                                <p>Tất cả sản phẩm</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.category.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.category.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.category.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Category</p>
+                                <p>Danh mục sản phẩm</p>
                                 </Link>
                             </li>
 
@@ -97,35 +97,35 @@ onMounted(() => {
                                 <Link preserve-scroll :href="route('admin.brand.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.brand.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.brand.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Brand</p>
+                                <p>Thương hiệu</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.colors.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.colors.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.colors.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Colors</p>
+                                <p>Màu sắc</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.attribute.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.attribute.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.attribute.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Attribute Sets</p>
+                                <p>Đặt thuộc tính</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.attribute-values.index')" class="nav-link"
                                     :class="{ 'active bg-primary': route().current('admin.attribute-values.*') }">
                                 <i class="nav-icon" :class="[ route().current('admin.attribute-values.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Attribute Values</p>
+                                <p>Giá trị của thuộc tính</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link preserve-scroll :href="route('admin.flash-deals.index')"
                                     :class="['nav-link', route().current('admin.flash-deals.*') ? 'active bg-primary' : '']">
                                 <i class="nav-icon" :class="[ route().current('admin.flash-deals.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                <p>Flash Deals</p>
+                                <p>Ưu đãi</p>
                                 </Link>
                             </li>
                         </ul>
@@ -135,28 +135,28 @@ onMounted(() => {
                             :class="['nav-link', (route().current('admin.orders.*') || route().current('admin.view_order') || route().current('admin.order_delivered')) ? 'active bg-primary' : '']">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>
-                                Orders
+                                Đơn hàng
                             </p>
                         </Link>
                     </li>
                     <li class="nav-item has-treeview" :class="classObjectReport">
                         <a @click="menuOpenReport = !menuOpenReport" href="javascript:;" class="nav-link">
                             <i class="nav-icon fas fa-file"></i>
-                            <p>Reports <i :class="['fas rightCustom', !menuOpenReport ? 'fa-angle-left' : 'fa-angle-down']"></i></p>
+                            <p>Thống kê <i :class="['fas rightCustom', !menuOpenReport ? 'fa-angle-left' : 'fa-angle-down']"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <Link :href="route('admin.product_sale.index')"
                                     :class="['nav-link', route().current('admin.product_sale.*') ? 'active bg-primary' : '']">
                                     <i class="nav-icon" :class="[ route().current('admin.product_sale.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                    <p>Products Sold</p>
+                                    <p>Sản phẩm đã bán</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link :href="route('admin.product_stock.index')"
                                     :class="['nav-link', route().current('admin.product_stock.*') ? 'active bg-primary' : '']">
                                     <i class="nav-icon" :class="[ route().current('admin.product_stock.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                    <p>Products Stock</p>
+                                    <p>Sản phẩm còn hàng</p>
                                 </Link>
                             </li>
                         </ul>
@@ -166,7 +166,7 @@ onMounted(() => {
                             :class="['nav-link', route().current('admin.reviews.*') ? 'active bg-primary' : '']">
                             <i class="nav-icon fas fa-star"></i>
                             <p>
-                                Reviews
+                                Đánh giá
                             </p>
                         </Link>
                     </li>
@@ -175,35 +175,35 @@ onMounted(() => {
                             :class="{ 'active': route().current('admin.users.*') }">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Users
+                            Người dùng
                         </p>
                         </Link>
                     </li>
                     <li class="nav-item has-treeview" :class="classObjecSetting">
                         <a @click="menuOpenSetting = !menuOpenSetting" href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
-                            <p>Settings <i class="fas fa-angle-left right"></i></p>
+                            <p>Thiết lập <i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <Link :href="route('admin.general_settings.index')"
                                     class="nav-link" :class="{ 'active bg-primary': route().current('admin.general_settings.*') }">
                                     <i class="nav-icon" :class="[ route().current('admin.general_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                    <p>General Settings</p>
+                                    <p>Chung</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link :href="route('admin.profile_settings.index')"
                                     class="nav-link" :class="{ 'active bg-primary': route().current('admin.profile_settings.*') }">
                                     <i class="nav-icon" :class="[ route().current('admin.profile_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                    <p>Profile Settings</p>
+                                    <p>Trang cá nhân</p>
                                 </Link>
                             </li>
                             <li class="nav-item">
                                 <Link :href="route('admin.social_settings.index')"
                                     class="nav-link" :class="{ 'active bg-primary': route().current('admin.social_settings.*') }">
                                     <i class="nav-icon" :class="[ route().current('admin.social_settings.*') ? 'fa fa-check-circle' : 'far fa-circle' ]"></i>
-                                    <p>Social Links Settings</p>
+                                    <p>Mạng xã hội</p>
                                 </Link>
                             </li>
                         </ul>

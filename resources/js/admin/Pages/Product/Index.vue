@@ -46,7 +46,7 @@ const { filters, isLoading, isFilled } = useFilters({
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.products.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.products.create')" class="align-top btn btn-sm btn-primary">Thêm sản phẩm</Link>
             </template>
         </BreadCrumb>
         <section class="content">
@@ -58,13 +58,13 @@ const { filters, isLoading, isFilled } = useFilters({
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    <th>Images</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Discount</th>
-                                    <th>Today Deal</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên</th>
+                                    <th>Danh mục</th>
+                                    <th>Giảm giá</th>
+                                    <th>Ưu đãi hôm nay</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,12 +84,12 @@ const { filters, isLoading, isFilled } = useFilters({
                                         {{ $filters.formatNumber(row.discount) ?? 0 }} {{ row.discount_type == 'percent' ? '%' : 'vnd' }}
                                     </td>
                                     <td>
-                                        <span v-if="row.today_deal == '1'" class="badge badge-success">Active</span>
-                                        <span v-else class="badge badge-danger">Inactive</span>
+                                        <span v-if="row.today_deal == '1'" class="badge badge-success">Kích hoạt</span>
+                                        <span v-else class="badge badge-danger">Chưa kích hoạt</span>
                                     </td>
                                     <td>
-                                        <span v-if="row.status == '1'" class="badge badge-success">Published</span>
-                                        <span v-else class="badge badge-danger">Draft</span>
+                                        <span v-if="row.status == '1'" class="badge badge-success">Hiển thị</span>
+                                        <span v-else class="badge badge-danger">Chưa hiển thị</span>
                                     </td>
                                     <td>
                                         <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"

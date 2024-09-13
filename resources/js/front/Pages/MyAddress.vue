@@ -22,37 +22,37 @@ const deleteAddress = (id) => {
         <div id="site-content">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>My Address</h2>
+                    <h2>Địa chỉ</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
                             <li class="breadcrumb-item">
-                                <Link :href="`${baseUrl}`">Home</Link>
+                                <Link :href="`${baseUrl}`">Trang chủ</Link>
                             </li>
-                            <li class="breadcrumb-item active">My Address</li>
+                            <li class="breadcrumb-item active">Địa chỉ</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <div class="container-xl container-fluid">
                 <div>
-                    <Link :href="route('address.create')" class="btn btn-primary mb-3">Add New Address</Link>
+                    <Link :href="route('address.create')" class="btn btn-primary mb-3">Tạo địa chỉ mới</Link>
                 </div>
                 <div class="row">
                     <div class="col-xl-3 mt-3" v-for="(address, index) in addresses">
                         <div class="wsus__dash_add_single">
-                            <h4>Billing Address {{ index + 1 }}</h4>
+                            <h4>Địa chỉ vận chuyển {{ index + 1 }}</h4>
                             <ul>
-                                <li><strong>Name :</strong> {{address.name}}</li>
-                                <li><strong>Phone :</strong> {{address.phone}}</li>
+                                <li><strong>Tên :</strong> {{address.name}}</li>
+                                <li><strong>SĐT :</strong> {{address.phone}}</li>
                                 <li><strong>Email :</strong> {{address.email}}</li>
-                                <li><strong>Country :</strong> {{address.country.country_name}}</li>
-                                <li><strong>State :</strong> {{address.state.state_name}}</li>
-                                <li><strong>City :</strong> {{address.city.city_name}}</li>
-                                <li><strong>Address Detail :</strong> {{address.address}}</li>
+                                <li><strong>Quốc gia :</strong> {{address.country.country_name}}</li>
+                                <li><strong>Tỉnh/thành phố :</strong> {{address.state.state_name}}</li>
+                                <li><strong>Quận/huyện :</strong> {{address.city.city_name}}</li>
+                                <li><strong>Số nhà/tên đường :</strong> {{address.address}}</li>
                             </ul>
                             <div class="wsus__address_btn pr-5">
-                                <Link :href="route('address.edit', address.id)" class="edit pr-5"><i class="fa fa-edit"></i> edit</Link>
-                                <a href="javascript:;" @click="deleteAddress(address.id)" class="del delete-item"><i class="fa fa-trash-alt"></i> delete</a>
+                                <Link :href="route('address.edit', address.id)" class="edit pr-5"><i class="fa fa-edit"></i> Sửa</Link>
+                                <a href="javascript:;" @click="deleteAddress(address.id)" class="del delete-item"><i class="fa fa-trash-alt"></i> Xóa</a>
                             </div>
                         </div>
                     </div>

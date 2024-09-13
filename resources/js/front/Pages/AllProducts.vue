@@ -57,17 +57,17 @@ const handleFilter = () => {
 };
 
 const sortOptions = [
-    { name: 'Latest', value: 'latest' },
-    { name: 'Oldest', value: 'oldest' },
-    { name: 'Price:Low to High', value: 'l-h' },
-    { name: 'Price:High to Low', value: 'h-l' },
+    { name: 'Mới nhất', value: 'latest' },
+    { name: 'Cũ nhất', value: 'oldest' },
+    { name: 'Giá: Thấp đến cao', value: 'l-h' },
+    { name: 'Giá: Cao đến thấp', value: 'h-l' },
 ];
 
 </script>
 
 <template>
 
-    <Head :title="cat_detail?.category_name ?? 'All Products'"></Head>
+    <Head :title="cat_detail?.category_name ?? 'Tất cả sản phẩm'"></Head>
     <Preloader v-if="change" />
     <FrontLayout>
         <div id="banner" class="d-flex flex-row justify-content-center">
@@ -77,12 +77,12 @@ const sortOptions = [
 
                 <h2 v-else-if="cat_detail != null">{{ cat_detail.category_name }}</h2>
 
-                <h2 v-else>All Products</h2>
+                <h2 v-else>Tất cả sản phẩm</h2>
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center p-0">
                         <li class="breadcrumb-item">
-                            <Link href="/">Home</Link>
+                            <Link href="/">Trang chủ</Link>
                         </li>
                         <template v-if="breadcrumb != null">
                             <template v-for="value in breadcrumb" :key="value.id">
@@ -97,7 +97,7 @@ const sortOptions = [
                             </template>
                         </template>
                         <li class="breadcrumb-item" v-else>
-                            All Products
+                            Tất cả sản phẩm
                         </li>
                     </ol>
                 </nav>
@@ -119,17 +119,17 @@ const sortOptions = [
                                                 {{ slug }}
                                             </h5>
                                             <p class="result-count" v-if="products.from != products.last_page && products.data.length > 0">
-                                                Showing {{ products.from }} to
-                                                {{ products.to }} of
-                                                {{ products.total }}
+                                                Đang hiển thị <b>{{ products.from }}</b>  đến
+                                                <b>{{ products.to }}</b> của
+                                                <b>{{ products.total }}</b> sản phẩm
                                             </p>
-                                            <p class="result-count" v-else>Showing Totals : <b style="font-size: 12px;"> {{ products.total }}</b></p>
+                                            <p class="result-count" v-else>Đang hiển thị tổng cộng : <b style="font-size: 12px;"> {{ products.total }}</b></p>
                                         </div>
                                         <div class="col-md-4"></div>
                                         <div
                                             class="col-md-4 d-flex flex-row justify-content-between align-items-center">
                                             <label for="" class="text-nowrap my-auto mr-2">
-                                                Sort By
+                                                Sắp xếp bởi
                                             </label>
                                             <select name="sort" class="form-control" v-model="data.sort"
                                                 @change="handleFilter">

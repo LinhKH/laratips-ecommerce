@@ -41,9 +41,9 @@ const breakpoints = {
             <div className="row">
                 <div className="col-12">
                     <div className="section-heading">
-                        <h2 className="title">Today Deals</h2>
+                        <h2 className="title">Ưu đãi hôm nay</h2>
                         <Link className="btn btn-primary text-white" :href="`${baseUrl}/today-deals`">
-                        Show All
+                        Tất cả
                         </Link>
                     </div>
                 </div>

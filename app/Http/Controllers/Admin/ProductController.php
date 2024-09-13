@@ -45,8 +45,8 @@ class ProductController extends Controller
         return inertia()->render('Product/Index', [
             'data' => $data,
             'brands' => $brands,
-            'title' => 'Products Management',
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'title' => 'Quản lý sản phẩm',
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
         ]);
@@ -71,7 +71,7 @@ class ProductController extends Controller
                         ->get();
         $colors = Color::select(['colors.*'])->get();
         return inertia()->render('Product/Create', [
-            'title' => 'Add Product',
+            'title' => 'Thêm sản phẩm',
             'edit' => false,
             'tax' => $tax,
             'category' => $category,
@@ -79,7 +79,7 @@ class ProductController extends Controller
             'attrvalues' => $attrvalues,
             'attribute' => $attribute,
             'colors' => $colors,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard', 'Products List' => 'admin.products.index'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard', 'Sản phẩm' => 'admin.products.index'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }

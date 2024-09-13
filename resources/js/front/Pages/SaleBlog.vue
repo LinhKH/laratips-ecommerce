@@ -31,7 +31,7 @@ const products = flash_products.filter((product) => {
 <template>
     <div class="col-md-4 col-sm-6">
         <div class="section-heading">
-            <h2 class="title">On Sale</h2>
+            <h2 class="title">Đang giảm giá</h2>
         </div>
         <div v-for="(flash_product, index) in products" class="blog-grid d-flex flex-row" :key="index">
             <Link :href="`${baseUrl}/product/${flash_product.slug}`" class="blog-img">

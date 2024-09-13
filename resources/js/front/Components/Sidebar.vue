@@ -54,7 +54,7 @@ const handleFilter = () => {
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                     aria-expanded="true" aria-controls="collapseOne">
-                    Product categories
+                    Danh mục sản phẩm
                 </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
@@ -74,7 +74,7 @@ const handleFilter = () => {
                     aria-expanded="false"
                     aria-controls="collapseTwo"
                 >
-                    Filter By Price
+                    Lọc bởi giá
                 </button>
             </h2>
             <div
@@ -86,7 +86,7 @@ const handleFilter = () => {
                 <div class="accordion-body" :style="{border: '1px solid', boxShadow: '3px 3px #059473 , 0em 0 .4em olive'}">
                     <div class="row">
                         <div class="col-md-6">
-                            <span class="d-block">Min</span>
+                            <span class="d-block">Thấp nhất</span>
                             <input
                                 type="number"
                                 name="min_price"
@@ -97,7 +97,7 @@ const handleFilter = () => {
                             />
                         </div>
                         <div class="col-md-6">
-                            <span class="d-block">Max</span>
+                            <span class="d-block">Cao nhất</span>
                             <input
                                 type="number"
                                 name="max_price"
@@ -113,7 +113,7 @@ const handleFilter = () => {
                                 class="btn btn-primary btn-sm mt-2"
                                 @click="handleFilter"
                             >
-                                Apply
+                                Lọc
                             </button>
                         </div>
                     </div>

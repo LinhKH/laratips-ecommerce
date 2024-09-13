@@ -13,7 +13,7 @@ const { related } = usePage().props;
         <div className="row">
             <div className="col-12">
                 <div className="section-heading">
-                    <h2 className="title">Related Product</h2>
+                    <h2 className="title">Sản phẩm liên quan</h2>
                 </div>
             </div>
         </div>

@@ -39,8 +39,8 @@ const breakpoints = {
         <div class="row">
             <div class="col-12">
                 <div class="section-heading">
-                    <h2 class="title">Lastest Product</h2>
-                    <Link class="btn btn-primary text-white" href='/search'>Show All</Link>
+                    <h2 class="title">Sản phẩm mới nhất</h2>
+                    <Link class="btn btn-primary text-white" href='/search'>Tất cả</Link>
                 </div>
             </div>
         </div>

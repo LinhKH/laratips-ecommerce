@@ -4,11 +4,11 @@
         <div class="successfull-page py-5 text-center">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>Payment Successful</h2>
+                    <h2>Tạo đơn hàng thành công</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
-                            <li class="breadcrumb-item"><Link href="/">Home</Link></li>
-                            <li class="breadcrumb-item active">Success</li>
+                            <li class="breadcrumb-item"><Link href="/">Trang chủ</Link></li>
+                            <li class="breadcrumb-item active">Thành công</li>
                         </ol>
                     </nav>
                 </div>
@@ -19,13 +19,13 @@
                         <div class="icon h2">
                             <i class="fas fa-check-circle" style="color: #059473;"</i>
                         </div>
-                        <h4 class="mb-2">Your Order is Confirmed!</h4>
+                        <h4 class="mb-2">Đơn hàng của bạn đã được xác nhận!</h4>
                     </div>
                 </div>
                 <div class="col-md-4"></div>
                 <div class="col-md-12">
                     <div class="booking-btn text-center">
-                        <Link :href="route('my_orders')" class="btn btn-primary text-center">My Orders</Link>
+                        <Link :href="route('my_orders')" class="btn btn-primary text-center">Đơn hàng của bạn</Link>
                     </div>
                 </div>
             </div>

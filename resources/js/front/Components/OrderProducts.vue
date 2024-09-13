@@ -40,7 +40,7 @@ const calculateDate = (date, days) => {
 <template>
     <table class="table table-bordered">
         <tr>
-            <td>Order No : ODR00{{ props.order_detail.order.id }}</td>
+            <td>Mã đơn hàng : ODR00{{ props.order_detail.order.id }}</td>
         </tr>
     </table>
     <div class="d-flex flex-row mb-3" v-for="value in order_detail.order_products" :key="value.id">
@@ -48,21 +48,21 @@ const calculateDate = (date, days) => {
         <div>
             <h6>{{ value.product_name }}</h6>
             <ul>
-                <li><b>Qty :</b> {{ value.product_qty }}</li>
+                <li><b>Số lượng :</b> {{ value.product_qty }}</li>
                 <li>
                     <template v-for="item in color" key="item.id">
-                        <span v-if="value.product_color == item.id"><b>Color : </b>{{ item.color_name }}</span>
+                        <span v-if="value.product_color == item.id"><b>Màu sắc : </b>{{ item.color_name }}</span>
                     </template>
                 </li>
                 <Attribute :product="value" :is-order="true"/>
                 <li>
-                    <b>Amount : </b>
+                    <b>Tổng tiền : </b>
                     {{ $filters.formatNumber(value.product_amount) }} {{ generalSettings.currency }}
                 </li>
                 <template v-if="value.product_delivery == '0'">
-                    <li><b>Delivery :</b> Pending </li>
+                    <li><b>Tình trạng :</b> Đang vận chuyển </li>
                     <li>
-                        <b>Expected Delivery : </b>
+                        <b>Dự kiến giao hàng : </b>
                         {{calculateDate(
                             order_detail.order.created_at,
                             value.shipping_days
@@ -70,9 +70,9 @@ const calculateDate = (date, days) => {
                     </li>
                 </template>
                 <template v-else>
-                    <li><b>Delivery : </b>Delivered</li>
+                    <li><b>Tình trạng : </b>Đã vận chuyển</li>
                     <li>
-                        <b>Delivered On : </b>
+                        <b>Đã giao hàng lúc : </b>
                         {{new Date(
                             order_detail.order.updated_at
                         ).toLocaleDateString()}}
@@ -82,7 +82,7 @@ const calculateDate = (date, days) => {
                             :href="route('review.create', value.product_id)"
                             className="btn btn-primary btn-sm"
                         >
-                            Write a product review
+                            Đánh giá sản phẩm
                         </Link>
                     </li>
                 </template>
@@ -91,11 +91,11 @@ const calculateDate = (date, days) => {
     </div>
     <table className="table table-bordered">
         <tr>
-            <td>Total Products</td>
+            <td>Tổng sản phẩm</td>
             <td>{{ order_detail.order.qty }}</td>
         </tr>
         <tr>
-            <td>Total Amount</td>
+            <td>Tổng tiền</td>
             <th>
                 {{ $filters.formatNumber(order_detail.order.amount) }} {{ generalSettings.currency }}
             </th>

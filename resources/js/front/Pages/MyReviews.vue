@@ -16,13 +16,13 @@ const { reviews } = usePage().props;
         <div id="site-content">
             <div id="banner" class="d-flex flex-row justify-content-center">
                 <div class="align-self-center">
-                    <h2>My Reviews</h2>
+                    <h2>Đánh giá của bạn</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center p-0">
                             <li class="breadcrumb-item">
-                                <Link href="/">Home</Link>
+                                <Link href="/">Trang chủ</Link>
                             </li>
-                            <li class="breadcrumb-item active">My Reviews</li>
+                            <li class="breadcrumb-item active">Đánh giá của bạn</li>
                         </ol>
                     </nav>
                 </div>
@@ -45,7 +45,7 @@ const { reviews } = usePage().props;
 
                                 <div v-if="row.hide_by_admin == '1'"
                                     class="alert alert-danger p-2 py-0 m-0 d-inline-block">
-                                    Hidden by Admin
+                                    Đã ẩn bởi Admin
                                 </div>
 
                                 <div v-if="row.approved == '0'" class="alert alert-danger p-2 py-0 m-0 d-inline-block">

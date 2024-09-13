@@ -28,7 +28,7 @@ const attr_values = !props.isOrder ? props.product.attrvalues?.split(",") : prop
     <template v-for='row in attributes'>
         <template v-for="item in attr_values">
             <li :key="row.id" v-if="row.id == isCheckAttr(item)[0] && isCheckAttr(item)[0]">
-                <b>{{ row.title }} : </b> {{ attrvalues.find(item1 => item1.id == isCheckAttr(item)[1])['value'] ?? null }}
+                <b>{{ row.name }} : </b> {{ attrvalues.find(item1 => item1.id == isCheckAttr(item)[1])['value'] ?? null }}
             </li>
         </template>
     </template>

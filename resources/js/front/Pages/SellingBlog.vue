@@ -11,7 +11,7 @@ const {  generalSettings } = usePage().props;
 <template>
     <div class="col-md-4 col-sm-6">
         <div class="section-heading">
-            <h2 class="title">Best Selling</h2>
+            <h2 class="title">Bán chạy</h2>
         </div>
         <div v-for="(value, index) in orderProducts" class="blog-grid d-flex flex-row" key="index">
             <Link :href="`${baseUrl}/product/${value.slug}`" class="blog-img">

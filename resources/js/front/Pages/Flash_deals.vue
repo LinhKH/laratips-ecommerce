@@ -35,9 +35,9 @@ const deals = flash_deals.filter((deal) => {
             <div class="row">
                 <div class="col-12">
                     <div class="section-heading">
-                        <h2 class="title">Flash Deals</h2>
+                        <h2 class="title">Ưu đãi</h2>
                         <Link class="btn btn-primary text-white" :href="`${baseUrl}/all-flash-deals`">
-                        Show All
+                        Tất cả
                         </Link>
                     </div>
                 </div>
