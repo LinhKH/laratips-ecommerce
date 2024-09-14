@@ -653,9 +653,4 @@ const submit = () => {
         </section>
     </BackendLayout>
 </template>
-<style scoped>
-    .card-header {
-        background-color: rgb(194, 194, 194) !important;
-    }
-</style>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

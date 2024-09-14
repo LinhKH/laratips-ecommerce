@@ -56,6 +56,12 @@ button:focus{ outline: none; }
     transition: all 0.5s ease 0s;
 }
 
+
+.card-header {
+    background-color: rgb(194, 194, 194) !important;
+}
+
+
 .btn:hover
 .btn.active,
 .btn-primary:hover{
