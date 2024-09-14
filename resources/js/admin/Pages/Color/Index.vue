@@ -43,9 +43,9 @@ const { filters, isLoading, isFilled } = useFilters({
 <template>
     <Head :title="title" />
     <BackendLayout>
-        <BreadCrumb :breadcrumb='breadcrumb' :title="`All Colors`" :active='`All Colors`'>
+        <BreadCrumb :breadcrumb='breadcrumb' :title="`Tất cả màu sắc`" :active='`Tất cả màu sắc`'>
             <template #add_btn>
-                <Link :href="route('admin.colors.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.colors.create')" class="align-top btn btn-sm btn-primary">Thêm mới</Link>
             </template>
             
         </BreadCrumb>
@@ -58,9 +58,9 @@ const { filters, isLoading, isFilled } = useFilters({
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    <th>Name</th>
-                                    <th>Color Code</th>
-                                    <th>Action</th>
+                                    <th>Tên</th>
+                                    <th>Mã màu</th>
+                                    <th>Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>

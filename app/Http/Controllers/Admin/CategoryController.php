@@ -29,11 +29,11 @@ class CategoryController extends Controller
         if ($request->parentId) {
             $data->where('categories.parent_category', $request->parentId);
         }
-        $data = $data->paginate(10)->withQueryString();
+        $data = $data->paginate(20)->withQueryString();
         return inertia()->render('Category/Index', [
             'data' => $data,
-            'title' => 'Categories Management',
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'title' => 'Quản lý danh mục',
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
             'rootCategories' => Category::where('parent_category', 0)->get(['id', 'category_name'])
@@ -49,9 +49,9 @@ class CategoryController extends Controller
     {
         // return view('admin.category.create',['category'=>$category,'attributes'=>$attributes]);
         return inertia()->render('Category/Create', [
-            'title' => 'Create Category',
+            'title' => 'Tạo danh mục',
             'edit' => false,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
             'attributes' => Attribute::get(['id','title'])->toArray(),
             'category' => Category::with('childrenCategories')->where('parent_category', 0)->get(['id', 'category_name'])
@@ -69,8 +69,8 @@ class CategoryController extends Controller
         $request->validate([
             'parentId' => ['bail', 'nullable', 'integer'],
             'name' => ['bail', 'required', 'string', 'max:255'],
-            'meta_desc' => ['bail', 'required', 'string', 'max:255'],
-            'meta_title' => ['bail', 'required', 'string', 'max:255'],
+            // 'meta_desc' => ['bail', 'required', 'string', 'max:255'],
+            // 'meta_title' => ['bail', 'required', 'string', 'max:255'],
         ]);
         $check_exist = Category::where('category_name', $request->name)->where('parent_category', '0')->first();
         if ($check_exist) {
@@ -106,10 +106,10 @@ class CategoryController extends Controller
         }
         $category->meta_desc = $request->meta_desc;
         // $category->category_slug = $slug;
-        if ($request->cat_attributes) {
-            $arrId = \Arr::pluck($request->cat_attributes,'id');
-            $category->filter_attr = implode(',', $arrId);
-        }
+        // if ($request->cat_attributes) {
+        //     $arrId = \Arr::pluck($request->cat_attributes,'id');
+        //     $category->filter_attr = implode(',', $arrId);
+        // }
 
         $category->status = $request->status ? 1 : 0;
 
@@ -171,8 +171,8 @@ class CategoryController extends Controller
         $request->validate([
             'parentId' => ['bail', 'nullable', 'integer'],
             'name' => ['bail','required','string','max:255'],
-            'meta_desc' => ['bail','required','string','max:255'],
-            'meta_title' => ['bail','required','string','max:255'],
+            // 'meta_desc' => ['bail','required','string','max:255'],
+            // 'meta_title' => ['bail','required','string','max:255'],
         ]);
 
         $check_exist = Category::where('category_name', $request->name)->where('parent_category', '0')->where('id', '!=', $id)->first();
@@ -233,14 +233,15 @@ class CategoryController extends Controller
         $category->meta_title = $meta_title;
         $category->meta_desc = $request->meta_desc;
 
-        if (isset($request->cat_attributes)) {
-            $arrId = \Arr::pluck($request->cat_attributes,'id');
-            $category->filter_attr = implode(',', $arrId);
-        }
+        // if (isset($request->cat_attributes)) {
+        //     $arrId = \Arr::pluck($request->cat_attributes,'id');
+        //     $category->filter_attr = implode(',', $arrId);
+        // }
         $category->status = $request->status ? 1 : 0;
         $update = $category->save();
 
-        return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Category updated successfully.');
+        // return redirect()->route("admin.{$this->routeResourceName}.index")->with('success', 'Danh mục được cập nhật thành công.');
+        return back()->with('success', 'Danh mục được cập nhật thành công.');
     }
 
     /**
@@ -256,9 +257,9 @@ class CategoryController extends Controller
         // return $child;
         if ($child == 0 && $check == 0) {
             $destroy = Category::where(['id' => $id])->delete();
-            return back()->with('success', 'Category deleted successfully.');
+            return back()->with('success', 'Danh mục được xóa thành công.');
         } else {
-            return back()->with('error', "You won't Delete this (This Category have children categories or used in Products.)");
+            return back()->with('error', "Bạn không thể xóa mục này (Danh mục này có các danh mục con hoặc được sử dụng trong Sản phẩm.)");
         }
     }
 

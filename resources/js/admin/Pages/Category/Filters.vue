@@ -38,7 +38,7 @@ watch(
 <template>
     <div class="card card-default">
         <div class="card-header">
-            <h3 class="card-title">Filters</h3>
+            <h3 class="card-title">Lọc</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" @click="showFilters = !showFilters">
                     <i class="fas fa-minus" :class="{'fa-minus': showFilters, 'fa-plus' : !showFilters}"></i>
@@ -50,22 +50,22 @@ watch(
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group" >
-                        <label>Name</label>
+                        <label>Tên</label>
                         <input v-model="filters.name" type="text" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Root Category</label>
+                        <label>Danh mục cha</label>
                         <select class="form-control" style="width: 100%;" v-model="filters.parentId">
-                            <option value=''>Select</option>
+                            <option value=''>Chọn</option>
                             <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.category_name }}</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div>
-                <button type="button" class="btn bg-danger" @click="filters = {}" >Clear Filter</button>
+                <button type="button" class="btn bg-danger" @click="filters = {}" >Xóa lọc</button>
             </div>
         </div>
 

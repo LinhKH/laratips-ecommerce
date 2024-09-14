@@ -23,7 +23,7 @@ import RatedBlog from './RatedBlog.vue';
         <LastestProduct />
         <Flash_deals />
         <Flash_sale />
-        <<div class="py-4">
+        <div class="py-4">
             <div class="container">
                 <div class="row">
                     <SellingBlog />

@@ -22,8 +22,8 @@ class ColorController extends Controller
 
         return inertia()->render('Color/Index', [
             'data' => $data,
-            'title' => 'Colors Management',
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'title' => 'Quản lý màu sấc',
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
         ]);
@@ -37,9 +37,9 @@ class ColorController extends Controller
     public function create()
     {
         return inertia()->render('Color/Create', [
-            'title' => 'Create Colors',
+            'title' => 'Tạo màu sắc',
             'edit' => false,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -61,7 +61,7 @@ class ColorController extends Controller
         $color->color_name = $request->input('color_name');
         $color->color_code = $request->input('color_code');
         $color->save();
-        return to_route('admin.colors.index')->with('success', 'Color Created Successfuly!.');
+        return to_route('admin.colors.index')->with('success', 'Màu sắc được tạo thành công!.');
     }
 
     /**
@@ -85,10 +85,10 @@ class ColorController extends Controller
     {
         $color = Color::where(['id' => $id])->first();
         return inertia()->render('Color/Create', [
-            'title' => 'Edit Colors',
+            'title' => 'Chỉnh sửa màu sắc',
             'edit' => true,
             'item' => $color,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -111,7 +111,7 @@ class ColorController extends Controller
             'color_name' => $request->input('color_name'),
             'color_code' => $request->input('color_code'),
         ]);
-        return to_route('admin.colors.index')->with('success', 'Color Updated Successfuly!.');
+        return to_route('admin.colors.index')->with('success', 'Màu sắc được cập nhật thành công!.');
     }
 
     /**
@@ -125,9 +125,9 @@ class ColorController extends Controller
         $check = Product::where('colors', 'LIKE', "%{$id}%")->count();
         if ($check == '0') {
             Color::where(['id' => $id])->delete();
-            return back()->with('success', 'Color deleted successfully.');
+            return back()->with('success', 'Màu sắc được xóa thành công.');
         } else {
-            return back()->with('error', "You don't delete this, This color is used in Products Table");
+            return back()->with('error', "Bạn không thể xóa màu sắc này. Nó được sử dụng trong sản phẩm");
         }
     }
 }

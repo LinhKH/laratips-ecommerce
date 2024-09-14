@@ -51,6 +51,7 @@ class UserController extends Controller
                 ->leftJoin('cities', 'cities.id', '=', 'users.city')
                 ->leftJoin('states', 'states.id', '=', 'users.state')
                 ->leftJoin('countries', 'countries.id', '=', 'users.country')
+                ->where('isAdmin', '!=', 1)
                 ->orderBy('user_id', 'desc')->get();
 
         return Inertia::render('User/Index', [

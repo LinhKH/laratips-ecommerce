@@ -23,7 +23,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-    title: props.item.title ?? "",
+    name: props.item.name ?? "",
 });
 
 
@@ -66,7 +66,7 @@ const submit = () => {
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.attribute.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+                <Link :href="route('admin.attribute.index')" class="align-top btn btn-sm btn-primary">Quay lại</Link>
             </template>
         </BreadCrumb>
         <section class="content card">
@@ -76,19 +76,19 @@ const submit = () => {
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Attribute Details</h3>
+                                    <h3 class="card-title">Chi tiết thuộc tính</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Title</span>
+                                                <span>Name</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" v-model="form.title" placeholder="Name">
-                                                <div v-show="$page.props.errors.title">
+                                                <input type="text" class="form-control" v-model="form.name" placeholder="Tên">
+                                                <div v-show="$page.props.errors.name">
                                                     <p class="text-sm text-red-600">
-                                                        {{ $page.props.errors.title }}
+                                                        {{ $page.props.errors.name }}
                                                     </p>
                                                 </div>
                                             </div>

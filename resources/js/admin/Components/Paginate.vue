@@ -3,10 +3,10 @@
         <div class="col-12 mb-5 mt-5">
             <ul class="pagination align-items-center float-right">
                 <span style="margin-right: 10px;">
-                    Showing
+                    Đang hiển thị
                     <b>{{ pagination.from }}-{{ pagination.to }}</b>
-                    of
-                    <b>{{ pagination.total }}</b> sản phẩm
+                    của
+                    <b>{{ pagination.total }}</b>
                 </span>
                 <template v-for="(link, key) in pagination.links" :key="link.label">
                     <li v-if="link.url" class="page-item" :class="{ 'active': link.active }">

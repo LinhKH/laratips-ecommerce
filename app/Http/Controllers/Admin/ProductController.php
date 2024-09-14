@@ -227,7 +227,7 @@ class ProductController extends Controller
         $attribute_values = Attribute_value::where(['product_id' => $id])->get();
 
         $products['attributes'] = [];
-        $products['category'] = Category::where('id', $products['category'])->get()->toArray();
+        $products['category'] = Category::where('id', $products['category'])->first()->toArray();
 
         if ($products['colors']) {
             $products['color'] = Color::whereIn('id', explode(',', $products['colors']))->get()->toArray();
@@ -351,7 +351,7 @@ class ProductController extends Controller
             'thumbnail_img' => $image,
             'gallery_img' => implode(',', $gallery),
             'product_name' => $request->input('product_name'),
-            'category' => $request->input('category')[0]['id'],
+            'category' => $request->input('category')['id'],
             'brand' => $request->input('brand'),
             'unit' => $request->input('unit'),
             'min_qty' => $request->input('min_qty'),

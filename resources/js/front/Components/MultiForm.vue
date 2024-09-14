@@ -280,7 +280,7 @@ const handleSubmit = (e) => {
                                 <div class="ml-2">
                                     {{ product.product_name }}
                                     <div v-if="product.color_code" class="d-flex">
-                                        <b>Color : </b>
+                                        <b>Màu sắc : </b>
                                         <label :style="{
                                             backgroundColor: product.color_code, marginLeft: '10px', borderRadius: '50%', border: '1px solid', cursor: 'auto', height: '20px', width: '20px', display: 'inline-block',
                                         }"></label>

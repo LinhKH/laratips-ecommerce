@@ -24,8 +24,8 @@ class BrandController extends Controller
         $data = Brand::latest()->when($request->name, fn(Builder $builder, $name) => $builder->where('brand_name', 'like', "%{$name}%"))->orderBy('id', 'desc')->paginate(10)->withQueryString();
         return inertia()->render('Brand/Index', [
             'data' => $data,
-            'title' => 'Brands Management',
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'title' => 'Quản lý thương hiệu',
+            'breadcrumb' => ['Bẳng điều khiển' => 'admin.dashboard'],
             'filters' => (object) $request->all(),
             'category' => Category::with('childrenCategories')->where('parent_category', 0)->get(['id', 'category_name']),
             'routeResourceName' => $this->routeResourceName,
@@ -58,7 +58,7 @@ class BrandController extends Controller
         }
 
         return inertia()->render('Brand/Create', [
-            'title' => 'Create Brand',
+            'title' => 'Tạo thương hiệu',
             'edit' => false,
             'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
             // 'category' => $arrTree,
@@ -78,7 +78,7 @@ class BrandController extends Controller
         // return $request->input();
         $request->validate([
             'name' => 'required|unique:brands,brand_name',
-            'brand_img' => 'image|mimes:jpeg,jpg,png,svg|max:2048',
+            // 'brand_img' => 'image|mimes:jpeg,jpg,png,svg|max:2048',
             'brand_cat' => 'required',
         ]);
 
@@ -106,7 +106,7 @@ class BrandController extends Controller
         $brand->brand_slug = $slug;
         $brand->status = $request->input('brand_status') ?? 1;
         $result = $brand->save();
-        return to_route('admin.brand.index')->with('success', 'Brand Created Successfuly!.');
+        return to_route('admin.brand.index')->with('success', 'Thương hiệu được tạo thành công.!');
     }
 
     /**
@@ -146,11 +146,11 @@ class BrandController extends Controller
 
         $brand = Brand::where(['id' => $id])->first();
         return inertia()->render('Brand/Create', [
-            'title' => 'Edit Brand',
+            'title' => 'Chỉnh sửa thương hiệu',
             'edit' => true,
             'item' => $brand,
             'category' => $arrTree,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -212,7 +212,7 @@ class BrandController extends Controller
             'brand_slug' => $slug,
             'status' => $request->input('brand_status') ?? 1
         ]);
-        return to_route('admin.brand.index')->with('success', 'Brand Updated Successfuly!.');
+        return to_route('admin.brand.index')->with('success', 'Cập nhật thương hiệu thành công!.');
     }
 
     /**
@@ -226,9 +226,9 @@ class BrandController extends Controller
         $check = Product::where('brand', $id)->count();
         if ($check == '0') {
             $destroy = Brand::where(['id' => $id])->delete();
-            return back()->with('success', 'Brand deleted successfully.');
+            return back()->with('success', 'Xóa thương hiệu thành công.!');
         } else {
-            return back()->with('error', "You don't delete this, This color is used in Products Table");
+            return back()->with('error', "Bạn không thể xóa mục này, Màu sắc này đã được sử dụng trong Sản phẩm.");
         }
     }
 }

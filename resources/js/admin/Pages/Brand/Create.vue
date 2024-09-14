@@ -103,10 +103,10 @@ let treeSelect = props.item.brand_subcat?.split(",").map(item => parseInt(item))
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Name</span>
+                                                <span>Tên</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" v-model="form.name" placeholder="Name">
+                                                <input type="text" class="form-control" v-model="form.name" placeholder="Tên">
                                                 <div v-show="$page.props.errors.name">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.name }}
@@ -123,25 +123,30 @@ let treeSelect = props.item.brand_subcat?.split(",").map(item => parseInt(item))
                                             <div class="custom-file col-md-7">
                                                 <input type="hidden" class="custom-file-input" v-model="form.old_img" />
                                                 <input type="file" class="custom-file-input" @input="form.brand_img = $event.target.files[0]" name="brand_img">
-                                                <label class="custom-file-label">Choose file</label>
-                                            </div>
-                                            <div class="col-md-3 text-right">
-                                                <img id="image" :src="photo_or_blank_image" alt="" width="150px">
                                                 <div v-show="$page.props.errors.brand_img">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.brand_img }}
                                                     </p>
                                                 </div>
+                                                <label class="custom-file-label">Chọn hình ảnh</label>
+                                            </div>
+                                            <div class="col-md-3 text-right">
+                                                <img id="image" :src="photo_or_blank_image" alt="" width="150px">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Category</span>
+                                                <span>Thuộc danh mục</span>
                                             </div>
                                             <div class="col-md-10">
                                                 <treeselect v-model="treeSelect" :multiple="true" :options="category" :flat="false"/>
+                                                <div v-show="$page.props.errors.brand_cat">
+                                                    <p class="text-sm text-red-600">
+                                                        {{ $page.props.errors.brand_cat }}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

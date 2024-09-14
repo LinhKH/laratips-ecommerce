@@ -27,7 +27,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                 </div>
                 <div class="col-lg-3 col-md-6 mb-5">
                     <div class="widget-box">
-                        <h6 class="widget-title">Categories</h6>
+                        <h6 class="widget-title">Danh mục</h6>
                         <ul class="widget-list">
                             <template v-for="cat_menu in all_category" :key="cat_menu.id">
                                 <li v-if="cat_menu.parent_category == '0'">
@@ -43,7 +43,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                 </div>
                 <div class="col-lg-3 col-md-6 mb-5">
                     <div class="widget-box">
-                        <h6 class="widget-title">Links</h6>
+                        <h6 class="widget-title">Liên kết</h6>
                         <ul class="widget-list">
                             <template v-for="page in sitePages" key="page.page_id">
                                 <li v-if="page.show_in_footer == '1'">
@@ -56,7 +56,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                             <li>
                                 <Link :href="`${baseUrl}/contact_us`">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                Contact us
+                                Liên hệ
                                 </Link>
                             </li>
                         </ul>
@@ -64,14 +64,14 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                 </div>
                 <div class="col-lg-3 col-md-6 d-flex justify-content-left justify-content-lg-center">
                     <div class="contact-widget">
-                        <h6 class="widget-title">Contact Us</h6>
+                        <h6 class="widget-title">Liên hệ</h6>
                         <ul class="contact-list">
                             <li v-if="generalSettings.address">
                                 <span class="icon">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </span>
                                 <span>
-                                    <b>Address: </b>
+                                    <b>Địa chỉ: </b>
                                     {{ generalSettings.address }}
                                 </span>
                             </li>
@@ -80,7 +80,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                                     <i class="fas fa-envelope"></i>
                                 </span>
                                 <span>
-                                    <b>Email: </b>
+                                    <b>Thư điện tử: </b>
                                     {{ generalSettings.email }}
                                 </span>
                             </li>
@@ -89,7 +89,7 @@ const { generalSettings, socialLinks, sitePages, all_category } = usePage().prop
                                     <i class="fas fa-phone-alt"></i>
                                 </span>
                                 <span>
-                                    <b>Contact Us: </b>
+                                    <b>Số điện thoại: </b>
                                     {{ generalSettings.phone }}
                                 </span>
                             </li>

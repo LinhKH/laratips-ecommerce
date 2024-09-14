@@ -42,9 +42,9 @@ const { filters, isLoading, isFilled } = useFilters({
 <template>
     <Head :title="title" />
     <BackendLayout>
-        <BreadCrumb :breadcrumb='breadcrumb' :title="`All Brand`" :active='`All Brand`'>
+        <BreadCrumb :breadcrumb='breadcrumb' :title="`Tất cả thương hiệu`" :active='`Tất cả thương hiệu`'>
             <template #add_btn>
-                <Link :href="route('admin.brand.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.brand.create')" class="align-top btn btn-sm btn-primary">Thêm mới</Link>
             </template>
             
         </BreadCrumb>
@@ -57,9 +57,9 @@ const { filters, isLoading, isFilled } = useFilters({
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Tên</th>
+                                    <th>Trạng thái</th>
+                                    <th>Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,8 +69,8 @@ const { filters, isLoading, isFilled } = useFilters({
                                         {{ row.brand_name }}
                                     </td>
                                     <td>
-                                        <span v-if="row.status == '1'"class="badge badge-success">Active</span>
-                                        <span v-else class="badge badge-danger">Inactive</span>
+                                        <span v-if="row.status == '1'"class="badge badge-success">Kích hoạt</span>
+                                        <span v-else class="badge badge-danger">Chưa kích hoạt</span>
                                     </td>
                                     <td>
                                         <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"

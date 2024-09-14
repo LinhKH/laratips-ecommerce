@@ -51,9 +51,9 @@ const { filters, isLoading, isFilled } = useFilters({
 
     <BackendLayout>
 
-        <BreadCrumb :breadcrumb='breadcrumb' :title="`All Category`" :active='`All Category`'>
+        <BreadCrumb :breadcrumb='breadcrumb' :title="`Tất cả danh mục`" :active='`Tất cả danh mục`'>
             <template #add_btn>
-                <Link :href="route('admin.category.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.category.create')" class="align-top btn btn-sm btn-primary">Thêm mới</Link>
             </template>
         </BreadCrumb>
         <section class="content">
@@ -67,10 +67,10 @@ const { filters, isLoading, isFilled } = useFilters({
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    <th>Name</th>
-                                    <th>Parent Category</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Tên</th>
+                                    <th>Thuộc danh mục</th>
+                                    <th>Trạng thái</th>
+                                    <th>Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,8 +85,8 @@ const { filters, isLoading, isFilled } = useFilters({
                                     </td>
                                     <td>{{ row.parent_name }}</td>
                                     <td>
-                                        <span v-if="row.status == '1'" class="badge badge-success">Active</span>
-                                        <span v-else class="badge badge-danger">Inactive</span>
+                                        <span v-if="row.status == '1'" class="badge badge-success">Kích hoạt</span>
+                                        <span v-else class="badge badge-danger">Chưa kích hoạt</span>
                                     </td>
                                     <td>
                                         <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"

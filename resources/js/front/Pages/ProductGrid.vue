@@ -87,7 +87,7 @@ function handleRemoveFromWishlist(product_id) {
             </span>
             <!-- <span class="product-sale-label">sale</span> -->
             <Link class="quick-view" :href="`${baseUrl}/product/${product.slug}`">
-            quick view
+            xem ngay
             </Link>
         </div>
         <div class="product-content">

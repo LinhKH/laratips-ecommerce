@@ -24,8 +24,8 @@ class AttributeController extends Controller
         $data = Attribute::select('*')->when($request->name, fn(Builder $builder, $name) => $builder->where('title', 'like', "%{$name}%"))->orderBy('id', 'desc')->paginate(10)->withQueryString();
         return inertia()->render('Attribute/Index', [
             'data' => $data,
-            'title' => 'Attribute Management',
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'title' => 'Quản lý thuộc tính',
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'filters' => (object) $request->all(),
             'routeResourceName' => $this->routeResourceName,
         ]);
@@ -39,9 +39,9 @@ class AttributeController extends Controller
     public function create()
     {
         return inertia()->render('Attribute/Create', [
-            'title' => 'Create Attribute',
+            'title' => 'Tạo thuộc tính',
             'edit' => false,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -55,11 +55,11 @@ class AttributeController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
-            'title' => 'required|unique:attributes,title',
+            'name' => 'required|unique:attributes,name',
         ]);
 
         $attribute = new Attribute();
-        $attribute->title = $request->input('title');
+        $attribute->name = $request->input('name');
         $result = $attribute->save();
         return to_route('admin.attribute.index')->with('success', 'Attribute Created Successfuly!.');
     }
@@ -85,10 +85,10 @@ class AttributeController extends Controller
     {
         $attribute = Attribute::where(['id' => $id])->first();
         return inertia()->render('Attribute/Create', [
-            'title' => 'Edit Attribute',
+            'title' => 'Chỉnh sửa thuộc tính',
             'edit' => true,
             'item' => $attribute,
-            'breadcrumb' => ['Dashboard' => 'admin.dashboard'],
+            'breadcrumb' => ['Bảng điều khiển' => 'admin.dashboard'],
             'routeResourceName' => $this->routeResourceName,
         ]);
     }
@@ -103,13 +103,13 @@ class AttributeController extends Controller
     public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
-            'title' => 'required|unique:attributes,title,' . $id . ',id',
+            'name' => 'required|unique:attributes,name,' . $id . ',id',
         ]);
 
         $attribute = Attribute::where(['id' => $id])->update([
-            'title' => $request->input('title'),
+            'name' => $request->input('name'),
         ]);
-        return to_route('admin.attribute.index')->with('success', 'Attribute Updated Successfuly!.');
+        return to_route('admin.attribute.index')->with('success', 'Thuộc tính cập nhật thành công!.');
     }
 
     /**

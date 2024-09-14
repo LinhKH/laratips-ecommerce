@@ -114,7 +114,7 @@ const sortOptions = [
                             <div class="col-md-12">
                                 <div class="content-box">
                                     <div class="row">
-                                        <div class="col-md-4 d-flex flex-row align-items-center">
+                                        <div class="col-md-9 d-flex flex-row align-items-center">
                                             <h5 class="title">
                                                 {{ slug }}
                                             </h5>
@@ -125,11 +125,10 @@ const sortOptions = [
                                             </p>
                                             <p class="result-count" v-else>Đang hiển thị tổng cộng : <b style="font-size: 12px;"> {{ products.total }}</b></p>
                                         </div>
-                                        <div class="col-md-4"></div>
                                         <div
-                                            class="col-md-4 d-flex flex-row justify-content-between align-items-center">
+                                            class="col-md-3 d-flex flex-row justify-content-between align-items-center">
                                             <label for="" class="text-nowrap my-auto mr-2">
-                                                Sắp xếp bởi
+                                                Sắp xếp
                                             </label>
                                             <select name="sort" class="form-control" v-model="data.sort"
                                                 @change="handleFilter">

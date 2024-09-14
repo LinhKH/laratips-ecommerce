@@ -40,15 +40,15 @@ const form = useForm({
     status: props.item.status == 0 ? false : true,
     meta_title: props.item.meta_title ?? "",
     meta_desc: props.item.meta_desc ?? "",
-    cat_attributes: props.item.filter_attr ?? [],
+    // cat_attributes: props.item.filter_attr ?? [],
 });
 
-onMounted(() => {
-    jQuery(".select2").select2({
-    }).on('select2:change', (e) => {
-        this.form.cat_attributes = e.params.data.id;
-    });
-});
+// onMounted(() => {
+//     jQuery(".select2").select2({
+//     }).on('select2:change', (e) => {
+//         this.form.cat_attributes = e.params.data.id;
+//     });
+// });
 
 const submit = () => {
     props.edit
@@ -89,7 +89,7 @@ const submit = () => {
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.category.index')" class="align-top btn btn-sm btn-primary">Back</Link>
+                <Link :href="route('admin.category.index')" class="align-top btn btn-sm btn-primary">Quay lại</Link>
             </template>
         </BreadCrumb>
         <section class="content card">
@@ -102,17 +102,17 @@ const submit = () => {
                             <!-- jquery validation -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Category Details</h3>
+                                    <h3 class="card-title">Chi tiết danh mục</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Category Name</span>
+                                                <span>Tên danh mục</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" v-model="form.name" name="name" placeholder="Name">
+                                                <input type="text" class="form-control" v-model="form.name" name="name" placeholder="Tên">
                                                 <div v-show="$page.props.errors.name">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.name }}
@@ -124,7 +124,7 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Category Parent</span>
+                                                <span>Danh mục cha (chọn No parent nếu muốn nó là danh mục cha)</span>
                                             </div>
                                             <div class="col-md-10">
                                                 <select name="parent" v-model="form.parent" class="form-control">
@@ -142,10 +142,10 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Meta Title</span>
+                                                <span>Tiêu đề Meta</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" v-model="form.meta_title" name="meta_title" placeholder="Meta Title">
+                                                <input type="text" class="form-control" v-model="form.meta_title" name="meta_title" placeholder="Tiêu đề Meta">
                                                 <div v-show="$page.props.errors.meta_title">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.meta_title }}
@@ -157,10 +157,10 @@ const submit = () => {
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Meta Description</span>
+                                                <span>Chi tiết Meta</span>
                                             </div>
                                             <div class="col-md-10">
-                                                <textarea class="form-control" v-model="form.meta_desc" name="meta_desc" placeholder="Meta Description" id="" cols="30" rows="2"></textarea>
+                                                <textarea class="form-control" v-model="form.meta_desc" name="meta_desc" placeholder="Chi tiết Meta" id="" cols="30" rows="2"></textarea>
                                                 <div v-show="$page.props.errors.meta_desc">
                                                     <p class="text-sm text-red-600">
                                                         {{ $page.props.errors.meta_desc }}
@@ -169,10 +169,10 @@ const submit = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span>Filter Attributes</span>
+                                                <span>Thuộc thương hiệu</span>
                                             </div>
                                             <div class="col-md-10">
                                                 <VueMultiselect
@@ -180,13 +180,13 @@ const submit = () => {
                                                     :options="attributes"
                                                     :multiple="true"
                                                     :close-on-select="true"
-                                                    placeholder="Pick some"
+                                                    placeholder="Chọn 1 hoặc nhiều"
                                                     label="title"
                                                     track-by="id"
                                                 />
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-2">

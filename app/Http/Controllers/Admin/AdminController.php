@@ -49,7 +49,7 @@ class AdminController extends Controller
 
     public function dashboard(){
         $data['products'] = Product::count();
-        $data['users'] = Users::count();
+        $data['users'] = Users::where('isAdmin','!=', 1)->count();
         $date = date('Y-m-d');
         $data['today_orders'] = Order::whereDate('created_at',$date)->count();
         $data['total_saled'] = OrderProducts::sum('product_qty');

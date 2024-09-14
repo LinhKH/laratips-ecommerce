@@ -44,7 +44,7 @@ const { filters, isLoading, isFilled } = useFilters({
     <BackendLayout>
         <BreadCrumb :breadcrumb='breadcrumb' :title="title" :active='title'>
             <template #add_btn>
-                <Link :href="route('admin.attribute.create')" class="align-top btn btn-sm btn-primary">Add New</Link>
+                <Link :href="route('admin.attribute.create')" class="align-top btn btn-sm btn-primary">Thêm mới</Link>
             </template>
             
         </BreadCrumb>
@@ -57,7 +57,8 @@ const { filters, isLoading, isFilled } = useFilters({
                             <thead>
                                 <tr>
                                     <th>S No</th>
-                                    <th>Title</th>
+                                    <th>Name</th>
+                                    <!-- <th>Title</th> -->
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -65,8 +66,11 @@ const { filters, isLoading, isFilled } = useFilters({
                                 <tr v-for="row in data.data" :key="row.id">
                                     <td>{{ row.id }}</td>
                                     <td>
-                                        {{ row.title }}
+                                        {{ row.name }}
                                     </td>
+                                    <!-- <td>
+                                        {{ row.title }}
+                                    </td> -->
                                     <td>
                                         <Actions :edit-link="route(`admin.${routeResourceName}.edit`, { id: row.id })"
                                             @deleteClicked="showDeleteModal(row)" />
